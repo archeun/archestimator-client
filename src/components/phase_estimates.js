@@ -115,7 +115,8 @@ class PhaseEstimatesComponent extends Component {
                                     overlay={
                                         <Tooltip id="tooltip-top">Edit</Tooltip>
                                     }>
-                        <Button style={{'float': 'right'}} variant="outline-primary" size="sm">
+                        <Button onClick={this.handleEstimateBtnClick.bind(this, estimate, 'edit')}
+                            style={{'float': 'right'}} variant="outline-primary" size="sm">
                             <span className="oi oi-pencil"/>
                         </Button>
                     </OverlayTrigger>

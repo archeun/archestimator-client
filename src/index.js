@@ -11,6 +11,7 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import NavbarComponent from "./components/navbar";
 import PhaseEstimatesComponent from "./components/phase_estimates";
 import EstimateViewComponent from "./components/estimate_view";
+import EstimateEditComponent from "./components/estimate_edit";
 
 ReactDOM.render(
     <Router>
@@ -21,6 +22,7 @@ ReactDOM.render(
             <Route path="/home" component={HomeComponent}/>
             <Route path="/phase/:phaseId/estimates/" component={PhaseEstimatesComponent}/>
             <Route path="/estimates/:estimateId/view/" component={EstimateViewComponent}/>
+            <Route path="/estimates/:estimateId/edit/" component={EstimateEditComponent}/>
             <Route path="/login/" component={LoginComponent}/>
             <Route path="/logout/" component={LogoutComponent}/>
         </div>
