@@ -4,6 +4,7 @@ import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import {BACKEND_ESTIMATOR_API_URL, HANDSONTABLE_KEY} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import {HotTable} from '@handsontable/react'
+import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
 const _ = require('lodash');
 
@@ -122,7 +123,7 @@ class EstimateViewComponent extends Component {
         return (
 
             <ArchestAuthEnabledComponent>
-                <Container style={{marginTop: '1%'}}>
+                <ArchestMainContainerComponent>
                     <Card>
                         <Card.Body>
                             <Card.Subtitle>{this.state.estimate.name}</Card.Subtitle>
@@ -138,7 +139,7 @@ class EstimateViewComponent extends Component {
                                   height="500"
                         />
                     </div>
-                </Container>
+                </ArchestMainContainerComponent>
             </ArchestAuthEnabledComponent>
         );
     }

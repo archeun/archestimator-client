@@ -4,6 +4,7 @@ import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import {BACKEND_ESTIMATOR_API_URL, HANDSONTABLE_KEY} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import {HotTable} from '@handsontable/react'
+import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
 const _ = require('lodash');
 
@@ -31,6 +32,9 @@ class EstimateEditComponent extends Component {
         return (
 
             <ArchestAuthEnabledComponent>
+                <ArchestMainContainerComponent>
+                    
+                </ArchestMainContainerComponent>
             </ArchestAuthEnabledComponent>
         );
     }

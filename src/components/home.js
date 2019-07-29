@@ -4,6 +4,7 @@ import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import {Redirect} from "react-router-dom";
+import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
 const _ = require('lodash');
 
@@ -52,7 +53,7 @@ class HomeComponent extends Component {
 
         return (
             <ArchestAuthEnabledComponent>
-                <Container style={{marginTop: '5%'}}>
+                <ArchestMainContainerComponent>
                     <Row>
                         <Col sm={3}/>
                         <Col sm={6}>
@@ -65,7 +66,7 @@ class HomeComponent extends Component {
                         </Col>
                         <Col sm={3}/>
                     </Row>
-                </Container>
+                </ArchestMainContainerComponent>
             </ArchestAuthEnabledComponent>
         );
     }

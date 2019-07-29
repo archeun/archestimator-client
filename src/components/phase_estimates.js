@@ -4,6 +4,7 @@ import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import {Redirect} from "react-router-dom";
+import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
 const _ = require('lodash');
 
@@ -63,7 +64,7 @@ class PhaseEstimatesComponent extends Component {
 
         return (
             <ArchestAuthEnabledComponent>
-                <Container style={{marginTop: '5%'}}>
+                <ArchestMainContainerComponent>
                     <Row>
                         <Col sm={2}/>
                         <Col sm={8}>
@@ -86,7 +87,7 @@ class PhaseEstimatesComponent extends Component {
                         </Col>
                         <Col sm={2}/>
                     </Row>
-                </Container>
+                </ArchestMainContainerComponent>
             </ArchestAuthEnabledComponent>
         );
     }
@@ -116,7 +117,7 @@ class PhaseEstimatesComponent extends Component {
                                         <Tooltip id="tooltip-top">Edit</Tooltip>
                                     }>
                         <Button onClick={this.handleEstimateBtnClick.bind(this, estimate, 'edit')}
-                            style={{'float': 'right'}} variant="outline-primary" size="sm">
+                                style={{'float': 'right'}} variant="outline-primary" size="sm">
                             <span className="oi oi-pencil"/>
                         </Button>
                     </OverlayTrigger>
