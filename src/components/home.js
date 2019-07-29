@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Container, Row, Col, Card, ListGroup, Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Row, Col, Card, ListGroup, Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";

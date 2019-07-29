@@ -1,12 +1,10 @@
 import React, {Component} from "react";
-import {Container, Row, Col, Card, ListGroup, Badge, Button, OverlayTrigger, Tooltip, Spinner} from "react-bootstrap";
+import {Card, Spinner} from "react-bootstrap";
 import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import {BACKEND_ESTIMATOR_API_URL, HANDSONTABLE_KEY} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import {HotTable} from '@handsontable/react'
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
-
-const _ = require('lodash');
 
 class EstimateViewComponent extends Component {
 
