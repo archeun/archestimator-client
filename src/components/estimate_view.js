@@ -126,14 +126,6 @@ class EstimateViewComponent extends Component {
                     <Card>
                         <Card.Body>
                             <Card.Subtitle>{this.state.estimate.name}</Card.Subtitle>
-                            <OverlayTrigger key="edit" placement="top"
-                                                    overlay={
-                                                        <Tooltip id="tooltip-top">Add New Estimate</Tooltip>
-                                                    }>
-                                        <Button onClick={this.saveEstimateData.bind(this)} style={{'float': 'right'}} variant="success" size="sm">
-                                            <span className="oi oi-plus"/>
-                                        </Button>
-                                    </OverlayTrigger>
                         </Card.Body>
                     </Card>
                     <Spinner hidden={this.state.dataLoaded} animation="border" style={{margin: '5% 50%'}}/>
