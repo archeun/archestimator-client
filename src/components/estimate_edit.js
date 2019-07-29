@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import {Card} from "react-bootstrap";
+import {Button, Card, Col, Row, Spinner} from "react-bootstrap";
 import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
+import ArchestEstimateActivityComponent from "./ArchestEstimateActivityComponent";
 
 class EstimateEditComponent extends Component {
 
@@ -17,7 +18,6 @@ class EstimateEditComponent extends Component {
             estimateDetails: {},
             estimateTableData: [],
         };
-        this.hotTableComponent = React.createRef();
     }
 
     componentDidMount() {
@@ -28,58 +28,9 @@ class EstimateEditComponent extends Component {
 
         ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/detailed_read_view/', {})
             .then(function (response) {
-                let estimateActivities = response.data.results;
-                let estimateTableRows = [];
-                let featureNames = {};
-                let activityNames = {};
-                for (let i = 0; i < estimateActivities.length; i++) {
-                    if (estimateActivities[i].sub_activities.length > 0) {
-                        for (let j = 0; j < estimateActivities[i].sub_activities.length; j++) {
-
-                            let subActivityData = [
-                                estimateActivities[i].feature.name,
-                                estimateActivities[i].name,
-                                estimateActivities[i].sub_activities[j].name,
-                                estimateActivities[i].sub_activities[j].estimated_time,
-                                estimateActivities[i].sub_activities[j].actual_time,
-                                estimateActivities[i].sub_activities[j].is_completed ? 'Completed' : 'Pending',
-                            ];
-                            if (featureNames[estimateActivities[i].feature.id]) {
-                                subActivityData[0] = '';
-                            }
-                            if (activityNames[estimateActivities[i].id]) {
-                                subActivityData[1] = '';
-                            }
-                            estimateTableRows.push(subActivityData);
-                            featureNames[estimateActivities[i].feature.id] = true;
-                            activityNames[estimateActivities[i].id] = true;
-                        }
-                    } else {
-                        let activityData = [
-                            estimateActivities[i].feature.name,
-                            estimateActivities[i].name,
-                            '',
-                            estimateActivities[i].estimated_time,
-                            estimateActivities[i].actual_time,
-                            estimateActivities[i].is_completed ? 'Completed' : 'Pending',
-                        ];
-
-                        if (featureNames[estimateActivities[i].feature.id]) {
-                            activityData[0] = '';
-                        }
-                        if (activityNames[estimateActivities[i].id]) {
-                            activityData[1] = '';
-                        }
-
-                        estimateTableRows.push(activityData);
-                        featureNames[estimateActivities[i].feature.id] = true;
-                        activityNames[estimateActivities[i].id] = true;
-                    }
-                }
 
                 component.setState({
                     estimateDetails: response.data.results,
-                    estimateTableData: estimateTableRows,
                     dataLoaded: true
                 });
             })
@@ -99,22 +50,44 @@ class EstimateEditComponent extends Component {
     }
 
     render() {
+        let activityComps = [];
+        if (this.state.dataLoaded) {
+            activityComps = this.state.estimateDetails.map(
+                (activity, idx) =>
+                    <ArchestEstimateActivityComponent
+                        key={idx}
+                        activity={activity}
+                        features={this.state.estimate.features}
+                    />
+            );
+        }
         return (
 
             <ArchestAuthEnabledComponent>
                 <ArchestMainContainerComponent>
-                    <Card>
-                        <Card.Body>
-                            <Card.Subtitle>ASHABSDn kjkajasd</Card.Subtitle>
-                        </Card.Body>
+                    <Button style={{'left': '93%', 'marginBottom': '2%'}} className='fixed-bottom' variant="success"
+                            size="lg">
+                        <span className="oi oi-check"/>
+                    </Button>
+                    <Card bg="info" text="white">
+                        <Card.Header>
+                            {this.state.estimate.name}
+                        </Card.Header>
                     </Card>
+                    <br/>
+                    <Spinner hidden={this.state.dataLoaded} animation="border" style={{margin: '5% 50%'}}/>
+                    {activityComps}
+                    <Row style={{margin: '0 42%'}}>
+                        <Col>
+                            <Button variant="link">
+                                <span className="oi oi-plus"/>&nbsp;&nbsp;
+                                <span>Add Activity</span>
+                            </Button>
+                        </Col>
+                    </Row>
                 </ArchestMainContainerComponent>
             </ArchestAuthEnabledComponent>
         );
-    }
-
-    saveEstimateData() {
-        console.log(this.hotTableComponent.current.hotInstance.getData());
     }
 
 }
