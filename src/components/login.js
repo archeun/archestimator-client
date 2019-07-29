@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {Button, FormGroup, FormControl, FormLabel, Card, Container, Row, Col} from "react-bootstrap";
-import {LOCAL_STORAGE_TOKEN_KEY, BACKEND_API_BASE_URL} from "../constants";
+import {BACKEND_API_BASE_URL} from "../constants";
 import {Redirect} from "react-router-dom";
-
-const axios = require('axios');
+import ArchestHttp from "../modules/archest_http";
+import ArchestAuth from "../modules/archest_auth";
 
 
 class LoginComponent extends Component {
@@ -31,30 +31,25 @@ class LoginComponent extends Component {
     handleSubmit = event => {
         event.preventDefault();
 
-        const params = new URLSearchParams();
-        params.append('username', this.state.username);
-        params.append('password', this.state.password);
-
         const loginComponent = this;
 
-        axios.post(BACKEND_API_BASE_URL + '/api-token-auth/', params)
-            .then(function (response) {
-                localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, response.data.token);
-                loginComponent.setState({
-                    redirectTo: 'home'
-                });
-
-            })
-            .catch(function (error) {
-                console.log(error);
+        ArchestHttp.POST(BACKEND_API_BASE_URL + '/api-token-auth/', {
+            username: this.state.username,
+            password: this.state.password
+        }).then(function (response) {
+            ArchestAuth.setToken(response.data.token);
+            loginComponent.setState({
+                redirectTo: 'home'
             });
+
+        }).catch(function (error) {
+            console.log(error);
+        });
     };
 
     render() {
 
-        let token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
-
-        if (token) {
+        if (ArchestAuth.getToken()) {
             return <Redirect to={
                 {
                     pathname: "/home",
