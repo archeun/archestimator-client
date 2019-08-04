@@ -26,7 +26,7 @@ class EstimateViewComponent extends Component {
         const component = this;
         let estimateId = this.props.match.params.estimateId;
 
-        ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/detailed_read_view/', {})
+        ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/detailed_view/', {})
             .then(function (response) {
                 let estimateActivities = response.data.results;
                 let estimateTableRows = [];
