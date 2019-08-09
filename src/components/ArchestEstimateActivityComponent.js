@@ -71,7 +71,10 @@ class ArchestEstimateActivityComponent extends Component {
                                     <Form.Label column lg="1">Activity</Form.Label>
                                     <Col lg={9}>
                                         <Form.Group controlId="activityForm.ActivityName">
-                                            <Form.Control as="textarea" rows="1" placeholder="Activity Name"
+                                            <Form.Control as="textarea"
+                                                          rows="1"
+                                                          placeholder="Activity Name"
+                                                          size="sm"
                                                           value={this.state.activityName}
                                                           name="activityName"
                                                           onChange={this.handleActivityFormFieldChange}/>
@@ -80,6 +83,7 @@ class ArchestEstimateActivityComponent extends Component {
                                     <Col lg={2}>
                                         <Form.Group controlId="activityForm.ActivityName">
                                             <Form.Control type="number" placeholder="Hrs."
+                                                          size="sm"
                                                           value={this.state.activityEstimatedTime}
                                                           name="activityEstimatedTime"
                                                           onChange={this.handleActivityFormFieldChange}/>
