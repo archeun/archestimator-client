@@ -21,8 +21,9 @@ export default class ArchestHttp {
      *
      * @param url
      * @param params
+     * @param authenticate
      */
-    static POST(url, params) {
+    static POST(url, params, authenticate = true) {
 
         const postParams = new URLSearchParams();
 
@@ -30,7 +31,11 @@ export default class ArchestHttp {
             postParams.append(key, value);
         });
 
-        return axios.post(url, postParams);
+        let postConfig = {};
+        if(authenticate){
+            postConfig['headers'] = {'Authorization': 'Token ' + ArchestAuth.getToken()};
+        }
+        return axios.post(url, postParams, postConfig);
     }
 
     /**

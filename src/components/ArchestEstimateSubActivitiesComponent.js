@@ -7,6 +7,7 @@ class ArchestEstimateSubActivitiesComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            activity: this.props.activity,
             subActivities: this.props.subActivities,
             newlyAddedSubActivityCount: 0
         };
@@ -22,7 +23,7 @@ class ArchestEstimateSubActivitiesComponent extends Component {
 
         let addSubActivityItem = function () {
             component.setState(prevState => ({
-                subActivities: [...prevState.subActivities, {id: `new_sub_activity_${++prevState.newlyAddedSubActivityCount}`}]
+                subActivities: [...prevState.subActivities, {id: `new_sub_activity_${++prevState.newlyAddedSubActivityCount}`, parent_id: prevState.activity.id}]
             }))
         };
 

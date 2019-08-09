@@ -36,7 +36,7 @@ class LoginComponent extends Component {
         ArchestHttp.POST(BACKEND_API_BASE_URL + '/api-token-auth/', {
             username: this.state.username,
             password: this.state.password
-        }).then(function (response) {
+        }, false).then(function (response) {
             ArchestAuth.setToken(response.data.token);
             loginComponent.setState({
                 redirectTo: 'home'

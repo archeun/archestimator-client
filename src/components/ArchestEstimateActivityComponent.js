@@ -53,8 +53,8 @@ class ArchestEstimateActivityComponent extends Component {
                                 <Row>
                                     <Col>
                                         <Form.Group as={Row} controlId="activityForm.FeatureName">
-                                            <Form.Label column sm="1">Feature</Form.Label>
-                                            <Col sm="11">
+                                            <Form.Label column lg="1">Feature</Form.Label>
+                                            <Col lg="11">
                                                 <Form.Control
                                                     size="sm"
                                                     as="select"
@@ -68,7 +68,9 @@ class ArchestEstimateActivityComponent extends Component {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Form.Label column lg="1">Activity</Form.Label>
+                                    <Col lg={1}>
+                                    <Form.Label>Activity</Form.Label>
+                                    </Col>
                                     <Col lg={9}>
                                         <Form.Group controlId="activityForm.ActivityName">
                                             <Form.Control as="textarea"
@@ -80,7 +82,7 @@ class ArchestEstimateActivityComponent extends Component {
                                                           onChange={this.handleActivityFormFieldChange}/>
                                         </Form.Group>
                                     </Col>
-                                    <Col lg={2}>
+                                    <Col lg={1}>
                                         <Form.Group controlId="activityForm.ActivityName">
                                             <Form.Control type="number" placeholder="Hrs."
                                                           size="sm"
@@ -89,12 +91,16 @@ class ArchestEstimateActivityComponent extends Component {
                                                           onChange={this.handleActivityFormFieldChange}/>
                                         </Form.Group>
                                     </Col>
+                                    <Col lg={1}>
+                                        <Button onClick={this.saveActivityData} size="sm">
+                                            <span className="oi oi-check"/>
+                                        </Button>
+                                    </Col>
                                 </Row>
                                 <ArchestEstimateSubActivitiesComponent
+                                    activity={this.props.activity}
                                     subActivities={this.props.activity.sub_activities}/>
                             </Form>
-                            <Button onClick={this.saveActivityData} style={{'float': 'right'}}
-                                    size="sm">Save</Button>
                         </Card.Body>
                     </Card>
                 </Col>
