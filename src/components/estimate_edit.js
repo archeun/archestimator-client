@@ -51,6 +51,8 @@ class EstimateEditComponent extends Component {
 
     render() {
         let activityComps = [];
+        let component = this;
+
         if (this.state.dataLoaded) {
             activityComps = this.state.estimateDetails.map(
                 (activity, idx) =>
@@ -61,6 +63,26 @@ class EstimateEditComponent extends Component {
                     />
             );
         }
+
+        let addActivityItem = function () {
+            const features = component.state.estimate.features;
+
+            ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/activities/", {
+                feature_id: features[0].id,
+                name: '',
+                estimate_id: component.state.estimate.id,
+                estimated_time: 0,
+                is_completed: 0,
+            }).then(function (response) {
+                console.log(response);
+                component.setState(prevState => ({
+                    estimateDetails: [...prevState.estimateDetails, response.data]
+                }))
+            }).catch(function (error) {
+                console.log(error);
+            });
+        };
+
         return (
 
             <ArchestAuthEnabledComponent>
@@ -79,7 +101,7 @@ class EstimateEditComponent extends Component {
                     {activityComps}
                     <Row style={{margin: '0 42%'}}>
                         <Col>
-                            <Button variant="link">
+                            <Button onClick={addActivityItem} variant="link">
                                 <span className="oi oi-plus"/>&nbsp;&nbsp;
                                 <span>Add Activity</span>
                             </Button>
