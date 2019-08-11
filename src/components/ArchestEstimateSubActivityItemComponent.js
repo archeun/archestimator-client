@@ -14,41 +14,32 @@ class ArchestEstimateSubActivityItemComponent extends Component {
             subActivityEstimatedTime: this.props.subActivity.estimated_time,
         };
         this.saveSubActivityData = this.saveSubActivityData.bind(this);
+        this.deleteSubActivityActivityItem = this.deleteSubActivityActivityItem.bind(this);
         this.handleSubActivityFormFieldChange = this.handleSubActivityFormFieldChange.bind(this);
     }
 
     saveSubActivityData() {
-        let subActivityId = this.state.subActivityId;
+        ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/sub_activities/" + this.state.subActivityId + "/", {
+            name: this.state.subActivityName,
+            estimated_time: this.state.subActivityEstimatedTime,
+        }).then(function (response) {
 
-        if (typeof subActivityId !== 'number' && subActivityId.startsWith('new_sub_activity_')) {
-
-            ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/sub_activities/", {
-                parent_id: this.state.parentActivityId,
-                name: this.state.subActivityName,
-                estimated_time: this.state.subActivityEstimatedTime,
-            }).then(function (response) {
-
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-        } else {
-
-            ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/sub_activities/" + this.state.subActivityId + "/", {
-                name: this.state.subActivityName,
-                estimated_time: this.state.subActivityEstimatedTime,
-            }).then(function (response) {
-
-            }).catch(function (error) {
-                console.log(error);
-            });
-
-        }
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
     handleSubActivityFormFieldChange(formElement) {
         this.setState({
             [formElement.target.name]: formElement.target.value,
+        });
+    }
+
+    deleteSubActivityActivityItem() {
+        ArchestHttp.DELETE(BACKEND_ESTIMATOR_API_URL + "/sub_activities/" + this.state.subActivityId + "/", {}).then(
+            (response) => this.props.removeSubActivityItemHandler(this.state.subActivityId, response)
+        ).catch(function (error) {
+            console.error(error);
         });
     }
 
@@ -83,8 +74,9 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                                     size="sm"><span className="oi oi-check"/></Button>
                         </Col>
                         <Col lg={1}>
-                            <Button style={{'marginLeft': '10px'}} variant="danger" size="sm"><span
-                                className="oi oi-x"/></Button>
+                            <Button style={{'marginLeft': '10px'}} onClick={this.deleteSubActivityActivityItem}
+                                    variant="danger" size="sm">
+                                <span className="oi oi-x"/></Button>
                         </Col>
                     </Row>
                 </Col>

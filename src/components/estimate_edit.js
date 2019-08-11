@@ -6,6 +6,8 @@ import ArchestHttp from "../modules/archest_http";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import ArchestEstimateActivityComponent from "./ArchestEstimateActivityComponent";
 
+const _ = require('lodash');
+
 class EstimateEditComponent extends Component {
 
     constructor(props) {
@@ -18,6 +20,7 @@ class EstimateEditComponent extends Component {
             estimateDetails: {},
             estimateTableData: [],
         };
+        this.removeActivityItem = this.removeActivityItem.bind(this);
     }
 
     componentDidMount() {
@@ -49,6 +52,16 @@ class EstimateEditComponent extends Component {
             });
     }
 
+    removeActivityItem = function (removedActivityId, response) {
+        //TODO: Refactor this function to have proper constants and validations
+        if (response.status === 204) {
+            this.setState(function (prevState) {
+                _.remove(prevState.estimateDetails, {id: removedActivityId});
+                return {estimateDetails: prevState.estimateDetails}
+            });
+        }
+    };
+
     render() {
         let activityComps = [];
         let component = this;
@@ -60,6 +73,7 @@ class EstimateEditComponent extends Component {
                         key={idx}
                         activity={activity}
                         features={this.state.estimate.features}
+                        removeActivityItemHandler={this.removeActivityItem}
                     />
             );
         }
@@ -72,12 +86,11 @@ class EstimateEditComponent extends Component {
                 name: '',
                 estimate_id: component.state.estimate.id,
                 estimated_time: 0,
-                is_completed: 0,
+                status: 1,
             }).then(function (response) {
-                console.log(response);
                 component.setState(prevState => ({
                     estimateDetails: [...prevState.estimateDetails, response.data]
-                }))
+                }));
             }).catch(function (error) {
                 console.log(error);
             });

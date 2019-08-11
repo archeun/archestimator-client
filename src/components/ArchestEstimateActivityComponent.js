@@ -15,6 +15,7 @@ class ArchestEstimateActivityComponent extends Component {
             activityEstimatedTime: this.props.activity.estimated_time,
         };
         this.saveActivityData = this.saveActivityData.bind(this);
+        this.deleteActivityData = this.deleteActivityData.bind(this);
         this.handleActivityFormFieldChange = this.handleActivityFormFieldChange.bind(this);
     }
 
@@ -26,6 +27,14 @@ class ArchestEstimateActivityComponent extends Component {
         }).then(function (response) {
 
         }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    deleteActivityData() {
+        ArchestHttp.DELETE(BACKEND_ESTIMATOR_API_URL + "/activities/" + this.state.activityId + "/", {}).then(
+            (response) => this.props.removeActivityItemHandler(this.state.activityId, response)
+        ).catch(function (error) {
             console.log(error);
         });
     }
@@ -54,7 +63,7 @@ class ArchestEstimateActivityComponent extends Component {
                                     <Col>
                                         <Form.Group as={Row} controlId="activityForm.FeatureName">
                                             <Form.Label column lg="1">Feature</Form.Label>
-                                            <Col lg="11">
+                                            <Col lg="10">
                                                 <Form.Control
                                                     size="sm"
                                                     as="select"
@@ -69,7 +78,7 @@ class ArchestEstimateActivityComponent extends Component {
                                 </Row>
                                 <Row>
                                     <Col lg={1}>
-                                    <Form.Label>Activity</Form.Label>
+                                        <Form.Label>Activity</Form.Label>
                                     </Col>
                                     <Col lg={9}>
                                         <Form.Group controlId="activityForm.ActivityName">
@@ -91,10 +100,23 @@ class ArchestEstimateActivityComponent extends Component {
                                                           onChange={this.handleActivityFormFieldChange}/>
                                         </Form.Group>
                                     </Col>
-                                    <Col lg={1}>
-                                        <Button onClick={this.saveActivityData} size="sm">
-                                            <span className="oi oi-check"/>
-                                        </Button>
+
+                                    <Col lg="1">
+                                        <Row>
+                                            <Col lg="1">
+                                                <Button style={{'marginLeft': '-18px'}} onClick={this.saveActivityData}
+                                                        size="sm">
+                                                    <span className="oi oi-check"/>
+                                                </Button>
+                                            </Col>
+                                            <Col lg="1">
+                                                <Button style={{'marginLeft': '-8px'}} onClick={this.deleteActivityData}
+                                                        size="sm"
+                                                        variant="danger">
+                                                    <span className="oi oi-x"/>
+                                                </Button>
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                                 <ArchestEstimateSubActivitiesComponent

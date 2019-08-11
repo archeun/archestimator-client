@@ -54,4 +54,20 @@ export default class ArchestHttp {
         return axios.patch(url, patchParams, {headers: {'Authorization': 'Token ' + ArchestAuth.getToken()}});
     }
 
+    /**
+     * Performs a DELETE request to the given url, with the given params.
+     *
+     * @param url
+     * @param params
+     */
+    static DELETE(url, params) {
+
+        const patchParams = new URLSearchParams();
+        _.each(params, function (value, key) {
+            patchParams.append(key, value);
+        });
+
+        return axios.delete(url, {headers: {'Authorization': 'Token ' + ArchestAuth.getToken()}}, patchParams);
+    }
+
 }
