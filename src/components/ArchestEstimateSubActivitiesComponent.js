@@ -58,10 +58,10 @@ class ArchestEstimateSubActivitiesComponent extends Component {
 
         return (
             <Card border="light" bg="light">
-                <Card.Header>
+                <Card.Header className="archest-activity-sub-activities-card-heading">
                     Sub Activities
                 </Card.Header>
-                <Card.Body>
+                <Card.Body className="archest-activity-sub-activities-card-body">
                     {subActivities}
                     <Row>
                         <Col>

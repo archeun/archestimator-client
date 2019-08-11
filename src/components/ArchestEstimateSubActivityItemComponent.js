@@ -10,6 +10,7 @@ class ArchestEstimateSubActivityItemComponent extends Component {
         this.state = {
             parentActivityId: this.props.subActivity.parent_id,
             subActivityId: this.props.subActivity.id,
+            subActivityStatus: this.props.subActivity.status,
             subActivityName: this.props.subActivity.name,
             subActivityEstimatedTime: this.props.subActivity.estimated_time,
         };
@@ -22,6 +23,7 @@ class ArchestEstimateSubActivityItemComponent extends Component {
         ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/sub_activities/" + this.state.subActivityId + "/", {
             name: this.state.subActivityName,
             estimated_time: this.state.subActivityEstimatedTime,
+            status: this.state.subActivityStatus,
         }).then(function (response) {
 
         }).catch(function (error) {
@@ -44,10 +46,18 @@ class ArchestEstimateSubActivityItemComponent extends Component {
     }
 
     render() {
+
+        let subActivityStatusOptions = this.props.subActivity.STATUS_CHOICES.map(
+            (status_choice) => {
+                return <option value={status_choice[0]} key={status_choice[0]}>{status_choice[1]}</option>
+            }
+        );
+
         return (
             <Row>
-                <Col lg={10}>
-                    <Form.Group controlId="activityForm.ActivityName">
+                <Col lg={8}>
+                    <Form.Group controlId="subActivityForm.ActivityName"
+                                className="archest-sub-activity-item-activity-name-form-group">
                         <Form.Control size="sm"
                                       as="textarea"
                                       rows="1"
@@ -58,7 +68,8 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                     </Form.Group>
                 </Col>
                 <Col lg={1}>
-                    <Form.Group controlId="activityForm.ActivityName">
+                    <Form.Group controlId="subActivityForm.ActivityName"
+                                className="archest-sub-activity-item-activity-estimated-time-form-group">
                         <Form.Control size="sm"
                                       type="number"
                                       placeholder="Hrs."
@@ -67,14 +78,28 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                                       onChange={this.handleSubActivityFormFieldChange}/>
                     </Form.Group>
                 </Col>
+                <Col lg={2}>
+                    <Form.Group controlId="subActivityForm.ActivityStatus"
+                                className="archest-sub-activity-item-activity-status-form-group">
+                        <Form.Control
+                            size="sm"
+                            as="select"
+                            value={this.state.activityStatus}
+                            name="activityStatus"
+                            onChange={this.handleActivityFormFieldChange}>
+                            {subActivityStatusOptions}
+                        </Form.Control>
+                    </Form.Group>
+                </Col>
                 <Col lg={1}>
                     <Row>
+                        {/*<Col lg={1}>*/}
+                        {/*<Button style={{'float': 'left'}} onClick={this.saveSubActivityData}*/}
+                        {/*size="sm"><span className="oi oi-check"/></Button>*/}
+                        {/*</Col>*/}
                         <Col lg={1}>
-                            <Button style={{'float': 'left'}} onClick={this.saveSubActivityData}
-                                    size="sm"><span className="oi oi-check"/></Button>
-                        </Col>
-                        <Col lg={1}>
-                            <Button style={{'marginLeft': '10px'}} onClick={this.deleteSubActivityActivityItem}
+                            <Button className="archest-sub-activity-item-delete-btn"
+                                    onClick={this.deleteSubActivityActivityItem}
                                     variant="danger" size="sm">
                                 <span className="oi oi-x"/></Button>
                         </Col>

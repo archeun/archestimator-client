@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
+import './res/archest-default-theme/index.scss';
 import './res/icons/font/css/open-iconic-bootstrap.scss';
 import '../node_modules/handsontable/dist/handsontable.full.min.css';
 import * as serviceWorker from './serviceWorker';

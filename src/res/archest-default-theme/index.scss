@@ -1,0 +1,19 @@
+@import "variables";
+
+body {
+  margin: 0;
+  font-family: $primary-font-family;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  monospace;
+}
+
+label.form-label {
+  font-size: 0.8em;
+  font-family: $primary-font-family;
+  color: $primary-color;
+  font-weight: bold;
+  margin-left: 2px;
+}

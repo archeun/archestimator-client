@@ -1,0 +1,74 @@
+@import "../../res/archest-default-theme/variables.scss";
+
+.archest-activity-container-row {
+  margin-bottom: 20px;
+}
+
+.archest-activity-sub-activities-card-heading {
+  padding: .35rem 1rem;
+  border-bottom: none;
+  font-size: 0.9rem;
+  color: $primary-color;
+  font-weight: bold;
+  margin-bottom: -0.2rem;
+}
+
+.archest-activity-sub-activities-card-body {
+  margin-left: -20px;
+}
+
+.archest-activity-card-body {
+  padding: 0.75rem;
+}
+
+.archest-activity-sub-activities-card-body > .row, .archest-activity-form > .row {
+  line-height: 0.5;
+}
+
+.archest-activity-sub-activities-card-body > .row {
+  margin-bottom: -0.5rem;
+}
+
+.archest-sub-activity-item-activity-name-form-group {
+  width: 115.3%;
+}
+
+.archest-sub-activity-item-activity-estimated-time-form-group {
+  margin-left: 5.5rem;
+  margin-right: -5.6rem;
+}
+
+.archest-sub-activity-item-activity-status-form-group {
+  margin-left: 4.5rem;
+  width: 100%;
+}
+
+.archest-sub-activity-item-delete-btn {
+  margin-left: 50px;
+}
+
+.archest-activity-estimated-time-form-group {
+  margin-left: -1.1rem;
+  width: 100%;
+}
+
+.archest-activity-status-form-group {
+  margin-left: -3.1rem;
+  width: 117%;
+}
+
+.archest-activity-feature-name-form-group {
+  width: 108%;
+}
+
+.archest-activity-delete-btn {
+  margin-left: 30px;
+}
+
+.archest-activity-estimated-time-label {
+  margin-left: -1rem !important;
+}
+
+.archest-activity-status-label {
+  margin-left: -2.1rem !important;
+}
