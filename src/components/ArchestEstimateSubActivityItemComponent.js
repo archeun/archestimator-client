@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Col, Form, Row, Button} from "react-bootstrap";
+import {Col, Form, Row, Button, Modal} from "react-bootstrap";
 import ArchestHttp from "../modules/archest_http";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 
@@ -17,23 +17,28 @@ class ArchestEstimateSubActivityItemComponent extends Component {
         this.saveSubActivityData = this.saveSubActivityData.bind(this);
         this.deleteSubActivityActivityItem = this.deleteSubActivityActivityItem.bind(this);
         this.handleSubActivityFormFieldChange = this.handleSubActivityFormFieldChange.bind(this);
+        this.showDeleteActivityModal = this.showDeleteActivityModal.bind(this);
+        this.hideDeleteActivityModal = this.hideDeleteActivityModal.bind(this);
     }
 
     saveSubActivityData() {
-        ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/sub_activities/" + this.state.subActivityId + "/", {
+
+        this.props.saveSubActivityItemCallback(this.state.subActivityId, {
             name: this.state.subActivityName,
             estimated_time: this.state.subActivityEstimatedTime,
             status: this.state.subActivityStatus,
-        }).then(function (response) {
-
-        }).catch(function (error) {
-            console.log(error);
         });
+
     }
 
     handleSubActivityFormFieldChange(formElement) {
+        const changedFormElement = formElement.target;
         this.setState({
             [formElement.target.name]: formElement.target.value,
+        }, () => {
+            if (changedFormElement.type === 'select-one') {
+                changedFormElement.blur();
+            }
         });
     }
 
@@ -43,6 +48,14 @@ class ArchestEstimateSubActivityItemComponent extends Component {
         ).catch(function (error) {
             console.error(error);
         });
+    }
+
+    showDeleteActivityModal() {
+        this.setState({showDeleteActivityModal: true});
+    }
+
+    hideDeleteActivityModal() {
+        this.setState({showDeleteActivityModal: false});
     }
 
     render() {
@@ -55,7 +68,21 @@ class ArchestEstimateSubActivityItemComponent extends Component {
 
         return (
             <Row>
-                <Col lg={8}>
+                <Modal show={this.state.showDeleteActivityModal} onHide={this.hideDeleteActivityModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Confirmation</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Do you really want to delete this Sub Activity?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.hideDeleteActivityModal}>
+                            Cancel
+                        </Button>
+                        <Button variant="primary" onClick={this.deleteSubActivityActivityItem}>
+                            Delete
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <Col lg={9}>
                     <Form.Group controlId="subActivityForm.ActivityName"
                                 className="archest-sub-activity-item-activity-name-form-group">
                         <Form.Control size="sm"
@@ -64,45 +91,37 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                                       placeholder="Sub Activity"
                                       value={this.state.subActivityName}
                                       name="subActivityName"
-                                      onChange={this.handleSubActivityFormFieldChange}/>
+                                      onChange={this.handleSubActivityFormFieldChange}
+                                      onBlur={this.saveSubActivityData}/>
                     </Form.Group>
                 </Col>
-                <Col lg={1}>
-                    <Form.Group controlId="subActivityForm.ActivityName"
-                                className="archest-sub-activity-item-activity-estimated-time-form-group">
+                <Col lg={1} className="archest-sub-activity-item-activity-estimated-time-col">
+                    <Form.Group controlId="subActivityForm.ActivityName">
                         <Form.Control size="sm"
                                       type="number"
                                       placeholder="Hrs."
-                                      defaultValue={this.state.subActivityEstimatedTime}
+                                      value={this.state.subActivityEstimatedTime}
                                       name="subActivityEstimatedTime"
-                                      onChange={this.handleSubActivityFormFieldChange}/>
+                                      onChange={this.handleSubActivityFormFieldChange}
+                                      onBlur={this.saveSubActivityData}/>
                     </Form.Group>
                 </Col>
                 <Col lg={2}>
-                    <Form.Group controlId="subActivityForm.ActivityStatus"
-                                className="archest-sub-activity-item-activity-status-form-group">
-                        <Form.Control
-                            size="sm"
-                            as="select"
-                            value={this.state.activityStatus}
-                            name="activityStatus"
-                            onChange={this.handleActivityFormFieldChange}>
-                            {subActivityStatusOptions}
-                        </Form.Control>
-                    </Form.Group>
-                </Col>
-                <Col lg={1}>
                     <Row>
-                        {/*<Col lg={1}>*/}
-                        {/*<Button style={{'float': 'left'}} onClick={this.saveSubActivityData}*/}
-                        {/*size="sm"><span className="oi oi-check"/></Button>*/}
-                        {/*</Col>*/}
-                        <Col lg={1}>
-                            <Button className="archest-sub-activity-item-delete-btn"
-                                    onClick={this.deleteSubActivityActivityItem}
-                                    variant="danger" size="sm">
-                                <span className="oi oi-x"/></Button>
-                        </Col>
+                        <Form.Group controlId="subActivityForm.ActivityStatus"
+                                    className="archest-sub-activity-item-activity-status-form-group">
+                            <Form.Control
+                                size="sm"
+                                as="select"
+                                value={this.state.subActivityStatus}
+                                name="subActivityStatus"
+                                onChange={this.handleSubActivityFormFieldChange}
+                                onBlur={this.saveSubActivityData}>
+                                {subActivityStatusOptions}
+                            </Form.Control>
+                        </Form.Group>
+                        <span onClick={this.showDeleteActivityModal}
+                              className="oi oi-x archest-sub-activity-item-delete-btn"/>
                     </Row>
                 </Col>
             </Row>

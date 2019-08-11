@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Card, Col, Row} from "react-bootstrap";
+import {Button, Card, Col, Row, Spinner} from "react-bootstrap";
 import ArchestEstimateSubActivityItemComponent from "./ArchestEstimateSubActivityItemComponent";
 import ArchestHttp from "../modules/archest_http";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
@@ -13,9 +13,11 @@ class ArchestEstimateSubActivitiesComponent extends Component {
         this.state = {
             activity: this.props.activity,
             subActivities: this.props.subActivities,
-            newlyAddedSubActivityCount: 0
+            newlyAddedSubActivityCount: 0,
+            savingData: false
         };
         this.removeSubActivityItem = this.removeSubActivityItem.bind(this);
+        this.saveSubActivityItemCallback = this.saveSubActivityItemCallback.bind(this);
 
     }
 
@@ -29,6 +31,22 @@ class ArchestEstimateSubActivitiesComponent extends Component {
         }
     };
 
+    saveSubActivityItemCallback = function (savedSubActivityId, savedSubActivityData) {
+        this.setState({savingData: true});
+
+        ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/sub_activities/" + savedSubActivityId + "/", savedSubActivityData).then(
+            function (response) {
+
+            }).catch(
+            function (error) {
+                console.log(error);
+            }).finally(
+            () => {
+                this.setState({savingData: false});
+            }
+        );
+    };
+
     render() {
 
         let component = this;
@@ -37,7 +55,8 @@ class ArchestEstimateSubActivitiesComponent extends Component {
             (subActivity) => <ArchestEstimateSubActivityItemComponent
                 key={subActivity.id}
                 subActivity={subActivity}
-                removeSubActivityItemHandler={this.removeSubActivityItem}/>
+                removeSubActivityItemHandler={this.removeSubActivityItem}
+                saveSubActivityItemCallback={this.saveSubActivityItemCallback}/>
         );
 
         let addSubActivityItem = function () {
@@ -59,7 +78,15 @@ class ArchestEstimateSubActivitiesComponent extends Component {
         return (
             <Card border="light" bg="light">
                 <Card.Header className="archest-activity-sub-activities-card-heading">
-                    Sub Activities
+                    <Row>
+                        <Col lg="11">
+                            Sub Activities
+                        </Col>
+                        <Col lg={1} hidden={!this.state.savingData}>
+                            <span style={{'fontSize': '0.8rem'}}>Saving </span>
+                            <Spinner animation="grow" size="sm" style={{'marginTop': '-10px', 'marginLeft' : '-5px'}}/>
+                        </Col>
+                    </Row>
                 </Card.Header>
                 <Card.Body className="archest-activity-sub-activities-card-body">
                     {subActivities}
