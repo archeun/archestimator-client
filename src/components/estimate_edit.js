@@ -67,7 +67,7 @@ class EstimateEditComponent extends Component {
 
     handleEstimateNameChange(formElement) {
         if (this.state.dataLoaded) {
-            this.setState({estimate: {...this.state.estimate, ['name']: formElement.target.value}})
+            this.setState({estimate: {...this.state.estimate, name: formElement.target.value}})
         }
     }
 

@@ -17,7 +17,13 @@ class PhaseEstimatesComponent extends Component {
             redirectTo: false,
             phase: {},
             phaseEstimateList: [],
+            modalProps: {}
         };
+        this.addNewEstimate = this.addNewEstimate.bind(this);
+        this.showAddEstimateModal = this.showAddEstimateModal.bind(this);
+        this.showDeleteEstimateModal = this.showDeleteEstimateModal.bind(this);
+        this.deleteEstimate = this.deleteEstimate.bind(this);
+        this.handleEstimateNavigationBtnClick = this.handleEstimateNavigationBtnClick.bind(this);
     }
 
     componentDidMount() {
@@ -46,6 +52,72 @@ class PhaseEstimatesComponent extends Component {
             });
     }
 
+    addNewEstimate() {
+        let phaseId = this.props.match.params.phaseId;
+        const component = this;
+
+        ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/estimates/", {
+            phase_id: phaseId,
+        }).then(function (response) {
+            component.setState({
+                modalProps: {show: false},
+                redirectTo: '/estimates/' + response.data.id + '/edit'
+            });
+        }).catch(function (error) {
+            component.setState({
+                modalProps: {show: false},
+            });
+            console.log(error);
+        });
+    }
+
+    showAddEstimateModal() {
+        this.setState({
+            modalProps: {
+                show: true,
+                onConfirm: this.addNewEstimate,
+                message: 'Do you really want to create an Estimate for Phase - ' + this.state.phase.name,
+                onCancel: () => {
+                    this.setState({modalProps: {show: false}});
+                }
+            }
+        })
+    }
+
+    showDeleteEstimateModal(estimateId) {
+        this.setState({
+            modalProps: {
+                show: true,
+                onConfirm: () => this.deleteEstimate(estimateId),
+                message: 'Do you really want to delete this estimate?',
+                onCancel: () => {
+                    this.setState({modalProps: {show: false}});
+                }
+            }
+        })
+    }
+
+    deleteEstimate(estimateId) {
+        let component = this;
+
+        ArchestHttp.DELETE(BACKEND_ESTIMATOR_API_URL + "/estimates/" + estimateId + '/', {}).then(function (response) {
+            if (response.status === 204) {
+                component.setState(function (prevState) {
+                    _.remove(prevState.phaseEstimateList, {id: estimateId});
+                    return {phaseEstimateList: prevState.phaseEstimateList, modalProps: {show: false}}
+                });
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
+    };
+
+    handleEstimateNavigationBtnClick(estimate, viewType) {
+        this.setState({
+            redirectTo: '/estimates/' + estimate.id + '/' + viewType
+        });
+    };
+
     render() {
 
         if (this.state.redirectTo) {
@@ -64,7 +136,7 @@ class PhaseEstimatesComponent extends Component {
 
         return (
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent>
+                <ArchestMainContainerComponent modalProps={this.state.modalProps}>
                     <Row>
                         <Col sm={2}/>
                         <Col sm={8}>
@@ -75,7 +147,12 @@ class PhaseEstimatesComponent extends Component {
                                                     overlay={
                                                         <Tooltip id="tooltip-top">Add New Estimate</Tooltip>
                                                     }>
-                                        <Button style={{'float': 'right'}} variant="success" size="sm">
+                                        <Button
+                                            style={{'float': 'right'}}
+                                            variant="success"
+                                            size="sm"
+                                            onClick={this.showAddEstimateModal}
+                                        >
                                             <span className="oi oi-plus"/>
                                         </Button>
                                     </OverlayTrigger>
@@ -92,22 +169,25 @@ class PhaseEstimatesComponent extends Component {
         );
     }
 
-    handleEstimateBtnClick(estimate, viewType) {
-        this.setState({
-            redirectTo: '/estimates/' + estimate.id + '/' + viewType
-        });
-    };
-
     getPhaseEstimateInfoListItem(estimate) {
         return (
             <ListGroup.Item key={estimate.id}>
                 <div>
-                    <h5 style={{'display': 'inline-block', 'maxWidth': '85%'}}>{estimate.name}</h5>
+                    <h5 style={{'display': 'inline-block', 'maxWidth': '80%'}}>{estimate.name}</h5>
+                    <OverlayTrigger key="delete" placement="right"
+                                    overlay={
+                                        <Tooltip id="tooltip-right">Delete</Tooltip>
+                                    }>
+                        <Button onClick={() => this.showDeleteEstimateModal(estimate.id)}
+                                style={{'float': 'right', 'marginLeft': '10px'}} variant="outline-danger" size="sm">
+                            <span className="oi oi-x"/>
+                        </Button>
+                    </OverlayTrigger>
                     <OverlayTrigger key="view" placement="right"
                                     overlay={
                                         <Tooltip id="tooltip-right">View</Tooltip>
                                     }>
-                        <Button onClick={this.handleEstimateBtnClick.bind(this, estimate, 'view')}
+                        <Button onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'view')}
                                 style={{'float': 'right', 'marginLeft': '10px'}} variant="outline-primary" size="sm">
                             <span className="oi oi-eye"/>
                         </Button>
@@ -116,14 +196,12 @@ class PhaseEstimatesComponent extends Component {
                                     overlay={
                                         <Tooltip id="tooltip-top">Edit</Tooltip>
                                     }>
-                        <Button onClick={this.handleEstimateBtnClick.bind(this, estimate, 'edit')}
+                        <Button onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'edit')}
                                 style={{'float': 'right'}} variant="outline-primary" size="sm">
                             <span className="oi oi-pencil"/>
                         </Button>
                     </OverlayTrigger>
                 </div>
-                <Badge variant="info">{estimate.phase.project.name}</Badge>
-                <span>&nbsp;</span>
                 <Badge variant="success">{estimate.owner.full_name}</Badge>
             </ListGroup.Item>
         );
