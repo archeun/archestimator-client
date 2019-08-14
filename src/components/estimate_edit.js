@@ -100,10 +100,6 @@ class EstimateEditComponent extends Component {
 
             <ArchestAuthEnabledComponent>
                 <ArchestMainContainerComponent>
-                    <Button style={{'left': '93%', 'marginBottom': '2%'}} className='fixed-bottom' variant="success"
-                            size="lg">
-                        <span className="oi oi-check"/>
-                    </Button>
                     <Card bg="info" text="white">
                         <Card.Header>
                             {this.state.estimate.name}
