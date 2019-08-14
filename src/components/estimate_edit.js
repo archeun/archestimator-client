@@ -68,9 +68,9 @@ class EstimateEditComponent extends Component {
 
         if (this.state.dataLoaded) {
             activityComps = this.state.estimateDetails.map(
-                (activity, idx) =>
+                (activity) =>
                     <ArchestEstimateActivityComponent
-                        key={idx}
+                        key={activity.id}
                         activity={activity}
                         features={this.state.estimate.features}
                         removeActivityItemHandler={this.removeActivityItem}

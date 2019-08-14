@@ -48,7 +48,10 @@ class ArchestEstimateActivityComponent extends Component {
 
     deleteActivityData() {
         ArchestHttp.DELETE(BACKEND_ESTIMATOR_API_URL + "/activities/" + this.state.activityId + "/", {}).then(
-            (response) => this.props.removeActivityItemHandler(this.state.activityId, response)
+            (response) => {
+                this.setState({showDeleteActivityModal: false});
+                this.props.removeActivityItemHandler(this.state.activityId, response);
+            }
         ).catch(function (error) {
             console.log(error);
         });
