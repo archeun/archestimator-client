@@ -10,8 +10,8 @@ class NavbarComponent extends Component {
     render() {
         if (!_.includes(PATHS_WITH_NO_NAVBAR, this.props.location.pathname)) {
             return (
-                <Navbar collapseOnSelect expand="lg" bg="secondary" variant="dark">
-                    <Navbar.Brand href="/home">ArChEstimator</Navbar.Brand>
+                <Navbar collapseOnSelect expand="sm" size="sm" bg="primary" variant="dark">
+                    <Navbar.Brand href="/home">ARCHESTIMATOR</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto"/>

@@ -105,7 +105,7 @@ class ArchestEstimateActivityComponent extends Component {
                     </Modal.Footer>
                 </Modal>
                 <Col>
-                    <Card border="info" bg="light">
+                    <Card className="archest-activity-card">
                         <Card.Body className="archest-activity-card-body">
 
                             <Form className="archest-activity-form" id={"archest-activity-form-" + activityId}>

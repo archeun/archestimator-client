@@ -76,15 +76,18 @@ class ArchestEstimateSubActivitiesComponent extends Component {
         };
 
         return (
-            <Card border="light" bg="light">
+            <Card border="light" bg="light" className="archest-activity-sub-activities-card">
                 <Card.Header className="archest-activity-sub-activities-card-heading">
                     <Row>
                         <Col lg="11">
-                            Sub Activities
+                            <div>
+                                <i style={{'verticalAlign': 'middle', 'marginTop':'-0.1rem', 'marginRight':'5px'}}
+                                      className="material-icons">toc</i><span>Sub Activities</span>
+                            </div>
                         </Col>
                         <Col lg={1} hidden={!this.state.savingData}>
                             <span style={{'fontSize': '0.8rem'}}>Saving </span>
-                            <Spinner animation="grow" size="sm" style={{'marginTop': '-10px', 'marginLeft' : '-5px'}}/>
+                            <Spinner animation="grow" size="sm" style={{'marginTop': '-10px', 'marginLeft': '-5px'}}/>
                         </Col>
                     </Row>
                 </Card.Header>

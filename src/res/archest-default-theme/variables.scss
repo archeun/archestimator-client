@@ -1,5 +1,102 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700&display=swap');
 
-$primary-color: teal;
 $primary-font-family: 'Quicksand', sans-serif;
+
+
+// Variables
+//
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+// Color system
+
+$white: #fff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black: #000;
+
+$grays: ();
+// stylelint-disable-next-line scss/dollar-variable-default
+$grays: map-merge(
+                (
+                        "100": $gray-100,
+                        "200": $gray-200,
+                        "300": $gray-300,
+                        "400": $gray-400,
+                        "500": $gray-500,
+                        "600": $gray-600,
+                        "700": $gray-700,
+                        "800": $gray-800,
+                        "900": $gray-900
+                ),
+                $grays
+);
+
+$blue: #007bff;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #28a745;
+$teal: #20c997;
+$cyan: #17a2b8;
+
+$colors: ();
+// stylelint-disable-next-line scss/dollar-variable-default
+$colors: map-merge(
+                (
+                        "blue": $blue,
+                        "indigo": $indigo,
+                        "purple": $purple,
+                        "pink": $pink,
+                        "red": $red,
+                        "orange": $orange,
+                        "yellow": $yellow,
+                        "green": $green,
+                        "teal": $teal,
+                        "cyan": $cyan,
+                        "white": $white,
+                        "gray": $gray-600,
+                        "gray-dark": $gray-800
+                ),
+                $colors
+);
+
+$primary: #2E294E;
+$secondary: #C5D86D;
+$success: $green;
+$info: #1B998B;
+$warning: $yellow;
+$danger: #D7263D;
+$light: $gray-100;
+$dark: $gray-800;
+
+$form-label: #1B998B;
+$sub-heading: #1B998B;
+$sub-heading-bg: #1B998B;
+
+$theme-colors: ();
+// stylelint-disable-next-line scss/dollar-variable-default
+$theme-colors: map-merge(
+                (
+                        "primary": $primary,
+                        "secondary": $secondary,
+                        "success": $success,
+                        "info": $info,
+                        "warning": $warning,
+                        "danger": $danger,
+                        "light": $light,
+                        "dark": $dark
+                ),
+                $theme-colors
+);
 

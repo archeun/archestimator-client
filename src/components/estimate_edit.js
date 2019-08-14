@@ -5,7 +5,8 @@ import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import ArchestEstimateActivityComponent from "./ArchestEstimateActivityComponent";
-import './styles/ArchestEditEstimate.scss'
+import './styles/ArchestEditEstimate.scss';
+import autosize from 'autosize';
 
 const _ = require('lodash');
 
@@ -53,6 +54,12 @@ class EstimateEditComponent extends Component {
             .catch(function (error) {
                 console.log(error);
             });
+
+    }
+
+    componentDidUpdate() {
+        window.addEventListener('load', autosize(document.getElementsByTagName('textarea')));
+
     }
 
     removeActivityItem = function (removedActivityId, response) {
@@ -119,7 +126,7 @@ class EstimateEditComponent extends Component {
 
             <ArchestAuthEnabledComponent>
                 <ArchestMainContainerComponent>
-                    <Card bg="info" text="white">
+                    <Card text="white">
                         <Card.Header>
                             <Row>
                                 <Col lg={12}>

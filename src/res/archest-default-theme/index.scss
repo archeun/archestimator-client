@@ -1,8 +1,13 @@
+/* import the necessary Bootstrap files */
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 @import "variables";
+@import '~material-design-icons/iconfont/material-icons.css';
 
 body {
   margin: 0;
-  font-family: $primary-font-family;
+  font-family: $primary-font-family !important;
+  background-color: $light !important;
 }
 
 code {
@@ -13,7 +18,34 @@ code {
 label.form-label {
   font-size: 0.8em;
   font-family: $primary-font-family;
-  color: $primary-color;
+  color: $form-label;
   font-weight: bold;
   margin-left: 2px;
 }
+
+.btn-link {
+  color: $info !important;
+}
+
+textarea {
+  outline: none !important;
+  box-shadow: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-radius: 0 !important;
+}
+
+textarea:hover {
+  border: 1px solid $info;
+}
+
+textarea:focus {
+  border-bottom: 2px solid $info !important;
+}
+
+.navbar {
+  padding: 0 125px !important;
+}
+
+@import "~bootstrap/scss/bootstrap";
