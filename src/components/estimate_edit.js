@@ -1,10 +1,11 @@
 import React, {Component} from "react";
-import {Button, Card, Col, Row, Spinner} from "react-bootstrap";
+import {Button, Card, Col, Row, Form} from "react-bootstrap";
 import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import ArchestEstimateActivityComponent from "./ArchestEstimateActivityComponent";
+import './styles/ArchestEditEstimate.scss'
 
 const _ = require('lodash');
 
@@ -21,6 +22,8 @@ class EstimateEditComponent extends Component {
             estimateTableData: [],
         };
         this.removeActivityItem = this.removeActivityItem.bind(this);
+        this.handleEstimateNameChange = this.handleEstimateNameChange.bind(this);
+        this.saveEstimateName = this.saveEstimateName.bind(this);
     }
 
     componentDidMount() {
@@ -62,6 +65,22 @@ class EstimateEditComponent extends Component {
         }
     };
 
+    handleEstimateNameChange(formElement) {
+        if (this.state.dataLoaded) {
+            this.setState({estimate: {...this.state.estimate, ['name']: formElement.target.value}})
+        }
+    }
+
+    saveEstimateName() {
+        ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/estimates/" + this.state.estimate.id + "/", {
+            name: this.state.estimate.name,
+        }).then(function (response) {
+        }).catch(function (error) {
+            console.log(error);
+        }).finally(() => {
+        });
+    }
+
     render() {
         let activityComps = [];
         let component = this;
@@ -102,11 +121,22 @@ class EstimateEditComponent extends Component {
                 <ArchestMainContainerComponent>
                     <Card bg="info" text="white">
                         <Card.Header>
-                            {this.state.estimate.name}
+                            <Row>
+                                <Col lg={12}>
+                                    <Form.Control type="text"
+                                                  placeholder="Estimate Name"
+                                                  size="sm"
+                                                  value={this.state.estimate.name || ''}
+                                                  name="estimateName"
+                                                  onChange={this.handleEstimateNameChange}
+                                                  onBlur={this.saveEstimateName}
+                                                  id="archest-edit-estimate-name-field"
+                                    />
+                                </Col>
+                            </Row>
                         </Card.Header>
                     </Card>
                     <br/>
-                    <Spinner hidden={this.state.dataLoaded} animation="border" style={{margin: '5% 50%'}}/>
                     {activityComps}
                     <Row style={{margin: '0 42%'}}>
                         <Col>

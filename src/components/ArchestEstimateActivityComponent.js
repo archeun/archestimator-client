@@ -3,7 +3,6 @@ import {Button, Card, Col, Form, Row, Dropdown, Spinner, Modal} from "react-boot
 import ArchestEstimateSubActivitiesComponent from "./ArchestEstimateSubActivitiesComponent";
 import ArchestHttp from "../modules/archest_http";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
-import './styles/ArchestEstimateActivityComponent.scss'
 
 
 class ArchestEstimateActivityComponent extends Component {
