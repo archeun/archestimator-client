@@ -14,11 +14,20 @@ class ArchestEstimateSubActivitiesComponent extends Component {
             activity: this.props.activity,
             subActivities: this.props.subActivities,
             newlyAddedSubActivityCount: 0,
-            savingData: false
+            savingData: false,
+            subActivityDataStore: {}
         };
+
+        for (let i = 0; i < this.props.subActivities.length; i++) {
+            this.state.subActivityDataStore[this.props.subActivities[i].id] = {
+                name: this.props.subActivities[i].name,
+                estimated_time: this.props.subActivities[i].estimated_time,
+            };
+        }
         this.removeSubActivityItem = this.removeSubActivityItem.bind(this);
         this.saveSubActivityItemCallback = this.saveSubActivityItemCallback.bind(this);
-
+        this.subActivityChangeHandler = this.subActivityChangeHandler.bind(this);
+        this.props.subActivityChangeHandler(this.state.subActivityDataStore)
     }
 
     removeSubActivityItem = function (removedSubActivityId, response) {
@@ -26,8 +35,9 @@ class ArchestEstimateSubActivitiesComponent extends Component {
         if (response.status === 204) {
             this.setState(function (prevState) {
                 _.remove(prevState.subActivities, {id: removedSubActivityId});
-                return {subActivities: prevState.subActivities}
-            });
+                delete prevState.subActivityDataStore[removedSubActivityId];
+                return {subActivities: prevState.subActivities, subActivityDataStore: prevState.subActivityDataStore}
+            }, () => this.props.subActivityChangeHandler(this.state.subActivityDataStore));
         }
     };
 
@@ -47,6 +57,16 @@ class ArchestEstimateSubActivitiesComponent extends Component {
         );
     };
 
+    subActivityChangeHandler(subActivityData) {
+        this.setState(function (prevState) {
+            prevState.subActivityDataStore[subActivityData.subActivityId] = {
+                name: subActivityData.subActivityName,
+                estimated_time: subActivityData.subActivityEstimatedTime,
+            };
+            return {subActivities: prevState.subActivities, subActivityDataStore: prevState.subActivityDataStore}
+        }, () => this.props.subActivityChangeHandler(this.state.subActivityDataStore));
+    }
+
     render() {
 
         let component = this;
@@ -56,7 +76,9 @@ class ArchestEstimateSubActivitiesComponent extends Component {
                 key={subActivity.id}
                 subActivity={subActivity}
                 removeSubActivityItemHandler={this.removeSubActivityItem}
-                saveSubActivityItemCallback={this.saveSubActivityItemCallback}/>
+                saveSubActivityItemCallback={this.saveSubActivityItemCallback}
+                subActivityChangeHandler={this.subActivityChangeHandler}
+            />
         );
 
         let addSubActivityItem = function () {
@@ -67,9 +89,16 @@ class ArchestEstimateSubActivitiesComponent extends Component {
                 estimated_time: 0,
                 status: 1,
             }).then(function (response) {
-                component.setState(prevState => ({
-                    subActivities: [...prevState.subActivities, response.data]
-                }));
+                component.setState(function (prevState) {
+                    prevState.subActivityDataStore[response.data.id] = {
+                        name: response.data.name,
+                        estimated_time: response.data.estimated_time,
+                    };
+                    return {
+                        subActivities: [...prevState.subActivities, response.data],
+                        subActivityDataStore: prevState.subActivityDataStore
+                    }
+                }, () => component.props.subActivityChangeHandler(component.state.subActivityDataStore));
             }).catch(function (error) {
                 console.log(error);
             });
@@ -79,15 +108,24 @@ class ArchestEstimateSubActivitiesComponent extends Component {
             <Card border="light" bg="light" className="archest-activity-sub-activities-card">
                 <Card.Header className="archest-activity-sub-activities-card-heading">
                     <Row>
-                        <Col lg="11">
-                            <div>
-                                <i style={{'verticalAlign': 'middle', 'marginTop':'-0.1rem', 'marginRight':'5px'}}
-                                      className="material-icons">toc</i><span>Sub Activities</span>
+                        <Col lg="9">
+                            <div className="archest-activity-sub-activities-card-heading-title-container">
+                                <i className="material-icons archest-activity-sub-activities-card-heading-icon">toc</i>
+                                <span>Sub Activities</span>
+                                <div className="archest-activity-sub-activities-save-loading-icon-container"
+                                     hidden={!this.state.savingData}>
+                                    <span
+                                        className="archest-activity-sub-activities-save-loading-icon-text">Saving </span>
+                                    <Spinner className="archest-activity-sub-activities-save-loading-icon"
+                                             animation="grow" size="sm"/>
+                                </div>
                             </div>
                         </Col>
-                        <Col lg={1} hidden={!this.state.savingData}>
-                            <span style={{'fontSize': '0.8rem'}}>Saving </span>
-                            <Spinner animation="grow" size="sm" style={{'marginTop': '-10px', 'marginLeft': '-5px'}}/>
+                        <Col lg={3}>
+                            <div className="archest-activity-sub-activities-card-heading-total-time-container">
+                                <i className="material-icons archest-activity-sub-activities-card-heading-icon">av_timer</i>
+                                <span>{this.props.subActivityTotalHours} Hours</span>
+                            </div>
                         </Col>
                     </Row>
                 </Card.Header>

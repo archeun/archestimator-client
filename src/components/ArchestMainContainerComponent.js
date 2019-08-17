@@ -28,7 +28,7 @@ class ArchestMainContainerComponent extends Component {
         let breadcrumbs = _.map(this.props.breadcrumbs, (function (breadcrumb) {
             return (
 
-                <OverlayTrigger key="edit" placement="bottom" overlay={<Tooltip>{breadcrumb.title}</Tooltip>}>
+                <OverlayTrigger key={breadcrumb.title} placement="bottom" overlay={<Tooltip>{breadcrumb.title}</Tooltip>}>
                     <Breadcrumb.Item key={breadcrumb.title} active={breadcrumb.active} href={breadcrumb.url}>
                         {breadcrumb.title}
                     </Breadcrumb.Item>

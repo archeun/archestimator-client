@@ -1,8 +1,10 @@
 import React, {Component} from "react";
-import {Button, Card, Col, Form, Row, Dropdown, Spinner, Modal} from "react-bootstrap";
+import {Button, Card, Col, Form, Row, Dropdown, Spinner, Modal, OverlayTrigger, Tooltip} from "react-bootstrap";
 import ArchestEstimateSubActivitiesComponent from "./ArchestEstimateSubActivitiesComponent";
 import ArchestHttp from "../modules/archest_http";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
+
+const _ = require('lodash');
 
 
 class ArchestEstimateActivityComponent extends Component {
@@ -15,6 +17,7 @@ class ArchestEstimateActivityComponent extends Component {
             activityStatus: this.props.activity.status,
             activityName: this.props.activity.name,
             activityEstimatedTime: this.props.activity.estimated_time,
+            subActivityTotalHours: 0,
             savingData: false,
             showDeleteActivityModal: false
         };
@@ -23,6 +26,8 @@ class ArchestEstimateActivityComponent extends Component {
         this.handleActivityFormFieldChange = this.handleActivityFormFieldChange.bind(this);
         this.showDeleteActivityModal = this.showDeleteActivityModal.bind(this);
         this.hideDeleteActivityModal = this.hideDeleteActivityModal.bind(this);
+        this.subActivityChangeHandler = this.subActivityChangeHandler.bind(this);
+        this.syncActivityHoursBySubActivityHours = this.syncActivityHoursBySubActivityHours.bind(this);
     }
 
     saveActivityData() {
@@ -59,12 +64,20 @@ class ArchestEstimateActivityComponent extends Component {
     handleActivityFormFieldChange(formElement) {
         const changedFormElement = formElement.target;
         this.setState({
-            [formElement.target.name]: formElement.target.value,
+            [changedFormElement.name]: this.getValidatedInput(changedFormElement),
         }, () => {
             if (changedFormElement.type === 'select-one') {
                 changedFormElement.blur();
             }
         });
+    }
+
+    getValidatedInput(changedFormElement) {
+        let validatedInput = changedFormElement.value;
+        if (changedFormElement.name === 'activityEstimatedTime' && parseFloat(changedFormElement.value) < 0) {
+            validatedInput = Math.abs(changedFormElement.value);
+        }
+        return validatedInput;
     }
 
     showDeleteActivityModal() {
@@ -73,6 +86,22 @@ class ArchestEstimateActivityComponent extends Component {
 
     hideDeleteActivityModal() {
         this.setState({showDeleteActivityModal: false});
+    }
+
+    subActivityChangeHandler(subActivities) {
+        const subActivityTotalHours = _.reduce(subActivities, function (prev, curr, currentIndex, arr) {
+            return parseFloat(prev) + (parseFloat(curr.estimated_time) ? parseFloat(curr.estimated_time) : 0);
+        }, 0);
+        this.setState({subActivityTotalHours: subActivityTotalHours});
+    }
+
+    syncActivityHoursBySubActivityHours() {
+        const estimatedTimeElement = document.getElementById('activityForm.ActivityEstimatedTime_' + this.state.activityId);
+        estimatedTimeElement.focus();
+        this.setState(
+            {activityEstimatedTime: this.state.subActivityTotalHours},
+            () => estimatedTimeElement.blur()
+        );
     }
 
     render() {
@@ -126,7 +155,8 @@ class ArchestEstimateActivityComponent extends Component {
                                 </Row>
                                 <Row>
                                     <Col lg="11">
-                                        <Form.Group as={Row} controlId="activityForm.FeatureName"
+                                        <Form.Group as={Row}
+                                                    controlId={'activityForm.ActivityFeatureId_' + this.state.activityId}
                                                     className="archest-activity-feature-name-form-group">
                                             <Col>
                                                 <Form.Control
@@ -161,19 +191,19 @@ class ArchestEstimateActivityComponent extends Component {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col lg={9}>
+                                    <Col lg={11}>
                                         <Form.Label>Activity</Form.Label>
                                     </Col>
                                     <Col lg={1}>
-                                        <Form.Label className="archest-activity-estimated-time-label">Hrs.</Form.Label>
-                                    </Col>
-                                    <Col lg={1}>
-                                        <Form.Label className="archest-activity-status-label">Status</Form.Label>
+                                        <Form.Label className="archest-activity-estimated-time-label">
+                                            Hrs.
+                                        </Form.Label>
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col lg={9}>
-                                        <Form.Group controlId="activityForm.ActivityName">
+                                    <Col lg={11}>
+                                        <Form.Group controlId={'activityForm.ActivityName_' + this.state.activityId}
+                                                    className="archest-activity-name-form-group">
                                             <Form.Control as="textarea"
                                                           rows="1"
                                                           placeholder="Activity Name"
@@ -186,38 +216,36 @@ class ArchestEstimateActivityComponent extends Component {
                                     </Col>
 
                                     <Col lg={1}>
-                                        <Form.Group controlId="activityForm.ActivityEstimatedTime"
-                                                    className="archest-activity-estimated-time-form-group">
-                                            <Form.Control type="number"
-                                                          placeholder="Hrs."
-                                                          size="sm"
-                                                          value={this.state.activityEstimatedTime}
-                                                          name="activityEstimatedTime"
-                                                          onChange={this.handleActivityFormFieldChange}
-                                                          onBlur={this.saveActivityData}/>
-                                        </Form.Group>
-                                    </Col>
-
-                                    <Col lg="2">
-                                        <Form.Group as={Row} controlId="activityForm.ActivityStatus"
-                                                    className="archest-activity-status-form-group">
-                                            <Col>
-                                                <Form.Control
-                                                    size="sm"
-                                                    as="select"
-                                                    value={this.state.activityStatus}
-                                                    name="activityStatus"
-                                                    onChange={this.handleActivityFormFieldChange}
-                                                    onBlur={this.saveActivityData}>
-                                                    {activityStatusOptions}
-                                                </Form.Control>
-                                            </Col>
-                                        </Form.Group>
+                                        <Row>
+                                            <Form.Group
+                                                controlId={'activityForm.ActivityEstimatedTime_' + this.state.activityId}
+                                                className="archest-activity-estimated-time-form-group">
+                                                <Form.Control type="number"
+                                                              placeholder="Hrs."
+                                                              size="sm"
+                                                              value={this.state.activityEstimatedTime}
+                                                              name="activityEstimatedTime"
+                                                              onChange={this.handleActivityFormFieldChange}
+                                                              onBlur={this.saveActivityData}/>
+                                            </Form.Group>
+                                            <OverlayTrigger key={this.state.activityName} placement="top"
+                                                            overlay={<Tooltip>Auto calculate from Sub Activity
+                                                                Hours</Tooltip>}>
+                                                <i className="material-icons archest-activity-estimated-time-sync-icon"
+                                                   onClick={this.syncActivityHoursBySubActivityHours}
+                                                >
+                                                    sync
+                                                </i>
+                                            </OverlayTrigger>
+                                        </Row>
                                     </Col>
                                 </Row>
                                 <ArchestEstimateSubActivitiesComponent
                                     activity={this.props.activity}
-                                    subActivities={this.props.activity.sub_activities}/>
+                                    subActivities={this.props.activity.sub_activities}
+                                    subActivityChangeHandler={this.subActivityChangeHandler}
+                                    subActivityTotalHours={this.state.subActivityTotalHours}
+                                />
                             </Form>
                         </Card.Body>
                     </Card>

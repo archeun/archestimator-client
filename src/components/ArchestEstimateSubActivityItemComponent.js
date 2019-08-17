@@ -10,7 +10,6 @@ class ArchestEstimateSubActivityItemComponent extends Component {
         this.state = {
             parentActivityId: this.props.subActivity.parent_id,
             subActivityId: this.props.subActivity.id,
-            subActivityStatus: this.props.subActivity.status,
             subActivityName: this.props.subActivity.name,
             subActivityEstimatedTime: this.props.subActivity.estimated_time,
         };
@@ -26,7 +25,6 @@ class ArchestEstimateSubActivityItemComponent extends Component {
         this.props.saveSubActivityItemCallback(this.state.subActivityId, {
             name: this.state.subActivityName,
             estimated_time: this.state.subActivityEstimatedTime,
-            status: this.state.subActivityStatus,
         });
 
     }
@@ -34,12 +32,21 @@ class ArchestEstimateSubActivityItemComponent extends Component {
     handleSubActivityFormFieldChange(formElement) {
         const changedFormElement = formElement.target;
         this.setState({
-            [formElement.target.name]: formElement.target.value,
+            [changedFormElement.name]: this.getValidatedInput(changedFormElement),
         }, () => {
             if (changedFormElement.type === 'select-one') {
                 changedFormElement.blur();
             }
+            this.props.subActivityChangeHandler(this.state);
         });
+    }
+
+    getValidatedInput(changedFormElement) {
+        let validatedInput = changedFormElement.value;
+        if (changedFormElement.name === 'subActivityEstimatedTime' && parseFloat(changedFormElement.value) < 0) {
+            validatedInput = Math.abs(changedFormElement.value);
+        }
+        return validatedInput;
     }
 
     deleteSubActivityActivityItem() {
@@ -82,7 +89,7 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                <Col lg={9}>
+                <Col lg={11}>
                     <Form.Group controlId="subActivityForm.ActivityName"
                                 className="archest-sub-activity-item-activity-name-form-group">
                         <Form.Control size="sm"
@@ -96,29 +103,16 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                     </Form.Group>
                 </Col>
                 <Col lg={1} className="archest-sub-activity-item-activity-estimated-time-col">
-                    <Form.Group controlId="subActivityForm.ActivityName">
-                        <Form.Control size="sm"
-                                      type="number"
-                                      placeholder="Hrs."
-                                      value={this.state.subActivityEstimatedTime}
-                                      name="subActivityEstimatedTime"
-                                      onChange={this.handleSubActivityFormFieldChange}
-                                      onBlur={this.saveSubActivityData}/>
-                    </Form.Group>
-                </Col>
-                <Col lg={2}>
                     <Row>
-                        <Form.Group controlId="subActivityForm.ActivityStatus"
-                                    className="archest-sub-activity-item-activity-status-form-group">
-                            <Form.Control
-                                size="sm"
-                                as="select"
-                                value={this.state.subActivityStatus}
-                                name="subActivityStatus"
-                                onChange={this.handleSubActivityFormFieldChange}
-                                onBlur={this.saveSubActivityData}>
-                                {subActivityStatusOptions}
-                            </Form.Control>
+                        <Form.Group controlId="subActivityForm.ActivityName"
+                                    className="archest-sub-activity-item-activity-estimated-time-form-group">
+                            <Form.Control size="sm"
+                                          type="number"
+                                          placeholder="Hrs."
+                                          value={this.state.subActivityEstimatedTime}
+                                          name="subActivityEstimatedTime"
+                                          onChange={this.handleSubActivityFormFieldChange}
+                                          onBlur={this.saveSubActivityData}/>
                         </Form.Group>
                         <span onClick={this.showDeleteActivityModal}
                               className="oi oi-x archest-sub-activity-item-delete-btn"/>

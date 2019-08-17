@@ -24,8 +24,7 @@
 
 .archest-sub-activity-item-activity-name-form-group > textarea {
   margin-left: -20px;
-  width: 103%;
-  resize: vertical !important;
+  width: 100%;
 }
 
 .archest-activity-card-body {
@@ -48,8 +47,26 @@
   //margin-left: 5.5rem;
 }
 
-.archest-sub-activity-item-activity-status-form-group {
-  width: 81%;
+.archest-sub-activity-item-activity-estimated-time-form-group {
+  width: 83%;
+  margin-left: -0.5rem;
+}
+
+.archest-activity-estimated-time-form-group {
+  width: 78%;
+  margin-left: -1.5rem;
+}
+
+.archest-activity-estimated-time-sync-icon {
+  margin-top: 0.4rem;
+  margin-left: 0.3rem;
+  font-size: 1.3rem;
+  color: $info;
+  font-weight: bold;
+}
+
+.archest-activity-estimated-time-sync-icon:hover {
+  cursor: pointer;
 }
 
 .archest-activity-settings-dropdown {
@@ -60,17 +77,17 @@
 
 .archest-sub-activity-item-delete-btn {
   color: $danger;
-  margin-top: 0.3rem;
-  margin-left: 1rem;
+  margin-top: 0.45rem;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
 }
 
 .archest-sub-activity-item-delete-btn:hover {
   cursor: pointer;
 }
 
-.archest-activity-estimated-time-form-group {
-  margin-left: -1.1rem;
-  width: 100%;
+.archest-activity-name-form-group {
+  width: 97%;
 }
 
 .archest-activity-status-form-group {
@@ -87,7 +104,11 @@
 }
 
 .archest-activity-estimated-time-label {
-  margin-left: -1rem !important;
+  margin-left: -2.5rem !important;
+}
+
+.archest-activity-estimated-time-label > .form-check {
+  margin-left: 1.5rem;
 }
 
 .archest-activity-status-label {
@@ -98,4 +119,27 @@
   border: none;
   box-shadow: 0 2px 4px 0 rgba(21, 27, 38, .15);
   background-color: white;
+}
+
+.archest-activity-sub-activities-card-heading-icon {
+  vertical-align: middle;
+  margin-top: -0.1rem;
+  margin-right: 0.3rem;
+}
+
+.archest-activity-sub-activities-card-heading-total-time-container {
+  float: right;
+  margin-right: 0.8rem;
+}
+
+.archest-activity-sub-activities-save-loading-icon-container {
+  float: right;
+}
+
+.archest-activity-sub-activities-save-loading-icon-text {
+  font-size: 0.8rem;
+}
+
+.archest-activity-sub-activities-save-loading-icon {
+  margin-top: -10px;
 }
