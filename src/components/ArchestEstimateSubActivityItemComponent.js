@@ -67,12 +67,6 @@ class ArchestEstimateSubActivityItemComponent extends Component {
 
     render() {
 
-        let subActivityStatusOptions = this.props.subActivity.STATUS_CHOICES.map(
-            (status_choice) => {
-                return <option value={status_choice[0]} key={status_choice[0]}>{status_choice[1]}</option>
-            }
-        );
-
         return (
             <Row>
                 <Modal show={this.state.showDeleteActivityModal} onHide={this.hideDeleteActivityModal}>
