@@ -17,6 +17,7 @@ class EstimateViewComponent extends Component {
             estimate: {},
             estimateDetails: {},
             estimateTableData: [],
+            breadcrumbs: []
         };
         this.hotTableComponent = React.createRef();
     }
@@ -82,15 +83,20 @@ class EstimateViewComponent extends Component {
                     estimateTableData: estimateTableRows,
                     dataLoaded: true
                 });
+                return ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/', {});
             })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-        ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/', {})
             .then(function (response) {
+                let estimate = response.data;
                 component.setState({
-                    estimate: response.data
+                    estimate: response.data,
+                    breadcrumbs: [
+                        {title: 'Home', url: '/'},
+                        {
+                            title: estimate.phase.name + ' - Estimates',
+                            url: `/phase/${estimate.phase.id}/estimates/`
+                        },
+                        {title: estimate.name, url: '#', active: true},
+                    ]
                 });
             })
             .catch(function (error) {
@@ -121,7 +127,7 @@ class EstimateViewComponent extends Component {
         return (
 
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent>
+                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
                     <Card>
                         <Card.Body>
                             <Card.Subtitle>{this.state.estimate.name}</Card.Subtitle>

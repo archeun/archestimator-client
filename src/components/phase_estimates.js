@@ -17,7 +17,8 @@ class PhaseEstimatesComponent extends Component {
             redirectTo: false,
             phase: {},
             phaseEstimateList: [],
-            modalProps: {}
+            modalProps: {},
+            breadcrumbs: []
         };
         this.addNewEstimate = this.addNewEstimate.bind(this);
         this.showAddEstimateModal = this.showAddEstimateModal.bind(this);
@@ -43,8 +44,13 @@ class PhaseEstimatesComponent extends Component {
 
         ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/phases/' + phaseId + '/', {})
             .then(function (response) {
+                const phase = response.data;
                 component.setState({
-                    phase: response.data
+                    phase: phase,
+                    breadcrumbs: [
+                        {title: 'Home', url: '/'},
+                        {title: phase.name, url: '#', active: true},
+                    ]
                 });
             })
             .catch(function (error) {
@@ -136,7 +142,7 @@ class PhaseEstimatesComponent extends Component {
 
         return (
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent modalProps={this.state.modalProps}>
+                <ArchestMainContainerComponent modalProps={this.state.modalProps} breadcrumbs={this.state.breadcrumbs}>
                     <Row>
                         <Col sm={2}/>
                         <Col sm={8}>

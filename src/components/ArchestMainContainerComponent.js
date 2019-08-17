@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {Container, Modal, Button} from "react-bootstrap";
+import {Container, Modal, Button, Breadcrumb, OverlayTrigger, Tooltip} from "react-bootstrap";
 
+const _ = require('lodash');
 
 class ArchestMainContainerComponent extends Component {
 
@@ -23,6 +24,18 @@ class ArchestMainContainerComponent extends Component {
     };
 
     render() {
+
+        let breadcrumbs = _.map(this.props.breadcrumbs, (function (breadcrumb) {
+            return (
+
+                <OverlayTrigger key="edit" placement="bottom" overlay={<Tooltip>{breadcrumb.title}</Tooltip>}>
+                    <Breadcrumb.Item key={breadcrumb.title} active={breadcrumb.active} href={breadcrumb.url}>
+                        {breadcrumb.title}
+                    </Breadcrumb.Item>
+                </OverlayTrigger>
+            )
+        }));
+
         return (
             <Container style={{marginTop: '1%'}}>
                 <Modal show={this.props.modalProps.show} onHide={this.modalFunctions.onCancelClickHandler}
@@ -40,6 +53,9 @@ class ArchestMainContainerComponent extends Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <Breadcrumb>
+                    {breadcrumbs}
+                </Breadcrumb>
                 {this.props.children}
             </Container>
         );
@@ -50,7 +66,10 @@ class ArchestMainContainerComponent extends Component {
 ArchestMainContainerComponent.defaultProps = {
     modalProps: {
         show: false,
-    }
+    },
+    breadcrumbs: [
+        {title: 'Home', url: '/', active: true}
+    ]
 };
 
 export default ArchestMainContainerComponent;

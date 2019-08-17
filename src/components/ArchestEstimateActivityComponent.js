@@ -78,15 +78,21 @@ class ArchestEstimateActivityComponent extends Component {
     render() {
         const activityId = this.props.activity.id;
 
-        let featureOptions = this.props.features.map(
-            (feature) => <option value={feature.id} key={feature.id}>{feature.name}</option>
-        );
+        let featureOptions, activityStatusOptions = [];
 
-        let activityStatusOptions = this.props.activity.STATUS_CHOICES.map(
-            (status_choice) => {
-                return <option value={status_choice[0]} key={status_choice[0]}>{status_choice[1]}</option>
-            }
-        );
+        if (this.props.features) {
+            featureOptions = this.props.features.map(
+                (feature) => <option value={feature.id} key={feature.id}>{feature.name}</option>
+            );
+        }
+
+        if (this.props.activity) {
+            activityStatusOptions = this.props.activity.STATUS_CHOICES.map(
+                (status_choice) => {
+                    return <option value={status_choice[0]} key={status_choice[0]}>{status_choice[1]}</option>
+                }
+            );
+        }
 
         return (
             <Row className="archest-activity-container-row">

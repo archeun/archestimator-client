@@ -21,6 +21,7 @@ class EstimateEditComponent extends Component {
             estimate: {},
             estimateDetails: {},
             estimateTableData: [],
+            breadcrumbs: []
         };
         this.removeActivityItem = this.removeActivityItem.bind(this);
         this.handleEstimateNameChange = this.handleEstimateNameChange.bind(this);
@@ -47,8 +48,17 @@ class EstimateEditComponent extends Component {
 
         ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/', {})
             .then(function (response) {
+                let estimate = response.data;
                 component.setState({
-                    estimate: response.data
+                    estimate: estimate,
+                    breadcrumbs: [
+                        {title: 'Home', url: '/'},
+                        {
+                            title: estimate.phase.name + ' - Estimates',
+                            url: `/phase/${estimate.phase.id}/estimates/`
+                        },
+                        {title: estimate.name, url: '#', active: true},
+                    ]
                 });
             })
             .catch(function (error) {
@@ -121,11 +131,10 @@ class EstimateEditComponent extends Component {
                 console.log(error);
             });
         };
-
         return (
 
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent>
+                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
                     <Card text="white">
                         <Card.Header>
                             <Row>
