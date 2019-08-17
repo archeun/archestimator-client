@@ -1,0 +1,145 @@
+@import "../../res/archest-default-theme/variables.scss";
+
+.archest-activity-container-row {
+  margin-bottom: 20px;
+}
+
+.archest-activity-sub-activities-card-heading {
+  padding: .35rem 1rem;
+  border-bottom: none;
+  font-size: 0.8rem;
+  color: $sub-heading;
+  font-weight: bold;
+  margin-bottom: -0.2rem;
+  //background-color: $sub-heading-bg;
+}
+
+.archest-activity-sub-activities-card {
+  border: none;
+}
+
+.archest-activity-sub-activities-card-body {
+  background-color: white;
+}
+
+.archest-sub-activity-item-activity-name-form-group > textarea {
+  margin-left: -20px;
+  width: 100%;
+}
+
+.archest-activity-card-body {
+  padding: 0.75rem;
+}
+
+.archest-activity-sub-activities-card-body > .row, .archest-activity-form > .row {
+  line-height: 0.5;
+}
+
+.archest-activity-sub-activities-card-body > .row {
+  margin-bottom: -0.5rem;
+}
+
+.archest-sub-activity-item-activity-name-form-group {
+  width: 101%;
+}
+
+.archest-sub-activity-item-activity-estimated-time-col {
+  //margin-left: 5.5rem;
+}
+
+.archest-sub-activity-item-activity-estimated-time-form-group {
+  width: 83%;
+  margin-left: -0.5rem;
+}
+
+.archest-activity-estimated-time-form-group {
+  width: 78%;
+  margin-left: -1.5rem;
+}
+
+.archest-activity-estimated-time-sync-icon {
+  margin-top: 0.4rem;
+  margin-left: 0.3rem;
+  font-size: 1.3rem;
+  color: $info;
+  font-weight: bold;
+}
+
+.archest-activity-estimated-time-sync-icon:hover {
+  cursor: pointer;
+}
+
+.archest-activity-settings-dropdown {
+  margin-left: 1.8rem;
+  margin-top: -1.9rem;
+  height: 28px;
+}
+
+.archest-sub-activity-item-delete-btn {
+  color: $danger;
+  margin-top: 0.45rem;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.archest-sub-activity-item-delete-btn:hover {
+  cursor: pointer;
+}
+
+.archest-activity-name-form-group {
+  width: 97%;
+}
+
+.archest-activity-status-form-group {
+  margin-left: -3.1rem;
+  width: 117%;
+}
+
+.archest-activity-feature-name-form-group {
+  width: 108%;
+}
+
+.archest-activity-delete-btn {
+  margin-left: 30px;
+}
+
+.archest-activity-estimated-time-label {
+  margin-left: -2.5rem !important;
+}
+
+.archest-activity-estimated-time-label > .form-check {
+  margin-left: 1.5rem;
+}
+
+.archest-activity-status-label {
+  margin-left: -2.1rem !important;
+}
+
+.archest-activity-card {
+  border: none;
+  box-shadow: 0 2px 4px 0 rgba(21, 27, 38, .15);
+  background-color: white;
+}
+
+.archest-activity-sub-activities-card-heading-icon {
+  vertical-align: middle;
+  margin-top: -0.1rem;
+  margin-right: 0.3rem;
+}
+
+.archest-activity-sub-activities-card-heading-total-time-container {
+  float: right;
+  margin-right: 0.8rem;
+}
+
+.archest-activity-sub-activities-save-loading-icon-container {
+  float: right;
+}
+
+.archest-activity-sub-activities-save-loading-icon-text {
+  font-size: 0.8rem;
+}
+
+.archest-activity-sub-activities-save-loading-icon {
+  margin-top: -10px;
+}
