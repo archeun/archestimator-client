@@ -37,7 +37,7 @@ class ArchestMainContainerComponent extends Component {
         }));
 
         return (
-            <Container style={{marginTop: '1%'}}>
+            <Container style={{marginTop: '4%'}}>
                 <Modal show={this.props.modalProps.show} onHide={this.modalFunctions.onCancelClickHandler}
                        onShow={this.props.modalProps.onShow}>
                     <Modal.Header closeButton>
@@ -68,7 +68,7 @@ ArchestMainContainerComponent.defaultProps = {
         show: false,
     },
     breadcrumbs: [
-        {title: 'Home', url: '/', active: true}
+        {title: 'Home', url: '/'}
     ]
 };
 

@@ -116,7 +116,7 @@ class ArchestEstimateActivityComponent extends Component {
         }
 
         return (
-            <Row className="archest-activity-container-row">
+            <Row className="archest-card-container-row">
                 <Modal show={this.state.showDeleteActivityModal} onHide={this.hideDeleteActivityModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirmation</Modal.Title>
@@ -132,8 +132,8 @@ class ArchestEstimateActivityComponent extends Component {
                     </Modal.Footer>
                 </Modal>
                 <Col>
-                    <Card className="archest-activity-card">
-                        <Card.Body className="archest-activity-card-body">
+                    <Card className="archest-card">
+                        <Card.Body className="archest-card-body">
 
                             <Form className="archest-activity-form" id={"archest-activity-form-" + activityId}>
                                 <Row>

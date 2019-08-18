@@ -110,7 +110,7 @@ class ArchestEstimateSubActivitiesComponent extends Component {
                     <Row>
                         <Col lg="9">
                             <div className="archest-activity-sub-activities-card-heading-title-container">
-                                <i className="material-icons archest-activity-sub-activities-card-heading-icon">toc</i>
+                                <i className="material-icons archest-inline-icon">toc</i>
                                 <span>Sub Activities</span>
                                 <div className="archest-activity-sub-activities-save-loading-icon-container"
                                      hidden={!this.state.savingData}>
@@ -123,7 +123,7 @@ class ArchestEstimateSubActivitiesComponent extends Component {
                         </Col>
                         <Col lg={3}>
                             <div className="archest-activity-sub-activities-card-heading-total-time-container">
-                                <i className="material-icons archest-activity-sub-activities-card-heading-icon">av_timer</i>
+                                <i className="material-icons archest-inline-icon">av_timer</i>
                                 <span>{this.props.subActivityTotalHours} Hours</span>
                             </div>
                         </Col>

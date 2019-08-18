@@ -1,9 +1,5 @@
 @import "../../res/archest-default-theme/variables.scss";
 
-.archest-activity-container-row {
-  margin-bottom: 20px;
-}
-
 .archest-activity-sub-activities-card-heading {
   padding: .35rem 1rem;
   border-bottom: none;
@@ -25,10 +21,6 @@
 .archest-sub-activity-item-activity-name-form-group > textarea {
   margin-left: -20px;
   width: 100%;
-}
-
-.archest-activity-card-body {
-  padding: 0.75rem;
 }
 
 .archest-activity-sub-activities-card-body > .row, .archest-activity-form > .row {
@@ -113,18 +105,6 @@
 
 .archest-activity-status-label {
   margin-left: -2.1rem !important;
-}
-
-.archest-activity-card {
-  border: none;
-  box-shadow: 0 2px 4px 0 rgba(21, 27, 38, .15);
-  background-color: white;
-}
-
-.archest-activity-sub-activities-card-heading-icon {
-  vertical-align: middle;
-  margin-top: -0.1rem;
-  margin-right: 0.3rem;
 }
 
 .archest-activity-sub-activities-card-heading-total-time-container {
