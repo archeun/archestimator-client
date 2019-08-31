@@ -6,6 +6,7 @@ import ArchestHttp from "../modules/archest_http";
 import ArchestWorkEntryComponent from "./ArchestWorkEntryComponent";
 import {Button, Card, Col, Form, Row} from "react-bootstrap";
 import ArchestFloatingButtonComponent from "./ArchestFloatingButtonComponent";
+import './styles/ArchestTimeline.scss';
 
 const _ = require('lodash');
 
