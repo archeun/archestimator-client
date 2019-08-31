@@ -17,6 +17,28 @@ export default class ArchestHttp {
     }
 
     /**
+     * Performs a GET requests in batch mode
+     *
+     * @param requestConfigs
+     */
+    static BATCH_GET(requestConfigs, callback) {
+
+        let requests = _.map(requestConfigs, requestConfig => {
+            let authHeaders = {'Authorization': 'Token ' + ArchestAuth.getToken()};
+            let headers = requestConfig.headers ? {...authHeaders, ...requestConfig.headers} : authHeaders;
+            return axios.get(requestConfig.url, {params: requestConfig.params, headers: headers});
+        });
+
+        axios.all(requests).then(axios.spread((...responses) => {
+            let callbackParams = {};
+            for (let i = 0; i < requestConfigs.length; i++) {
+                callbackParams[requestConfigs[i].name] = responses[i];
+            }
+            callback(callbackParams);
+        }));
+    }
+
+    /**
      * Performs a POST request to the given url, with the given params.
      *
      * @param url
@@ -32,7 +54,7 @@ export default class ArchestHttp {
         });
 
         let postConfig = {};
-        if(authenticate){
+        if (authenticate) {
             postConfig['headers'] = {'Authorization': 'Token ' + ArchestAuth.getToken()};
         }
         return axios.post(url, postParams, postConfig);
