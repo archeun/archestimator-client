@@ -6,14 +6,14 @@ class ArchestFloatingButtonComponent extends Component {
     render() {
         return <OverlayTrigger
             key={'archest-floating-btn'}
-            placement="top"
+            placement="left"
             overlay={<Tooltip>{this.props.helpText}</Tooltip>}>
 
             <Button hidden={this.props.hidden}
                     size={'sm'}
                     style={{
                         'position': 'fixed',
-                        'top': '90%',
+                        'top': '7.5%',
                         'left': '95%',
                         'borderRadius': '100%',
                         'width': '43px',

@@ -1,14 +1,16 @@
 import React, {Component} from "react";
 import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
-import {BACKEND_ESTIMATOR_API_URL} from "../constants";
+import {ACTIVITY_WORK_ENTRY_TYPE, BACKEND_ESTIMATOR_API_URL, SUB_ACTIVITY_WORK_ENTRY_TYPE} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import ArchestWorkEntryComponent from "./ArchestWorkEntryComponent";
 import {Button, Card, Col, Form, Row} from "react-bootstrap";
 import ArchestFloatingButtonComponent from "./ArchestFloatingButtonComponent";
 import './styles/ArchestTimeline.scss';
+import ArchestToastMessageComponent from "./ArchestToastMessageComponent";
 
 const _ = require('lodash');
+var moment = require('moment');
 
 
 class ArchestTimelineComponent extends Component {
@@ -17,9 +19,11 @@ class ArchestTimelineComponent extends Component {
         super(props);
 
         this.state = {
-            activityWorkEntries: {},
-            subActivityWorkEntries: {},
+            activityWorkEntries: [],
+            subActivityWorkEntries: [],
             addWorkEntryFormConfig: {
+                workEntryType: '',
+                workEntryId: false,
                 estimateId: {value: '', choices: []},
                 activityId: {value: '', choices: []},
                 subActivityId: {value: '', choices: []},
@@ -27,18 +31,21 @@ class ArchestTimelineComponent extends Component {
                 workedHours: {value: ''},
                 notes: {value: ''},
             },
-            showAddWorkEntryForm: false,
+            showWorkEntryForm: false,
+            modalProps: {},
         };
 
-        this.addNewWorkEntryClickHandler = this.addNewWorkEntryClickHandler.bind(this);
+        this.saveWorkEntryClickHandler = this.saveWorkEntryClickHandler.bind(this);
         this.handleTimelineWorkEntryFormFieldChange = this.handleTimelineWorkEntryFormFieldChange.bind(this);
         this.handleTimelineWorkEntryFormEstimateIdFieldChange = this.handleTimelineWorkEntryFormEstimateIdFieldChange.bind(this);
         this.handleTimelineWorkEntryFormActivityIdFieldChange = this.handleTimelineWorkEntryFormActivityIdFieldChange.bind(this);
         this.fetchActivityData = this.fetchActivityData.bind(this);
-        this.showAddWorkEntryForm = this.showAddWorkEntryForm.bind(this);
-        this.hideAddWorkEntryForm = this.hideAddWorkEntryForm.bind(this);
-        this.initAddNewWorkEntryForm = this.initAddNewWorkEntryForm.bind(this);
+        this.showWorkEntryForm = this.showWorkEntryForm.bind(this);
+        this.hideWorkEntryForm = this.hideWorkEntryForm.bind(this);
+        this.initWorkEntryForm = this.initWorkEntryForm.bind(this);
         this.initWorkEntryList = this.initWorkEntryList.bind(this);
+        this.editWorkEntryBtnClickHandler = this.editWorkEntryBtnClickHandler.bind(this);
+        this.deleteWorkEntryBtnClickHandler = this.deleteWorkEntryBtnClickHandler.bind(this);
     }
 
     componentDidMount() {
@@ -66,41 +73,67 @@ class ArchestTimelineComponent extends Component {
         });
     }
 
-    initAddNewWorkEntryForm() {
+    initWorkEntryForm(selectedWorkEntry = false) {
         ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/', {}).then((response) => {
 
             let estimates = response.data.results;
             let estimateChoices = estimates.map(
                 (estimate) => <option value={estimate.id} key={estimate.id}>{estimate.name}</option>
             );
-            let selectedEstimateId = estimates[0] ? estimates[0].id : '';
+
+            let selectedEstimateId;
+
+            if (selectedWorkEntry) {
+                selectedEstimateId = selectedWorkEntry.estimateId;
+            } else if (estimates[0]) {
+                selectedEstimateId = estimates[0].id;
+            } else {
+                selectedEstimateId = '';
+            }
             this.setState(prevState => {
+                let workedDate = moment();
+                let workedHours = '';
+                let notes = '';
+                let workEntryId = false;
+                let workEntryType = false;
+
+                if (selectedWorkEntry) {
+                    workEntryType = selectedWorkEntry.workEntryType;
+                    workEntryId = selectedWorkEntry.id;
+                    workedDate = selectedWorkEntry.date;
+                    workedHours = selectedWorkEntry.worked_hours;
+                    notes = selectedWorkEntry.note || '';
+                }
+
                 return {
                     addWorkEntryFormConfig: {
                         ...prevState.addWorkEntryFormConfig,
                         ...{
+                            workEntryType: workEntryType,
+                            workEntryId: workEntryId,
                             estimateId: {
                                 value: selectedEstimateId,
                                 choices: estimateChoices
                             },
-                            workedDate: {value: ''},
-                            workedHours: {value: ''},
-                            notes: {value: ''},
+                            workedDate: {value: workedDate},
+                            workedHours: {value: workedHours},
+                            notes: {value: notes},
                         }
                     },
 
                 };
             }, () => {
-                if (estimates && estimates.length > 0) {
-                    this.populateActivitiesForEstimateId(estimates[0].id);
+                if (selectedEstimateId !== '') {
+                    this.populateActivitiesForEstimateId(selectedEstimateId, selectedWorkEntry);
                 }
             });
         });
     }
 
-    addNewWorkEntryClickHandler() {
+    async saveWorkEntryClickHandler() {
 
         let workEntryData = {
+            workEntryType: this.state.addWorkEntryFormConfig.workEntryType,
             activity_id: this.state.addWorkEntryFormConfig.activityId.value,
             sub_activity_id: this.state.addWorkEntryFormConfig.subActivityId.value,
             worked_hours: this.state.addWorkEntryFormConfig.workedHours.value,
@@ -108,17 +141,40 @@ class ArchestTimelineComponent extends Component {
             note: this.state.addWorkEntryFormConfig.notes.value,
         };
 
-        let apiUrl;
+        let workEntryId = this.state.addWorkEntryFormConfig.workEntryId;
+        let isEditMode = workEntryId !== false;
+        let apiRequest;
+
         if (workEntryData.sub_activity_id && !isNaN(workEntryData.sub_activity_id)) {
-            apiUrl = BACKEND_ESTIMATOR_API_URL + "/sub_activity_work_entries/";
             delete workEntryData.activity_id;
+            if (isEditMode) {
+                if (workEntryData.workEntryType === SUB_ACTIVITY_WORK_ENTRY_TYPE) {
+                    apiRequest = ArchestHttp.PATCH(`${BACKEND_ESTIMATOR_API_URL}/sub_activity_work_entries/${workEntryId}/`, workEntryData)
+                } else {
+                    await ArchestHttp.DELETE(`${BACKEND_ESTIMATOR_API_URL}/activity_work_entries/${workEntryId}/`, {}).then((response) => {
+                        apiRequest = ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/sub_activity_work_entries/", workEntryData)
+                    });
+                }
+            } else {
+                apiRequest = ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/sub_activity_work_entries/", workEntryData)
+            }
         } else {
-            apiUrl = BACKEND_ESTIMATOR_API_URL + "/activity_work_entries/";
             delete workEntryData.sub_activity_id;
+            if (isEditMode) {
+                if (workEntryData.workEntryType === ACTIVITY_WORK_ENTRY_TYPE) {
+                    apiRequest = ArchestHttp.PATCH(`${BACKEND_ESTIMATOR_API_URL}/activity_work_entries/${workEntryId}/`, workEntryData)
+                } else {
+                    await ArchestHttp.DELETE(`${BACKEND_ESTIMATOR_API_URL}/sub_activity_work_entries/${workEntryId}/`, {}).then((response) => {
+                        apiRequest = ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/activity_work_entries/", workEntryData)
+                    });
+                }
+            } else {
+                apiRequest = ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/activity_work_entries/", workEntryData)
+            }
         }
 
-        ArchestHttp.POST(apiUrl, workEntryData).then((response) => {
-            this.hideAddWorkEntryForm();
+        apiRequest.then((response) => {
+            this.hideWorkEntryForm();
             this.initWorkEntryList();
         }).catch(function (error) {
             console.log(error);
@@ -145,14 +201,19 @@ class ArchestTimelineComponent extends Component {
         this.populateSubActivitiesForActivityId(selectedActivateId);
     }
 
-    populateActivitiesForEstimateId(estimateId) {
+    populateActivitiesForEstimateId(estimateId, selectedWorkEntry = false) {
         ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/detailed_view/', {}).then(response => {
             let activities = response.data.results;
             let activityIdChoices = _.map(
                 activities,
                 (activity) => <option value={activity.id} key={activity.id}>{activity.name}</option>
             );
+
             let selectedActivityId = activities[0] ? activities[0].id : '';
+
+            if (selectedWorkEntry) {
+                selectedActivityId = selectedWorkEntry.activityId;
+            }
             this.setState(prevState => {
                 return {
                     addWorkEntryFormConfig: {
@@ -166,7 +227,7 @@ class ArchestTimelineComponent extends Component {
                     },
                 };
             }, () => {
-                this.populateSubActivitiesForActivityId(selectedActivityId);
+                this.populateSubActivitiesForActivityId(selectedActivityId, selectedWorkEntry);
             });
 
         }).catch(function (error) {
@@ -174,17 +235,17 @@ class ArchestTimelineComponent extends Component {
         });
     }
 
-    showAddWorkEntryForm() {
+    showWorkEntryForm(workEntry = false) {
         window.scrollTo({top: 0, behavior: 'smooth'});
-        this.initAddNewWorkEntryForm();
-        this.setState({showAddWorkEntryForm: true});
+        this.initWorkEntryForm(workEntry);
+        this.setState({showWorkEntryForm: true});
     }
 
-    hideAddWorkEntryForm() {
-        this.setState({showAddWorkEntryForm: false});
+    hideWorkEntryForm() {
+        this.setState({showWorkEntryForm: false});
     }
 
-    async fetchActivityData(activateId) {
+    async fetchActivityData(activateId, selectedWorkEntry) {
         let activityData = {subActivityId: '', subActivities: []};
         if (activateId !== '') {
             let activityDataFetchReq = ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + `/activities/${activateId}/`, {});
@@ -194,14 +255,19 @@ class ArchestTimelineComponent extends Component {
                 activity.sub_activities,
                 (subActivity) => <option value={subActivity.id} key={subActivity.id}>{subActivity.name}</option>
             );
-            activityData.subActivityId = activity.sub_activities[0] ? activity.sub_activities[0].id : '';
+            subActivityIdChoices.unshift(<option value='' key=''/>);
+            if (selectedWorkEntry) {
+                activityData.subActivityId = selectedWorkEntry.subActivityId ? selectedWorkEntry.subActivityId : '';
+            } else {
+                activityData.subActivityId = activity.sub_activities[0] ? activity.sub_activities[0].id : '';
+            }
             activityData.subActivities = subActivityIdChoices;
         }
         return activityData;
     }
 
-    async populateSubActivitiesForActivityId(activateId) {
-        let subActivityData = await this.fetchActivityData(activateId);
+    async populateSubActivitiesForActivityId(activateId, selectedWorkEntry = false) {
+        let subActivityData = await this.fetchActivityData(activateId, selectedWorkEntry);
 
         this.setState(prevState => {
             return {
@@ -218,19 +284,58 @@ class ArchestTimelineComponent extends Component {
         });
     }
 
+    editWorkEntryBtnClickHandler(workEntry) {
+        this.showWorkEntryForm(workEntry);
+    }
+
+    deleteWorkEntry(workEntry) {
+        let apiRequest;
+
+        if (workEntry.subActivityId !== '') {
+            apiRequest = ArchestHttp.DELETE(`${BACKEND_ESTIMATOR_API_URL}/sub_activity_work_entries/${workEntry.id}/`, {})
+
+        } else {
+            apiRequest = ArchestHttp.DELETE(`${BACKEND_ESTIMATOR_API_URL}/activity_work_entries/${workEntry.id}/`, {})
+        }
+
+        apiRequest.then((response) => {
+            this.setState({
+                modalProps: {show: false},
+            });
+            this.initWorkEntryList();
+        }, (error) => {
+            console.log(error);
+        });
+    }
+
+    deleteWorkEntryBtnClickHandler(workEntry) {
+
+        this.setState({
+            modalProps: {
+                show: true,
+                onConfirm: () => this.deleteWorkEntry(workEntry),
+                message: 'Do you really want to delete this work entry?',
+                onCancel: () => {
+                    this.setState({modalProps: {show: false}});
+                }
+            }
+        });
+
+    }
+
     render() {
-        const workEntryComponents = this.getWorkEntryComponents(this.state.activityWorkEntries);
+        const workEntryComponents = this.getWorkEntryComponents();
         return (
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent>
+                <ArchestMainContainerComponent modalProps={this.state.modalProps}>
 
-                    <ArchestFloatingButtonComponent hidden={this.state.showAddWorkEntryForm}
+                    <ArchestFloatingButtonComponent hidden={this.state.showWorkEntryForm}
                                                     icon="add"
                                                     helpText="Add Work Entry"
-                                                    onClickHandler={this.showAddWorkEntryForm}/>
+                                                    onClickHandler={this.showWorkEntryForm}/>
 
 
-                    <Row hidden={!this.state.showAddWorkEntryForm} className="archest-card-container-row">
+                    <Row hidden={!this.state.showWorkEntryForm} className="archest-card-container-row">
                         <Col>
                             <Card className="archest-card">
                                 <Card.Body className="archest-card-body">
@@ -376,14 +481,14 @@ class ArchestTimelineComponent extends Component {
                                                             'marginLeft': '1.6rem'
                                                         }} size="sm"
                                                                 variant="primary"
-                                                                onClick={this.addNewWorkEntryClickHandler}>
+                                                                onClick={this.saveWorkEntryClickHandler}>
                                                             Save
                                                         </Button>
                                                     </Col>
                                                     <Col>
                                                         <Button style={{'float': 'right', 'width': '6rem'}} size="sm"
                                                                 variant="secondary"
-                                                                onClick={this.hideAddWorkEntryForm}>
+                                                                onClick={this.hideWorkEntryForm}>
                                                             Cancel
                                                         </Button>
                                                     </Col>
@@ -401,11 +506,31 @@ class ArchestTimelineComponent extends Component {
         );
     }
 
-    getWorkEntryComponents(workEntries) {
+    getWorkEntryComponents() {
+
         return _.map(
-            workEntries,
-            (workEntry) => <ArchestWorkEntryComponent workEntry={workEntry} key={workEntry.id}/>
+            this.getSortedWorkEntries(),
+            (workEntry) => <ArchestWorkEntryComponent
+                workEntry={workEntry}
+                key={`${workEntry.workEntryType}_${workEntry.id}`}
+                editWorkEntryBtnClickHandler={this.editWorkEntryBtnClickHandler}
+                deleteWorkEntryBtnClickHandler={this.deleteWorkEntryBtnClickHandler}
+            />
         );
+
+    }
+
+    getSortedWorkEntries() {
+        let workEntries = this.state.activityWorkEntries.concat(this.state.subActivityWorkEntries);
+        workEntries = _.map(workEntries, (workEntry) => {
+            if (workEntry.sub_activity) {
+                workEntry.workEntryType = SUB_ACTIVITY_WORK_ENTRY_TYPE;
+            } else {
+                workEntry.workEntryType = ACTIVITY_WORK_ENTRY_TYPE;
+            }
+            return workEntry;
+        });
+        return _.orderBy(workEntries, ['date'], ['desc']);
     }
 
 }

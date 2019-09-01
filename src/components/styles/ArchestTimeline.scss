@@ -25,13 +25,26 @@
 }
 
 .archest-timeline-we-worked-hrs {
-  font-size: 3.2rem;
+  font-size: 3rem;
   font-weight: bold;
   text-align: center;
 }
 
+.archest-timeline-we-info-container {
+  font-size: 0.875rem;
+}
+
 .archest-timeline-we-info {
   padding-top: 20px;
+}
+
+.archest-timeline-we-activity-info-badge {
+  float: right;
+  margin-top: 5px;
+}
+
+.archest-timeline-we-activity-info-est-time-badge {
+  margin-right: 5px;
 }
 
 .archest-timeline-we-info-label {
@@ -39,15 +52,18 @@
 }
 
 .archest-timeline-we-activity-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-height: 1.5;
-  max-height: 50px;
+  font-size: 1rem;
   color: $info;
   font-weight: bold;
+}
+
+.archest-timeline-we-parent-activity-name {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  color: $success;
+  font-weight: bold;
+  font-size: 0.8rem;
 }
 
 .archest-timeline-we-btn {
@@ -57,5 +73,10 @@
 
 .archest-timeline-we-estimate-link-icon {
   font-size: 0.9rem;
+}
+
+.archest-timeline-we-info-note {
+  background-color: $gray-200;
+  padding: 10px;
 }
 
