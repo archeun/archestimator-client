@@ -22,6 +22,13 @@ class NavbarComponent extends Component {
                                 </OverlayTrigger>
 
                             </Nav.Link>
+                            <Nav.Link href="/calendar">
+
+                                <OverlayTrigger placement="right" overlay={<Tooltip>Calendar</Tooltip>}>
+                                    <i className="material-icons archest-inline-icon">date_range</i>
+                                </OverlayTrigger>
+
+                            </Nav.Link>
                         </Nav>
                         <Nav>
                             <Nav.Link href="/logout">Logout</Nav.Link>

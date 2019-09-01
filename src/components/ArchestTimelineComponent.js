@@ -7,7 +7,6 @@ import ArchestWorkEntryComponent from "./ArchestWorkEntryComponent";
 import {Button, Card, Col, Form, Row} from "react-bootstrap";
 import ArchestFloatingButtonComponent from "./ArchestFloatingButtonComponent";
 import './styles/ArchestTimeline.scss';
-import ArchestToastMessageComponent from "./ArchestToastMessageComponent";
 
 const _ = require('lodash');
 var moment = require('moment');
