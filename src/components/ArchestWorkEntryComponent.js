@@ -12,7 +12,7 @@ class ArchestWorkEntryComponent extends Component {
         this.state = {};
     }
 
-    getGenericWorkEntryData(workEntry) {
+    static getGenericWorkEntryData(workEntry) {
         let activityStatus = '';
 
         if (workEntry.activity) {
@@ -30,7 +30,7 @@ class ArchestWorkEntryComponent extends Component {
         }
 
         return {
-            workEntryType: workEntry.workEntryType,
+            workEntryType: workEntry.ENTRY_TYPE,
             id: workEntry.id,
             estimateId: workEntry.activity ? workEntry.activity.estimate.id : workEntry.sub_activity.estimate_id,
             estimateName: workEntry.activity ? workEntry.activity.estimate.name : workEntry.sub_activity.estimate_name,
@@ -48,111 +48,109 @@ class ArchestWorkEntryComponent extends Component {
     }
 
     render() {
-        const workEntry = this.getGenericWorkEntryData(this.props.workEntry);
+        const workEntry = ArchestWorkEntryComponent.getGenericWorkEntryData(this.props.workEntry);
         return (
             <Row className="archest-card-container-row">
                 <Col>
-                    <Card className="archest-card">
-                        <Card.Body className="archest-card-body">
-                            <Row>
-                                <Col lg={2} className="archest-timeline-we-date-hours-col">
-                                    <div className="archest-timeline-we-worked-hrs-container">
-                                        <div className="archest-timeline-we-worked-hrs">
-                                            {workEntry.worked_hours}
-                                        </div>
-                                        <div className="archest-timeline-we-worked-hrs-label">
-                                            Hrs
-                                        </div>
+                    <Card.Body className="archest-card-body">
+                        <Row>
+                            <Col lg={2} className="archest-timeline-we-date-hours-col">
+                                <div className="archest-timeline-we-worked-hrs-container">
+                                    <div className="archest-timeline-we-worked-hrs">
+                                        {workEntry.worked_hours}
                                     </div>
-                                    <div className="archest-timeline-we-date">
-                                        {moment(workEntry.date, "YYYY-MM-DD").format('DD MMM')}
+                                    <div className="archest-timeline-we-worked-hrs-label">
+                                        Hrs
                                     </div>
-                                </Col>
-                                <Col lg={10} className="archest-timeline-we-info-container">
-                                    <Row hidden={!workEntry.subActivityName}>
-                                        <Col lg={12} className="archest-timeline-we-parent-activity-name">
-                                            {workEntry.activityName}
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col lg={9} className="archest-timeline-we-activity-name">
-                                            {workEntry.subActivityName ? workEntry.subActivityName : workEntry.activityName}
-                                        </Col>
-                                        <Col lg={3} className="archest-timeline-we-activity-info">
-                                            <Badge className="archest-timeline-we-activity-info-badge"
-                                                   variant='primary'>{workEntry.activityStatus}</Badge>
-                                            <Badge
-                                                className="archest-timeline-we-activity-info-badge archest-timeline-we-activity-info-est-time-badge"
-                                                variant='success'>{workEntry.activityEstimatedTime} Hrs</Badge>
-                                        </Col>
-                                    </Row>
-                                    <Row className="archest-timeline-we-info">
-                                        <Col lg={12}>
-                                            <Row hidden={!workEntry.note}>
-                                                <Col lg={12}>
-                                                    <p className="archest-timeline-we-info-note">
-                                                        {workEntry.note}
-                                                    </p>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col lg={2} className="archest-timeline-we-info-label">
-                                                    Estimate
-                                                </Col>
-                                                <Col lg={10}>
-                                                    {workEntry.estimateName}
-                                                    &nbsp;
-                                                    <a className=""
-                                                       href={`/estimates/${workEntry.estimateId}/edit`}
-                                                       rel="noopener noreferrer"
-                                                       target="_blank">
-                                                        <i className="material-icons archest-inline-icon archest-timeline-we-estimate-link-icon">
-                                                            open_in_new
-                                                        </i>
-                                                    </a>
-                                                </Col>
-                                            </Row>
-                                            <Row>
-                                                <Col lg={2} className="archest-timeline-we-info-label">
-                                                    Feature
-                                                </Col>
-                                                <Col lg={10}>
-                                                    {workEntry.featureName}
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col lg={10}/>
-                                        <Col lg={2}>
-                                            <OverlayTrigger placement="top"
-                                                            overlay={
-                                                                <Tooltip id="tooltip-top">Delete</Tooltip>
-                                                            }>
-                                                <Button
-                                                    onClick={() => this.props.deleteWorkEntryBtnClickHandler(workEntry)}
-                                                    className="archest-timeline-we-btn archest-timeline-we-delete-btn"
-                                                    variant="outline-danger" size="sm">
-                                                    <span className="oi oi-x"/>
-                                                </Button>
-                                            </OverlayTrigger>
-                                            <OverlayTrigger placement="top"
-                                                            overlay={
-                                                                <Tooltip id="tooltip-top">Edit</Tooltip>
-                                                            }>
-                                                <Button
-                                                    onClick={() => this.editWorkEntryBtnClickHandler(workEntry)}
-                                                    className="archest-timeline-we-btn archest-timeline-we-delete-btn"
-                                                    variant="outline-primary" size="sm">
-                                                    <span className="oi oi-pencil"/>
-                                                </Button>
-                                            </OverlayTrigger>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </Card.Body>
-                    </Card>
+                                </div>
+                                <div className="archest-timeline-we-date">
+                                    {moment(workEntry.date, "YYYY-MM-DD").format('DD MMM')}
+                                </div>
+                            </Col>
+                            <Col lg={10} className="archest-timeline-we-info-container">
+                                <Row hidden={!workEntry.subActivityName}>
+                                    <Col lg={12} className="archest-timeline-we-parent-activity-name">
+                                        {workEntry.activityName}
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col lg={9} className="archest-timeline-we-activity-name">
+                                        {workEntry.subActivityName ? workEntry.subActivityName : workEntry.activityName}
+                                    </Col>
+                                    <Col lg={3} className="archest-timeline-we-activity-info">
+                                        <Badge className="archest-timeline-we-activity-info-badge"
+                                               variant='primary'>{workEntry.activityStatus}</Badge>
+                                        <Badge
+                                            className="archest-timeline-we-activity-info-badge archest-timeline-we-activity-info-est-time-badge"
+                                            variant='success'>{workEntry.activityEstimatedTime} Hrs</Badge>
+                                    </Col>
+                                </Row>
+                                <Row className="archest-timeline-we-info">
+                                    <Col lg={12}>
+                                        <Row hidden={!workEntry.note}>
+                                            <Col lg={12}>
+                                                <p className="archest-timeline-we-info-note">
+                                                    {workEntry.note}
+                                                </p>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg={2} className="archest-timeline-we-info-label">
+                                                Estimate
+                                            </Col>
+                                            <Col lg={10}>
+                                                {workEntry.estimateName}
+                                                &nbsp;
+                                                <a className=""
+                                                   href={`/estimates/${workEntry.estimateId}/edit`}
+                                                   rel="noopener noreferrer"
+                                                   target="_blank">
+                                                    <i className="material-icons archest-inline-icon archest-timeline-we-estimate-link-icon">
+                                                        open_in_new
+                                                    </i>
+                                                </a>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg={2} className="archest-timeline-we-info-label">
+                                                Feature
+                                            </Col>
+                                            <Col lg={10}>
+                                                {workEntry.featureName}
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col lg={10}/>
+                                    <Col lg={2}>
+                                        <OverlayTrigger placement="top"
+                                                        overlay={
+                                                            <Tooltip id="tooltip-top">Delete</Tooltip>
+                                                        }>
+                                            <Button
+                                                onClick={() => this.props.deleteWorkEntryBtnClickHandler(workEntry)}
+                                                className="archest-timeline-we-btn archest-timeline-we-delete-btn"
+                                                variant="outline-danger" size="sm">
+                                                <span className="oi oi-x"/>
+                                            </Button>
+                                        </OverlayTrigger>
+                                        <OverlayTrigger placement="top"
+                                                        overlay={
+                                                            <Tooltip id="tooltip-top">Edit</Tooltip>
+                                                        }>
+                                            <Button
+                                                onClick={() => this.editWorkEntryBtnClickHandler(workEntry)}
+                                                className="archest-timeline-we-btn archest-timeline-we-delete-btn"
+                                                variant="outline-primary" size="sm">
+                                                <span className="oi oi-pencil"/>
+                                            </Button>
+                                        </OverlayTrigger>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Card.Body>
                 </Col>
             </Row>
         );
