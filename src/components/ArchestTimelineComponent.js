@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
-import {ACTIVITY_WORK_ENTRY_TYPE, BACKEND_ESTIMATOR_API_URL, SUB_ACTIVITY_WORK_ENTRY_TYPE} from "../constants";
+import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import ArchestWorkEntryComponent from "./ArchestWorkEntryComponent";
-import ArchestFloatingButtonComponent from "./ArchestFloatingButtonComponent";
 import './styles/ArchestTimeline.scss';
 import ArchestWorkEntryFormComponent from "./ArchestWorkEntryFormComponent";
 

@@ -1,5 +1,5 @@
-import React, {Component, useState} from "react";
-import {Button, Card, Col, Form, Modal, Row} from "react-bootstrap";
+import React, {Component} from "react";
+import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 import {ACTIVITY_WORK_ENTRY_TYPE, BACKEND_ESTIMATOR_API_URL, SUB_ACTIVITY_WORK_ENTRY_TYPE} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import ArchestFloatingButtonComponent from "./ArchestFloatingButtonComponent";
