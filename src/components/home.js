@@ -77,8 +77,7 @@ class HomeComponent extends Component {
             redirectTo: '/phase/' + phase.id + '/estimates/'
         });
     };
-// 8258007295
-//     Anuradhi Ineka Wickramasinghe
+
     getPhaseInfoListItem(phase) {
         let managersNames = _.map(phase.managers, (manager) => manager.full_name).join(', ');
         return (
