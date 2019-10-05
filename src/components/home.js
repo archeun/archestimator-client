@@ -77,8 +77,10 @@ class HomeComponent extends Component {
             redirectTo: '/phase/' + phase.id + '/estimates/'
         });
     };
-
+// 8258007295
+//     Anuradhi Ineka Wickramasinghe
     getPhaseInfoListItem(phase) {
+        let managersNames = _.map(phase.managers, (manager) => manager.full_name).join(', ');
         return (
             <ListGroup.Item key={phase.id}>
                 <div>
@@ -97,7 +99,7 @@ class HomeComponent extends Component {
                 </div>
                 <div>
                     <footer className="blockquote-footer">
-                        From <cite>{phase.start_date}</cite> To <cite>{phase.end_date}.</cite> Manager: <cite>{phase.manager.full_name}</cite>
+                        From <cite>{phase.start_date}</cite> To <cite>{phase.end_date}.</cite> Managers: <cite>{managersNames}</cite>
                     </footer>
                 </div>
                 <Badge variant="info">{phase.project.customer.name}</Badge>
