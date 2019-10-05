@@ -107,7 +107,7 @@ class ArchestEstimateActivityComponent extends Component {
     render() {
         const activityId = this.props.activity.id;
 
-        let featureOptions, activityStatusOptions = [];
+        let featureOptions;
 
         if (this.props.features) {
             featureOptions = this.props.features.map(
@@ -115,16 +115,8 @@ class ArchestEstimateActivityComponent extends Component {
             );
         }
 
-        if (this.props.activity) {
-            activityStatusOptions = this.props.activity.STATUS_CHOICES.map(
-                (status_choice) => {
-                    return <option value={status_choice[0]} key={status_choice[0]}>{status_choice[1]}</option>
-                }
-            );
-        }
-
         return (
-            <Row className="archest-activity-container-row">
+            <Row className="archest-card-container-row">
                 <Modal show={this.state.showDeleteActivityModal} onHide={this.hideDeleteActivityModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirmation</Modal.Title>
@@ -140,8 +132,8 @@ class ArchestEstimateActivityComponent extends Component {
                     </Modal.Footer>
                 </Modal>
                 <Col>
-                    <Card className="archest-activity-card">
-                        <Card.Body className="archest-activity-card-body">
+                    <Card className="archest-card">
+                        <Card.Body className="archest-card-body">
 
                             <Form className="archest-activity-form" id={"archest-activity-form-" + activityId}>
                                 <Row>

@@ -1,0 +1,87 @@
+@import "../../res/archest-default-theme/variables.scss";
+
+.archest-timeline-we-date {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+  text-align: center;
+  border: 1px solid $info;
+  background-color: $info;
+}
+
+.archest-timeline-we-worked-hrs-container {
+  border: 1px solid $primary;
+  background-color: $primary;
+  color: white;
+}
+
+.archest-timeline-we-worked-hrs-label {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: -1rem;
+  text-align: center;
+}
+
+.archest-timeline-we-worked-hrs {
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.archest-timeline-we-info-container {
+  font-size: 0.875rem;
+}
+
+.archest-timeline-we-info {
+  padding-top: 20px;
+}
+
+.archest-timeline-we-activity-info-badge {
+  float: right;
+  margin-top: 5px;
+}
+
+.archest-timeline-we-activity-info-est-time-badge {
+  margin-right: 5px;
+}
+
+.archest-timeline-we-info-label {
+  font-weight: bold;
+}
+
+.archest-timeline-we-activity-name {
+  font-size: 1rem;
+  color: $info;
+  font-weight: bold;
+}
+
+.archest-timeline-we-parent-activity-name {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  color: $success;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.archest-timeline-we-btn {
+  float: right;
+  margin-left: 10px;
+}
+
+.archest-timeline-we-estimate-link-icon {
+  font-size: 0.9rem;
+}
+
+.archest-timeline-we-info-note {
+  background-color: $gray-200;
+  padding: 10px;
+}
+
+@media (min-width: 992px) {
+  .modal-dialog {
+    max-width: 55%;
+  }
+}

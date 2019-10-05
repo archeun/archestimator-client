@@ -3,6 +3,8 @@
 @import "~bootstrap/scss/variables";
 @import "variables";
 @import '~material-design-icons/iconfont/material-icons.css';
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
 
 body {
   margin: 0;
@@ -64,6 +66,30 @@ ol.breadcrumb > .breadcrumb-item {
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+}
+
+.archest-inline-icon {
+  vertical-align: middle;
+  margin-top: -0.1rem;
+  margin-right: 0.3rem;
+}
+
+.archest-card {
+  border: none !important;
+  box-shadow: 0 2px 4px 0 rgba(21, 27, 38, .15) !important;
+  background-color: white !important;
+}
+
+.archest-table {
+  font-size: 0.875em;
+}
+
+.archest-card-body {
+  padding: 0.75rem !important;
+}
+
+.archest-card-container-row {
+  margin-bottom: 20px;
 }
 
 @import "~bootstrap/scss/bootstrap";

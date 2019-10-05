@@ -12,6 +12,9 @@ import NavbarComponent from "./components/navbar";
 import PhaseEstimatesComponent from "./components/phase_estimates";
 import EstimateViewComponent from "./components/estimate_view";
 import EstimateEditComponent from "./components/estimate_edit";
+import ArchestEstimateProgressComponent from "./components/ArchestEstimateProgressComponent";
+import TimelineComponent from "./components/ArchestTimelineComponent.js";
+import ArchestCalendarComponent from "./components/ArchestCalendarComponent";
 
 ReactDOM.render(
     <Router>
@@ -20,9 +23,12 @@ ReactDOM.render(
 
             <Route path="/" exact component={HomeComponent}/>
             <Route path="/home" component={HomeComponent}/>
+            <Route path="/timeline" component={TimelineComponent}/>
+            <Route path="/calendar" component={ArchestCalendarComponent}/>
             <Route path="/phase/:phaseId/estimates/" component={PhaseEstimatesComponent}/>
             <Route path="/estimates/:estimateId/view/" component={EstimateViewComponent}/>
             <Route path="/estimates/:estimateId/edit/" component={EstimateEditComponent}/>
+            <Route path="/estimates/:estimateId/progress/" component={ArchestEstimateProgressComponent}/>
             <Route path="/login/" component={LoginComponent}/>
             <Route path="/logout/" component={LogoutComponent}/>
         </div>

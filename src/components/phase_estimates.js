@@ -198,6 +198,15 @@ class PhaseEstimatesComponent extends Component {
                             <span className="oi oi-eye"/>
                         </Button>
                     </OverlayTrigger>
+                    <OverlayTrigger key="progress" placement="right"
+                                    overlay={
+                                        <Tooltip id="tooltip-right">Progress</Tooltip>
+                                    }>
+                        <Button onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'progress')}
+                                style={{'float': 'right', 'marginLeft': '10px'}} variant="outline-primary" size="sm">
+                            <span className="oi oi-project"/>
+                        </Button>
+                    </OverlayTrigger>
                     <OverlayTrigger key="edit" placement="top"
                                     overlay={
                                         <Tooltip id="tooltip-top">Edit</Tooltip>

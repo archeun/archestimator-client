@@ -1,0 +1,53 @@
+@import "../../res/archest-default-theme/variables.scss";
+
+.archest-estimate-progress-card-body {
+  font-size: 0.875em;
+}
+
+.archest-feature-progress-feature {
+  padding-bottom: 15px;
+}
+
+.archest-feature-progress-feature-name {
+  background-color: $primary;
+  font-size: 1em;
+  padding: 5px 5px 5px 15px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.archest-feature-progress-sub-activity:hover, .archest-feature-progress-sub-activity-name:hover {
+  background-color: $gray-300;
+  cursor: default;
+}
+
+.archest-feature-progress-activity:hover, .archest-feature-progress-activity-name:hover {
+  background-color: $info;
+  color: #ffffff;
+  cursor: default;
+}
+
+.archest-feature-progress-sub-activity-name {
+  padding-left: 30px;
+  font-weight: 300;
+}
+
+.archest-feature-progress-activity-name {
+  font-weight: 600;
+  color: $info;
+  font-size: 0.95em;
+}
+
+.archest-feature-progress-activity-entered-icon {
+  font-size: 1.1em;
+  margin-left: 5px;
+}
+
+.archest-feature-progress-heading {
+  font-weight: bold;
+  color: $primary;
+}
+
+.archest-feature-progress-activity-completion, .archest-feature-progress-sub-activity-completion {
+  padding-top: 7px;
+}
