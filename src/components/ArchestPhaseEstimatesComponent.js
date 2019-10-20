@@ -6,6 +6,7 @@ import ArchestHttp from "../modules/archest_http";
 import {Redirect} from "react-router-dom";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import './styles/ArchestPhaseEstimatesComponent.scss';
+import ArchestEstimateShareModalComponent from "./ArchestEstimateShareModalComponent";
 
 const _ = require('lodash');
 
@@ -19,7 +20,10 @@ class ArchestPhaseEstimatesComponent extends Component {
             phase: {},
             phaseEstimateList: [],
             modalProps: {},
-            breadcrumbs: []
+            breadcrumbs: [],
+            shareEstimateModalProps: {
+                show: false
+            }
         };
         this.addNewEstimate = this.addNewEstimate.bind(this);
         this.showAddEstimateModal = this.showAddEstimateModal.bind(this);
@@ -104,6 +108,23 @@ class ArchestPhaseEstimatesComponent extends Component {
         })
     }
 
+    showShareEstimateModal(estimatedId) {
+        this.setState({
+            shareEstimateModalProps: {
+                show: true,
+                estimateId: estimatedId,
+                onCancel: () => {
+                    this.setState({
+                        shareEstimateModalProps: {
+                            show: false,
+                            estimateId: estimatedId
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     deleteEstimate(estimateId) {
         let component = this;
 
@@ -144,6 +165,14 @@ class ArchestPhaseEstimatesComponent extends Component {
         return (
             <ArchestAuthEnabledComponent>
                 <ArchestMainContainerComponent modalProps={this.state.modalProps} breadcrumbs={this.state.breadcrumbs}>
+                    <ArchestEstimateShareModalComponent
+                        show={this.state.shareEstimateModalProps.show}
+                        estimateData={{
+                            phaseId: this.state.phase.id,
+                            estimateId: this.state.shareEstimateModalProps.estimateId
+                        }}
+                        onCancel={this.state.shareEstimateModalProps.onCancel}
+                    />
                     <Row>
                         <Col sm={2}/>
                         <Col sm={8}>
@@ -210,7 +239,7 @@ class ArchestPhaseEstimatesComponent extends Component {
                                 </Col>
                                 <Col sm={2}>
                                     <OverlayTrigger key="share" placement="top" overlay={<Tooltip>Share</Tooltip>}>
-                                        <i onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'share')}
+                                        <i onClick={() => this.showShareEstimateModal(estimate.id)}
                                            className="material-icons md-18 archest-phase-estimates-icon">folder_shared</i>
                                     </OverlayTrigger>
                                 </Col>
