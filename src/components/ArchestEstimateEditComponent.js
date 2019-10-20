@@ -5,7 +5,7 @@ import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import ArchestEstimateActivityComponent from "./ArchestEstimateActivityComponent";
-import './styles/ArchestEditEstimate.scss';
+import './styles/ArchestEstimateEditComponent.scss';
 import autosize from 'autosize';
 
 const _ = require('lodash');

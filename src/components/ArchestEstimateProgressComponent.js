@@ -4,7 +4,7 @@ import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import ArchestFeatureProgressComponent from "./ArchestFeatureProgressComponent";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
-import {Col, Row, Card, Table, ProgressBar, Dropdown} from "react-bootstrap";
+import {Col, Row, Card} from "react-bootstrap";
 import './styles/ArchestEstimateProgressComponent.scss';
 
 const _ = require('lodash');
