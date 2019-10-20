@@ -5,7 +5,7 @@ import {Navbar, Nav, OverlayTrigger, Tooltip} from "react-bootstrap";
 
 const _ = require('lodash');
 
-class NavbarComponent extends Component {
+class ArchestNavbarComponent extends Component {
 
     render() {
         if (!_.includes(PATHS_WITH_NO_NAVBAR, this.props.location.pathname)) {
@@ -41,4 +41,4 @@ class NavbarComponent extends Component {
     }
 }
 
-export default withRouter(NavbarComponent);
+export default withRouter(ArchestNavbarComponent);

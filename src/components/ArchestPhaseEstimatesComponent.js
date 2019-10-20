@@ -8,7 +8,7 @@ import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
 const _ = require('lodash');
 
-class PhaseEstimatesComponent extends Component {
+class ArchestPhaseEstimatesComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -223,4 +223,4 @@ class PhaseEstimatesComponent extends Component {
     }
 }
 
-export default PhaseEstimatesComponent;
+export default ArchestPhaseEstimatesComponent;

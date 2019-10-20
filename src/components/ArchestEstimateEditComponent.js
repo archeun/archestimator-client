@@ -10,7 +10,7 @@ import autosize from 'autosize';
 
 const _ = require('lodash');
 
-class EstimateEditComponent extends Component {
+class ArchestEstimateEditComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -169,4 +169,4 @@ class EstimateEditComponent extends Component {
 
 }
 
-export default EstimateEditComponent;
+export default ArchestEstimateEditComponent;
