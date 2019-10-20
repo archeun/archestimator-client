@@ -185,7 +185,7 @@ class ArchestPhaseEstimatesComponent extends Component {
                             <p style={{}}>{estimate.name}</p>
                         </Col>
                         <Col sm={3}>
-                            <Row>
+                            <Row className="archest-phase-estimates-icons-row">
                                 <Col sm={2}>
 
                                     <OverlayTrigger key="progress" placement="top"
