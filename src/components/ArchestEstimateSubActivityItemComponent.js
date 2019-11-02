@@ -10,6 +10,7 @@ class ArchestEstimateSubActivityItemComponent extends Component {
         this.state = {
             parentActivityId: this.props.subActivity.parent_id,
             subActivityId: this.props.subActivity.id,
+            ownerId: this.props.subActivity.owner ? this.props.subActivity.owner.id : '',
             subActivityName: this.props.subActivity.name,
             subActivityEstimatedTime: this.props.subActivity.estimated_time,
         };
@@ -25,6 +26,7 @@ class ArchestEstimateSubActivityItemComponent extends Component {
         this.props.saveSubActivityItemCallback(this.state.subActivityId, {
             name: this.state.subActivityName,
             estimated_time: this.state.subActivityEstimatedTime,
+            owner_id: this.state.ownerId
         });
 
     }
@@ -67,6 +69,17 @@ class ArchestEstimateSubActivityItemComponent extends Component {
 
     render() {
 
+        let resourcesOptions = [];
+
+        if (this.props.estimateResources) {
+            resourcesOptions = this.props.estimateResources.map(
+                (estimateResource) => <option value={estimateResource.resource.id}
+                                              key={estimateResource.resource.id}>{estimateResource.resource.full_name}</option>
+            );
+        }
+
+        resourcesOptions.unshift(<option value={''} key={''}>{''}</option>);
+
         return (
             <Row>
                 <Modal show={this.state.showDeleteActivityModal} onHide={this.hideDeleteActivityModal}>
@@ -83,7 +96,7 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                <Col lg={11}>
+                <Col lg={9}>
                     <Form.Group controlId="subActivityForm.ActivityName"
                                 className="archest-sub-activity-item-activity-name-form-group">
                         <Form.Control size="sm"
@@ -94,6 +107,23 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                                       name="subActivityName"
                                       onChange={this.handleSubActivityFormFieldChange}
                                       onBlur={this.saveSubActivityData}/>
+                    </Form.Group>
+                </Col>
+                <Col lg={2}>
+                    <Form.Group as={Row}
+                                controlId={'subActivityForm.OwnerId_' + this.state.ownerId}
+                                className="archest-sub-activity-item-activity-owner-form-group">
+                        <Col>
+                            <Form.Control
+                                size="sm"
+                                as="select"
+                                value={this.state.ownerId}
+                                name="ownerId"
+                                onChange={this.handleSubActivityFormFieldChange}
+                                onBlur={this.saveSubActivityData}>
+                                {resourcesOptions}
+                            </Form.Control>
+                        </Col>
                     </Form.Group>
                 </Col>
                 <Col lg={1} className="archest-sub-activity-item-activity-estimated-time-col">

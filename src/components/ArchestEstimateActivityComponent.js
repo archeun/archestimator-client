@@ -16,6 +16,7 @@ class ArchestEstimateActivityComponent extends Component {
             featureId: this.props.activity.feature.id,
             activityStatus: this.props.activity.status,
             activityName: this.props.activity.name,
+            ownerId: this.props.activity.owner ? this.props.activity.owner.id : '',
             activityEstimatedTime: this.props.activity.estimated_time,
             subActivityTotalHours: 0,
             savingData: false,
@@ -37,6 +38,7 @@ class ArchestEstimateActivityComponent extends Component {
         ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/activities/" + this.state.activityId + "/", {
             name: this.state.activityName,
             feature_id: this.state.featureId,
+            owner_id: this.state.ownerId,
             estimated_time: this.state.activityEstimatedTime,
             status: this.state.activityStatus,
         }).then(function (response) {
@@ -107,13 +109,23 @@ class ArchestEstimateActivityComponent extends Component {
     render() {
         const activityId = this.props.activity.id;
 
-        let featureOptions;
+        let featureOptions = [];
+        let resourcesOptions = [];
 
         if (this.props.features) {
             featureOptions = this.props.features.map(
                 (feature) => <option value={feature.id} key={feature.id}>{feature.name}</option>
             );
         }
+
+        if (this.props.estimateResources) {
+            resourcesOptions = this.props.estimateResources.map(
+                (estimateResource) => <option value={estimateResource.resource.id}
+                                              key={estimateResource.resource.id}>{estimateResource.resource.full_name}</option>
+            );
+        }
+
+        resourcesOptions.unshift(<option value={''} key={''}>{''}</option>);
 
         return (
             <Row className="archest-card-container-row">
@@ -183,8 +195,11 @@ class ArchestEstimateActivityComponent extends Component {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col lg={11}>
+                                    <Col lg={9}>
                                         <Form.Label>Activity</Form.Label>
+                                    </Col>
+                                    <Col lg={2}>
+                                        <Form.Label id="archest-activity-owner-label">Owner</Form.Label>
                                     </Col>
                                     <Col lg={1}>
                                         <Form.Label className="archest-activity-estimated-time-label">
@@ -193,7 +208,7 @@ class ArchestEstimateActivityComponent extends Component {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col lg={11}>
+                                    <Col lg={9}>
                                         <Form.Group controlId={'activityForm.ActivityName_' + this.state.activityId}
                                                     className="archest-activity-name-form-group">
                                             <Form.Control as="textarea"
@@ -204,6 +219,23 @@ class ArchestEstimateActivityComponent extends Component {
                                                           name="activityName"
                                                           onChange={this.handleActivityFormFieldChange}
                                                           onBlur={this.saveActivityData}/>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col lg={2}>
+                                        <Form.Group as={Row}
+                                                    controlId={'activityForm.ActivityOwnerId_' + this.state.ownerId}
+                                                    className="archest-activity-owner-name-form-group">
+                                            <Col>
+                                                <Form.Control
+                                                    size="sm"
+                                                    as="select"
+                                                    value={this.state.ownerId}
+                                                    name="ownerId"
+                                                    onChange={this.handleActivityFormFieldChange}
+                                                    onBlur={this.saveActivityData}>
+                                                    {resourcesOptions}
+                                                </Form.Control>
+                                            </Col>
                                         </Form.Group>
                                     </Col>
 
@@ -237,6 +269,7 @@ class ArchestEstimateActivityComponent extends Component {
                                     subActivities={this.props.activity.sub_activities}
                                     subActivityChangeHandler={this.subActivityChangeHandler}
                                     subActivityTotalHours={this.state.subActivityTotalHours}
+                                    estimateResources={this.props.estimateResources}
                                 />
                             </Form>
                         </Card.Body>

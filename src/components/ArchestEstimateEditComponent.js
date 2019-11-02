@@ -20,6 +20,7 @@ class ArchestEstimateEditComponent extends Component {
             redirectTo: false,
             estimate: {},
             estimateDetails: {},
+            estimateResources: [],
             estimateTableData: [],
             breadcrumbs: []
         };
@@ -34,36 +35,43 @@ class ArchestEstimateEditComponent extends Component {
 
         let estimateId = this.props.match.params.estimateId;
 
-        ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/detailed_view/', {})
-            .then(function (response) {
+        let requestConfigs = [
+            {
+                name: 'estimateDetailedView',
+                url: `${BACKEND_ESTIMATOR_API_URL}/estimates/${estimateId}/detailed_view/`,
+                params: {}
+            },
+            {
+                name: 'estimate',
+                url: `${BACKEND_ESTIMATOR_API_URL}/estimates/${estimateId}/`,
+                params: {}
+            },
+            {
+                name: 'estimateResources',
+                url: `${BACKEND_ESTIMATOR_API_URL}/estimates/${estimateId}/shared_resources/`,
+                params: {}
+            },
+        ];
 
-                component.setState({
-                    estimateDetails: response.data.results,
-                    dataLoaded: true
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        ArchestHttp.BATCH_GET(requestConfigs, (responses) => {
 
-        ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/estimates/' + estimateId + '/', {})
-            .then(function (response) {
-                let estimate = response.data;
-                component.setState({
-                    estimate: estimate,
-                    breadcrumbs: [
-                        {title: 'Home', url: '/'},
-                        {
-                            title: estimate.phase.name + ' - Estimates',
-                            url: `/phase/${estimate.phase.id}/estimates/`
-                        },
-                        {title: estimate.name, url: '#', active: true},
-                    ]
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
+            let estimate = responses.estimate.data;
+
+            component.setState({
+                estimateDetails: responses.estimateDetailedView.data.results,
+                dataLoaded: true,
+                estimateResources: responses.estimateResources.data.results,
+                estimate: estimate,
+                breadcrumbs: [
+                    {title: 'Home', url: '/'},
+                    {
+                        title: estimate.phase.name + ' - Estimates',
+                        url: `/phase/${estimate.phase.id}/estimates/`
+                    },
+                    {title: estimate.name, url: '#', active: true},
+                ]
             });
+        });
 
     }
 
@@ -109,6 +117,7 @@ class ArchestEstimateEditComponent extends Component {
                         key={activity.id}
                         activity={activity}
                         features={this.state.estimate.features}
+                        estimateResources={this.state.estimateResources}
                         removeActivityItemHandler={this.removeActivityItem}
                     />
             );

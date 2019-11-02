@@ -52,7 +52,7 @@
 .archest-activity-estimated-time-sync-icon {
   margin-top: 0.4rem;
   margin-left: 0.3rem;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   color: $info;
   font-weight: bold;
 }
@@ -71,7 +71,7 @@
   color: $danger;
   margin-top: 0.45rem;
   margin-left: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
 .archest-sub-activity-item-delete-btn:hover {
@@ -122,4 +122,18 @@
 
 .archest-activity-sub-activities-save-loading-icon {
   margin-top: -10px;
+}
+
+.archest-activity-owner-name-form-group {
+  margin-left: -30%;
+  width: 124%;
+}
+
+.archest-sub-activity-item-activity-owner-form-group {
+  margin-left: -25%;
+  width: 130%;
+}
+
+#archest-activity-owner-label {
+  margin-left: -20%;
 }
