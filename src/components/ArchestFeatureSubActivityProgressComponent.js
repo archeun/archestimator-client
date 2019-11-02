@@ -7,7 +7,7 @@ class ArchestFeatureSubActivityProgressComponent extends Component {
         let subActivity = this.props.subActivity;
         return (
             <Row className='archest-feature-progress-sub-activity'>
-                <Col lg={6} className='archest-feature-progress-sub-activity-name'>
+                <Col lg={5} className='archest-feature-progress-sub-activity-name'>
                     {subActivity.name}
                 </Col>
                 <Col lg={2} className='archest-feature-progress-sub-activity-completion'>
@@ -17,15 +17,24 @@ class ArchestFeatureSubActivityProgressComponent extends Component {
                         <ProgressBar striped variant="success" now={subActivity.completion_percentage}/>
                     </OverlayTrigger>
                 </Col>
-                <Col lg={1} className='archest-feature-progress-sub-activity-estimated'>
-                    {subActivity.estimated_time}
+                <Col lg={2} className='archest-feature-progress-sub-activity-owner'>
+                    {subActivity.owner}
                 </Col>
-                <Col lg={1} className='archest-feature-progress-sub-activity-entered'>
-                    {subActivity.entered_time}
+
+                <Col lg={2}>
+                    <Row>
+                        <Col lg={4} className='archest-feature-progress-sub-activity-estimated'>
+                            {subActivity.estimated_time}
+                        </Col>
+                        <Col lg={4} className='archest-feature-progress-sub-activity-entered'>
+                            {subActivity.entered_time}
+                        </Col>
+                        <Col lg={4} className='archest-feature-progress-sub-activity-remaining'>
+                            {subActivity.remaining_time}
+                        </Col>
+                    </Row>
                 </Col>
-                <Col lg={1} className='archest-feature-progress-sub-activity-remaining'>
-                    {subActivity.remaining_time}
-                </Col>
+
                 <Col lg={1} className='archest-feature-progress-sub-activity-actions'>
                     <Dropdown>
                         <Dropdown.Toggle variant="link" size="sm">

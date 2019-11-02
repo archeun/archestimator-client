@@ -16,7 +16,7 @@ class ArchestFeatureActivityProgressComponent extends Component {
             <Row className='archest-feature-progress-activity-container'>
                 <Col lg={12}>
                     <Row className='archest-feature-progress-activity'>
-                        <Col lg={6} className='archest-feature-progress-activity-name'>
+                        <Col lg={5} className='archest-feature-progress-activity-name'>
                             {activity.name}
                         </Col>
                         <Col lg={2} className='archest-feature-progress-activity-completion'>
@@ -26,26 +26,35 @@ class ArchestFeatureActivityProgressComponent extends Component {
                                 <ProgressBar striped variant="success" now={activity.completion_percentage}/>
                             </OverlayTrigger>
                         </Col>
-                        <Col lg={1} className='archest-feature-progress-activity-estimated'>
-                            {activity.estimated_time}
+                        <Col lg={2} className='archest-feature-progress-activity-owner'>
+                            {activity.owner}
                         </Col>
-                        <Col lg={1} className='archest-feature-progress-activity-entered'>
-                            <OverlayTrigger placement="top" overlay={
-                                <Tooltip variant='primary'>
-                                    Activity {activity.entered_time_directly_to_activity} Hrs, Sub
-                                    Activities {activity.entered_time_to_sub_activities} Hrs
-                                </Tooltip>
-                            }>
 
-                                <div>
-                                    {activity.total_entered_time}
-                                    <i className="material-icons archest-inline-icon archest-feature-progress-activity-entered-icon">schedule</i>
-                                </div>
-                            </OverlayTrigger>
+                        <Col lg={2}>
+                            <Row>
+                                <Col lg={4} className='archest-feature-progress-activity-estimated'>
+                                    {activity.estimated_time}
+                                </Col>
+                                <Col lg={4} className='archest-feature-progress-activity-entered'>
+                                    <OverlayTrigger placement="top" overlay={
+                                        <Tooltip variant='primary'>
+                                            Activity {activity.entered_time_directly_to_activity} Hrs, Sub
+                                            Activities {activity.entered_time_to_sub_activities} Hrs
+                                        </Tooltip>
+                                    }>
+
+                                        <div>
+                                            {activity.total_entered_time}
+                                        </div>
+                                    </OverlayTrigger>
+                                </Col>
+                                <Col lg={4} className='archest-feature-progress-activity-remaining'>
+                                    {activity.remaining_time}
+                                </Col>
+                            </Row>
                         </Col>
-                        <Col lg={1} className='archest-feature-progress-activity-remaining'>
-                            {activity.remaining_time}
-                        </Col>
+
+
                         <Col lg={1} className='archest-feature-progress-activity-actions'>
                             <Dropdown>
                                 <Dropdown.Toggle variant="link" size="sm">
