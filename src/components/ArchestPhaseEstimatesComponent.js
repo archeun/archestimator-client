@@ -108,16 +108,18 @@ class ArchestPhaseEstimatesComponent extends Component {
         })
     }
 
-    showShareEstimateModal(estimatedId) {
+    showShareEstimateModal(estimatedId, estimateOwner) {
         this.setState({
             shareEstimateModalProps: {
                 show: true,
                 estimateId: estimatedId,
+                estimateOwner: estimateOwner,
                 onCancel: () => {
                     this.setState({
                         shareEstimateModalProps: {
                             show: false,
-                            estimateId: estimatedId
+                            estimateId: estimatedId,
+                            estimateOwner: estimateOwner,
                         }
                     });
                 }
@@ -169,7 +171,8 @@ class ArchestPhaseEstimatesComponent extends Component {
                         show={this.state.shareEstimateModalProps.show}
                         estimateData={{
                             phaseId: this.state.phase.id,
-                            estimateId: this.state.shareEstimateModalProps.estimateId
+                            estimateId: this.state.shareEstimateModalProps.estimateId,
+                            estimateOwner: this.state.shareEstimateModalProps.estimateOwner
                         }}
                         onCancel={this.state.shareEstimateModalProps.onCancel}
                     />
@@ -239,7 +242,7 @@ class ArchestPhaseEstimatesComponent extends Component {
                                 </Col>
                                 <Col sm={2}>
                                     <OverlayTrigger key="share" placement="top" overlay={<Tooltip>Share</Tooltip>}>
-                                        <i onClick={() => this.showShareEstimateModal(estimate.id)}
+                                        <i onClick={() => this.showShareEstimateModal(estimate.id, estimate.owner)}
                                            className="material-icons md-18 archest-phase-estimates-icon">folder_shared</i>
                                     </OverlayTrigger>
                                 </Col>

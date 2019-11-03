@@ -100,7 +100,11 @@ class ArchestEstimateShareModalComponent extends Component {
                 if (this.state.resourceSharingOptions[phaseResource.id]) {
                     sharedOption = this.state.resourceSharingOptions[phaseResource.id];
                 }
-
+                let disableOptions = false;
+                if (parseInt(this.props.estimateData.estimateOwner.id, 10) === parseInt(phaseResource.id, 10)) {
+                    disableOptions = true;
+                    sharedOption = 2;
+                }
                 return (
                     <Row key={phaseResource.id} className="archest-estimate-share-modal-resource-row">
                         <Col sm={10}>{phaseResource.full_name}</Col>
@@ -109,6 +113,7 @@ class ArchestEstimateShareModalComponent extends Component {
                                 <Form.Group className="archest-estimate-share-modal-resource-row-share-options-group"
                                             controlId="estimateShareForm.shareOptions">
                                     <Form.Control as="select" size="sm" value={sharedOption}
+                                                  disabled={disableOptions}
                                                   onChange={(element) => this.onChangeShareOption(element, phaseResource.id)}>
                                         <option value={0}/>
                                         <option value={1}>View</option>
