@@ -125,6 +125,13 @@ class ArchestEstimateActivityComponent extends Component {
             );
         }
 
+        if (this.state.ownerId !== '') {
+            let estimateResources = this.props.estimateResources.map((estimateResource) => parseInt(estimateResource.resource.id, 10));
+            if (estimateResources.indexOf(parseInt(this.state.ownerId, 10)) === -1) {
+                resourcesOptions.unshift(<option value={this.state.ownerId} key={this.state.ownerId}>{this.props.activity.owner.full_name}</option>);
+            }
+        }
+
         resourcesOptions.unshift(<option value={''} key={''}>{''}</option>);
 
         return (
@@ -167,6 +174,7 @@ class ArchestEstimateActivityComponent extends Component {
                                                     size="sm"
                                                     as="select"
                                                     value={this.state.featureId}
+                                                    disabled={!this.props.activity.is_editable}
                                                     name="featureId"
                                                     onChange={this.handleActivityFormFieldChange}
                                                     onBlur={this.saveActivityData}>
@@ -179,7 +187,7 @@ class ArchestEstimateActivityComponent extends Component {
                                     <Col lg="1">
                                         <Row>
                                             <Col lg="1">
-                                                <Dropdown>
+                                                <Dropdown hidden={!this.props.activity.is_editable}>
                                                     <Dropdown.Toggle variant="link"
                                                                      className="archest-activity-settings-dropdown"
                                                                      size="sm">
@@ -215,6 +223,7 @@ class ArchestEstimateActivityComponent extends Component {
                                                           rows="1"
                                                           placeholder="Activity Name"
                                                           size="sm"
+                                                          disabled={!this.props.activity.is_editable}
                                                           value={this.state.activityName}
                                                           name="activityName"
                                                           onChange={this.handleActivityFormFieldChange}
@@ -230,6 +239,7 @@ class ArchestEstimateActivityComponent extends Component {
                                                     size="sm"
                                                     as="select"
                                                     value={this.state.ownerId}
+                                                    disabled={!this.props.activity.is_editable}
                                                     name="ownerId"
                                                     onChange={this.handleActivityFormFieldChange}
                                                     onBlur={this.saveActivityData}>
@@ -248,6 +258,7 @@ class ArchestEstimateActivityComponent extends Component {
                                                               placeholder="Hrs."
                                                               size="sm"
                                                               value={this.state.activityEstimatedTime}
+                                                              disabled={!this.props.activity.is_editable}
                                                               name="activityEstimatedTime"
                                                               onChange={this.handleActivityFormFieldChange}
                                                               onBlur={this.saveActivityData}/>
@@ -256,6 +267,7 @@ class ArchestEstimateActivityComponent extends Component {
                                                             overlay={<Tooltip>Auto calculate from Sub Activity
                                                                 Hours</Tooltip>}>
                                                 <i className="material-icons archest-activity-estimated-time-sync-icon"
+                                                   hidden={!this.props.activity.is_editable}
                                                    onClick={this.syncActivityHoursBySubActivityHours}
                                                 >
                                                     sync

@@ -78,6 +78,13 @@ class ArchestEstimateSubActivityItemComponent extends Component {
             );
         }
 
+        if (this.state.ownerId !== '') {
+            let estimateResources = this.props.estimateResources.map((estimateResource) => parseInt(estimateResource.resource.id, 10));
+            if (estimateResources.indexOf(parseInt(this.state.ownerId, 10)) === -1) {
+                resourcesOptions.unshift(<option value={this.state.ownerId} key={this.state.ownerId}>{this.props.subActivity.owner.full_name}</option>);
+            }
+        }
+
         resourcesOptions.unshift(<option value={''} key={''}>{''}</option>);
 
         return (
@@ -104,6 +111,7 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                                       rows="1"
                                       placeholder="Sub Activity"
                                       value={this.state.subActivityName}
+                                      disabled={!this.props.subActivity.is_editable}
                                       name="subActivityName"
                                       onChange={this.handleSubActivityFormFieldChange}
                                       onBlur={this.saveSubActivityData}/>
@@ -118,6 +126,7 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                                 size="sm"
                                 as="select"
                                 value={this.state.ownerId}
+                                disabled={!this.props.subActivity.is_editable}
                                 name="ownerId"
                                 onChange={this.handleSubActivityFormFieldChange}
                                 onBlur={this.saveSubActivityData}>
@@ -134,11 +143,12 @@ class ArchestEstimateSubActivityItemComponent extends Component {
                                           type="number"
                                           placeholder="Hrs."
                                           value={this.state.subActivityEstimatedTime}
+                                          disabled={!this.props.subActivity.is_editable}
                                           name="subActivityEstimatedTime"
                                           onChange={this.handleSubActivityFormFieldChange}
                                           onBlur={this.saveSubActivityData}/>
                         </Form.Group>
-                        <span onClick={this.showDeleteActivityModal}
+                        <span onClick={this.showDeleteActivityModal} hidden={!this.props.subActivity.is_editable}
                               className="oi oi-x archest-sub-activity-item-delete-btn"/>
                     </Row>
                 </Col>
