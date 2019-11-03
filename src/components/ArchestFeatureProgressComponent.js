@@ -10,7 +10,7 @@ class ArchestFeatureProgressComponent extends Component {
         let feature = this.props.feature;
         let activityComponents = _.map(
             feature.activities,
-            activity => <ArchestFeatureActivityProgressComponent key={activity.id} activity={activity}/>
+            activity => <ArchestFeatureActivityProgressComponent key={activity.id} activity={activity} showWorkEntriesCallback={this.props.showWorkEntriesCallback}/>
         );
         return (
             <Row key={feature.id}>

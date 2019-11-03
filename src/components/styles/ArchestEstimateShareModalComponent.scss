@@ -1,34 +1,6 @@
 @import "../../res/archest-default-theme/variables.scss";
-
-.archest-estimate-share-modal-card {
-  box-shadow: none !important;
-}
-
-.archest-estimate-share-modal-body, .archest-estimate-share-modal-header, .archest-estimate-share-modal-footer {
-  border: none !important;
-}
-
-.archest-estimate-share-modal-headings {
-  font-weight: bold;
-  font-size: 0.95em;
-}
-
-.archest-estimate-share-modal-body {
-  font-size: 0.88em;
-  padding-top: 0;
-  padding-bottom: 0;
-}
+@import "common/ArchestModalStyles.scss";
 
 .archest-estimate-share-modal-resource-row-share-options-group {
   margin-bottom: 4px;
-}
-
-.archest-estimate-share-modal-header {
-  background-color: $info;
-  color: #ffffff;
-}
-
-.archest-estimate-share-modal-title {
-  font-size: 1.2rem;
-  margin-left: 10px
 }

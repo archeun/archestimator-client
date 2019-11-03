@@ -21,12 +21,6 @@
   cursor: default;
 }
 
-.archest-feature-progress-activity:hover, .archest-feature-progress-activity-name:hover {
-  //background-color: $info;
-  //color: #ffffff;
-  //cursor: default;
-}
-
 .archest-feature-progress-sub-activity-name {
   padding-left: 30px;
   font-weight: 300;
@@ -36,6 +30,18 @@
   font-weight: 600;
   color: $info;
   font-size: 0.95em;
+}
+
+.archest-feature-progress-activity-entered > p {
+  text-decoration: underline;
+  color: $info;
+  cursor: pointer;
+}
+
+.archest-feature-progress-sub-activity-entered > p {
+  text-decoration: underline;
+  color: $info;
+  cursor: pointer;
 }
 
 .archest-feature-progress-activity-entered-icon {
@@ -52,12 +58,20 @@
   padding-top: 7px;
 }
 
-.archest-feature-progress-time-main-heading-row{
+.archest-feature-progress-time-main-heading-row {
   margin-left: -28%;
 }
 
-.archest-feature-progress-time-sub-heading{
+.archest-feature-progress-time-sub-heading {
   padding: 0;
   font-size: 0.75em;
   margin-top: 5px;
+}
+
+.archest-feature-progress-activity-remaining-danger::after, .archest-feature-progress-sub-activity-remaining-danger::after {
+  content: "";
+  position: absolute;
+  border: 3px solid $danger;
+  left: 40px;
+  border-radius: 100%;
 }

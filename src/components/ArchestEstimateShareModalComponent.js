@@ -130,13 +130,13 @@ class ArchestEstimateShareModalComponent extends Component {
         return (
             <ArchestAuthEnabledComponent>
                 <Modal show={this.props.show} onHide={this.onCancel}>
-                    <Modal.Header closeButton className="archest-estimate-share-modal-header">
-                        <Modal.Title className="archest-estimate-share-modal-title">Share Estimate</Modal.Title>
+                    <Modal.Header closeButton className="archest-modal-header">
+                        <Modal.Title className="archest-modal-title">Share Estimate</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body className="archest-estimate-share-modal-body">
-                        <Card className="archest-card archest-estimate-share-modal-card">
+                    <Modal.Body className="archest-modal-body">
+                        <Card className="archest-card archest-modal-card">
                             <Card.Body className="archest-card-body">
-                                <Row className="archest-estimate-share-modal-headings">
+                                <Row className="archest-modal-headings">
                                     <Col sm={10}>Name</Col>
                                     <Col sm={2}>Options</Col>
                                 </Row>
@@ -145,7 +145,7 @@ class ArchestEstimateShareModalComponent extends Component {
                             </Card.Body>
                         </Card>
                     </Modal.Body>
-                    <Modal.Footer className="archest-estimate-share-modal-footer">
+                    <Modal.Footer className="archest-modal-footer">
                         <Button size={'sm'} variant="secondary" onClick={this.onCancel}>Cancel</Button>
                         <Button size={'sm'} variant="primary" onClick={this.shareEstimate}>Share</Button>
                     </Modal.Footer>

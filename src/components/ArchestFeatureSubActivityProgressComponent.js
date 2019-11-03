@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Col, Dropdown, OverlayTrigger, ProgressBar, Row, Tooltip} from "react-bootstrap";
+import {SUB_ACTIVITY} from "../constants";
 
 class ArchestFeatureSubActivityProgressComponent extends Component {
 
@@ -27,10 +28,18 @@ class ArchestFeatureSubActivityProgressComponent extends Component {
                             {subActivity.estimated_time}
                         </Col>
                         <Col lg={4} className='archest-feature-progress-sub-activity-entered'>
-                            {subActivity.entered_time}
+                            <p onClick={() => this.props.showWorkEntriesCallback(subActivity, SUB_ACTIVITY)}>
+                                <strong>{subActivity.entered_time}</strong>
+                            </p>
+
                         </Col>
-                        <Col lg={4} className='archest-feature-progress-sub-activity-remaining'>
-                            {subActivity.remaining_time}
+                        <Col lg={4}>
+                            <div className={
+                                subActivity.remaining_time < 0 ?
+                                    'archest-feature-progress-sub-activity-remaining-danger' : 'archest-feature-progress-sub-activity-remaining'
+                            }>
+                                {subActivity.remaining_time}
+                            </div>
                         </Col>
                     </Row>
                 </Col>

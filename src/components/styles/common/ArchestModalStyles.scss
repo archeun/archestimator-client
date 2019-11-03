@@ -1,0 +1,30 @@
+@import "../../../res/archest-default-theme/variables.scss";
+
+.archest-modal-card {
+  box-shadow: none !important;
+}
+
+.archest-modal-body, .archest-modal-header, .archest-modal-footer {
+  border: none !important;
+}
+
+.archest-modal-headings {
+  font-weight: bold;
+  font-size: 0.95em;
+}
+
+.archest-modal-body {
+  font-size: 0.88em;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.archest-modal-header {
+  background-color: $info;
+  color: #ffffff;
+}
+
+.archest-modal-title {
+  font-size: 1.2rem;
+  margin-left: 10px
+}

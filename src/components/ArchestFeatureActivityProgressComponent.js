@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Col, Dropdown, OverlayTrigger, ProgressBar, Row, Tooltip} from "react-bootstrap";
 import ArchestFeatureSubActivityProgressComponent from "./ArchestFeatureSubActivityProgressComponent";
+import {ACTIVITY} from "../constants";
 
 const _ = require('lodash');
 
@@ -10,7 +11,8 @@ class ArchestFeatureActivityProgressComponent extends Component {
         let activity = this.props.activity;
         let subActivityComponents = _.map(
             activity.sub_activities,
-            subActivity => <ArchestFeatureSubActivityProgressComponent key={subActivity.id} subActivity={subActivity}/>
+            subActivity => <ArchestFeatureSubActivityProgressComponent key={subActivity.id} subActivity={subActivity}
+                                                                       showWorkEntriesCallback={this.props.showWorkEntriesCallback}/>
         );
         return (
             <Row className='archest-feature-progress-activity-container'>
@@ -43,12 +45,15 @@ class ArchestFeatureActivityProgressComponent extends Component {
                                         </Tooltip>
                                     }>
 
-                                        <div>
-                                            {activity.total_entered_time}
-                                        </div>
+                                        <p onClick={() => this.props.showWorkEntriesCallback(activity, ACTIVITY)}>
+                                            <strong>{activity.total_entered_time}</strong>
+                                        </p>
                                     </OverlayTrigger>
                                 </Col>
-                                <Col lg={4} className='archest-feature-progress-activity-remaining'>
+                                <Col lg={4} className={
+                                    activity.remaining_time < 0 ?
+                                        'archest-feature-progress-activity-remaining-danger' : 'archest-feature-progress-activity-remaining'
+                                }>
                                     {activity.remaining_time}
                                 </Col>
                             </Row>

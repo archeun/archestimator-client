@@ -6,3 +6,6 @@ export const HANDSONTABLE_KEY = 'non-commercial-and-evaluation';
 
 export const SUB_ACTIVITY_WORK_ENTRY_TYPE = 'SUB_ACTIVITY_WORK_ENTRY_TYPE';
 export const ACTIVITY_WORK_ENTRY_TYPE = 'ACTIVITY_WORK_ENTRY_TYPE';
+
+export const ACTIVITY = 'ACTIVITY';
+export const SUB_ACTIVITY = 'SUB_ACTIVITY';
