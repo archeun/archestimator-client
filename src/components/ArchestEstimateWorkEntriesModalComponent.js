@@ -10,11 +10,6 @@ class ArchestEstimateWorkEntriesModalComponent extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            phaseResources: [],
-            dataLoaded: false,
-            resourceSharingOptions: []
-        };
         this.onCancel = this.onCancel.bind(this);
     }
 

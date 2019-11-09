@@ -70,10 +70,11 @@ class ArchestEstimateProgressComponent extends Component {
         }
 
         ArchestHttp.GET(url, {}).then((response) => {
+            activityOrSubActivity.status_name = type === ACTIVITY ? response.data.results.activity.status_name : response.data.results.sub_activity.status_name
             this.setState({
                 workEntriesModalProps: {
                     show: true,
-                    workEntries: response.data.results,
+                    workEntries: response.data.results.work_entries,
                     activityOrSubActivity: activityOrSubActivity,
                     onCancel: () => {
                         this.setState({
