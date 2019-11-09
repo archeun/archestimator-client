@@ -8,32 +8,48 @@ import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
 const _ = require('lodash');
 
-class ArchestHomeComponent extends Component {
+class ArchestProjectPhasesComponent extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
             phaseList: [],
+            breadcrumbs: [],
+            project: {},
             redirectTo: false,
         };
     }
 
     componentDidMount() {
 
-        const component = this;
+        let projectId = this.props.match.params.projectId;
 
-        ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/phases/', {})
-            .then(function (response) {
-                    component.setState({
-                        phaseList: response.data.results
-                    });
-                }
-            )
-            .catch(function (error) {
-                    console.log(error);
-                }
-            );
+        let requestConfigs = [
+            {
+                name: 'project_phases',
+                url: `${BACKEND_ESTIMATOR_API_URL}/projects/${projectId}/phases/`,
+                params: {}
+            },
+            {
+                name: 'project',
+                url: `${BACKEND_ESTIMATOR_API_URL}/projects/${projectId}/`,
+                params: {}
+            },
+        ];
+
+        ArchestHttp.BATCH_GET(requestConfigs, (responses) => {
+            let project = responses.project.data;
+            this.setState({
+                phaseList: responses.project_phases.data.results,
+                project: project,
+                breadcrumbs: [
+                    {title: 'Home', url: '/'},
+                    {title: 'Projects', url: '/projects'},
+                    {title: `Phases of ${project.name}`, url: '#', active: true},
+                ]
+            });
+        });
     }
 
     render() {
@@ -53,12 +69,12 @@ class ArchestHomeComponent extends Component {
 
         return (
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent>
+                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
                     <Row>
                         <Col sm={3}/>
                         <Col sm={6}>
                             <Card>
-                                <Card.Header>Your Project Phases</Card.Header>
+                                <Card.Header>Your Phases of {this.state.project.name}</Card.Header>
                                 <ListGroup variant="flush">
                                     {phaseList}
                                 </ListGroup>
@@ -109,4 +125,4 @@ class ArchestHomeComponent extends Component {
     }
 }
 
-export default ArchestHomeComponent;
+export default ArchestProjectPhasesComponent;

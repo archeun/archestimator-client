@@ -64,8 +64,10 @@ class ArchestEstimateEditComponent extends Component {
                 estimate: estimate,
                 breadcrumbs: [
                     {title: 'Home', url: '/'},
+                    {title: 'Projects', url: '/projects'},
+                    {title: `Phases of ${estimate.phase.project.name}`, url: '/project/' + estimate.phase.project.id + '/phases/'},
                     {
-                        title: estimate.phase.name + ' - Estimates',
+                        title: `Estimates for ${estimate.phase.name}`,
                         url: `/phase/${estimate.phase.id}/estimates/`
                     },
                     {title: estimate.name, url: '#', active: true},

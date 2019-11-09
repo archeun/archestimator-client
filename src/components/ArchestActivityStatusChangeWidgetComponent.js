@@ -4,8 +4,6 @@ import ArchestHttp from "../modules/archest_http";
 import {Form} from "react-bootstrap";
 import './styles/ArchestActivityStatusChangeWidgetComponent.scss';
 
-const _ = require('lodash');
-
 class ArchestActivityStatusChangeWidgetComponent extends Component {
 
     constructor(props) {

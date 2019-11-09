@@ -91,8 +91,13 @@ class ArchestEstimateViewComponent extends Component {
                     estimate: response.data,
                     breadcrumbs: [
                         {title: 'Home', url: '/'},
+                        {title: 'Projects', url: '/projects'},
                         {
-                            title: estimate.phase.name + ' - Estimates',
+                            title: `Phases of ${estimate.phase.project.name}`,
+                            url: '/project/' + estimate.phase.project.id + '/phases/'
+                        },
+                        {
+                            title: `Estimates for ${estimate.phase.name}`,
                             url: `/phase/${estimate.phase.id}/estimates/`
                         },
                         {title: estimate.name, url: '#', active: true},
