@@ -38,13 +38,12 @@ class ArchestEstimateWorkEntriesModalComponent extends Component {
             return (
                 <Row key={workEntry.id} className="archest-estimate-work-entries-modal-work-entry-row">
                     <Col sm={2}>{workEntry.date}</Col>
-                    <Col sm={2}>{workEntry.worked_hours}</Col>
+                    <Col sm={2}>{workEntry.worked_hours.toFixed(2)}</Col>
                     <Col sm={3}>{workEntry.owner ? workEntry.owner.full_name : ''}</Col>
                     <Col sm={5}>{workEntry.note}</Col>
                 </Row>
             );
         });
-        console.log(activityOrSubActivity);
         return (
             <ArchestAuthEnabledComponent>
                 <Modal show={this.props.show} onHide={this.onCancel}>

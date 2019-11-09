@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {Col, Dropdown, OverlayTrigger, ProgressBar, Row, Tooltip} from "react-bootstrap";
+import {Col, OverlayTrigger, ProgressBar, Row, Tooltip} from "react-bootstrap";
 import {SUB_ACTIVITY} from "../constants";
+import ArchestActivityStatusChangeWidgetComponent from "./ArchestActivityStatusChangeWidgetComponent";
 
 class ArchestFeatureSubActivityProgressComponent extends Component {
 
@@ -45,14 +46,7 @@ class ArchestFeatureSubActivityProgressComponent extends Component {
                 </Col>
 
                 <Col lg={1} className='archest-feature-progress-sub-activity-actions'>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="link" size="sm">
-                            <span className='oi oi-cog'/>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item>Delete</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    <ArchestActivityStatusChangeWidgetComponent activity={subActivity} type={SUB_ACTIVITY}/>
                 </Col>
             </Row>
         );

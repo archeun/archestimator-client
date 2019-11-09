@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {Col, Dropdown, OverlayTrigger, ProgressBar, Row, Tooltip} from "react-bootstrap";
+import {Col, OverlayTrigger, ProgressBar, Row, Tooltip} from "react-bootstrap";
 import ArchestFeatureSubActivityProgressComponent from "./ArchestFeatureSubActivityProgressComponent";
 import {ACTIVITY} from "../constants";
+import ArchestActivityStatusChangeWidgetComponent from "./ArchestActivityStatusChangeWidgetComponent";
 
 const _ = require('lodash');
 
@@ -61,14 +62,7 @@ class ArchestFeatureActivityProgressComponent extends Component {
 
 
                         <Col lg={1} className='archest-feature-progress-activity-actions'>
-                            <Dropdown>
-                                <Dropdown.Toggle variant="link" size="sm">
-                                    <span className='oi oi-cog'/>
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item>Delete</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
+                            <ArchestActivityStatusChangeWidgetComponent activity={activity} type={ACTIVITY}/>
                         </Col>
                     </Row>
                     {subActivityComponents}

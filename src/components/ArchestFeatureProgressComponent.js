@@ -23,7 +23,7 @@ class ArchestFeatureProgressComponent extends Component {
 
                     <Row className='archest-feature-progress-time-main-heading-row'>
                         <Col lg={10}/>
-                        <Col lg={2} className='archest-feature-progress-heading'>
+                        <Col lg={2} className='archest-feature-progress-heading archest-feature-progress-times-heading'>
                             Times
                         </Col>
                     </Row>
@@ -34,7 +34,7 @@ class ArchestFeatureProgressComponent extends Component {
                         <Col lg={2} className='archest-feature-progress-heading'>
                             Progress (%)
                         </Col>
-                        <Col lg={2} className='archest-feature-progress-heading'>
+                        <Col lg={2} className='archest-feature-progress-heading' id="archest-feature-progress-owner-heading">
                             Owner
                         </Col>
 
@@ -53,7 +53,7 @@ class ArchestFeatureProgressComponent extends Component {
                         </Col>
 
                         <Col lg={1} className='archest-feature-progress-heading'>
-                            Actions
+                            Status
                         </Col>
                     </Row>
                     <hr/>
