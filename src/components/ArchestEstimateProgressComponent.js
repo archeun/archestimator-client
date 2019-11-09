@@ -19,7 +19,7 @@ class ArchestEstimateProgressComponent extends Component {
             estimateId: this.props.match.params.estimateId,
             estimate: {},
             estimateProgress: {},
-            workEntriesModalProps: {show: false, workEntries: [], activityOrSubActivity: {}, },
+            workEntriesModalProps: {show: false, workEntries: [], activityOrSubActivity: {},},
             breadcrumbs: []
         };
         this.showWorkEntriesModal = this.showWorkEntriesModal.bind(this);
