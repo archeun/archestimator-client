@@ -10,7 +10,7 @@ class ArchestFeatureProgressComponent extends Component {
         let feature = this.props.feature;
         let activityComponents = _.map(
             feature.activities,
-            activity => <ArchestFeatureActivityProgressComponent key={activity.id} activity={activity}/>
+            activity => <ArchestFeatureActivityProgressComponent key={activity.id} activity={activity} showWorkEntriesCallback={this.props.showWorkEntriesCallback}/>
         );
         return (
             <Row key={feature.id}>
@@ -20,24 +20,40 @@ class ArchestFeatureProgressComponent extends Component {
                             {feature.name}
                         </Col>
                     </Row>
+
+                    <Row className='archest-feature-progress-time-main-heading-row'>
+                        <Col lg={10}/>
+                        <Col lg={2} className='archest-feature-progress-heading archest-feature-progress-times-heading'>
+                            Times
+                        </Col>
+                    </Row>
                     <Row className='archest-feature-progress-headings'>
-                        <Col lg={6} className='archest-feature-progress-heading'>
+                        <Col lg={5} className='archest-feature-progress-heading'>
                             Activity/Sub Activity
                         </Col>
                         <Col lg={2} className='archest-feature-progress-heading'>
-                            Completion (%)
+                            Progress (%)
                         </Col>
-                        <Col lg={1} className='archest-feature-progress-heading'>
-                            Est.
+                        <Col lg={2} className='archest-feature-progress-heading' id="archest-feature-progress-owner-heading">
+                            Owner
                         </Col>
-                        <Col lg={1} className='archest-feature-progress-heading'>
-                            Ent.
+
+                        <Col lg={2}>
+                            <Row>
+                                <Col lg={4} className='archest-feature-progress-heading archest-feature-progress-time-sub-heading'>
+                                    Estimated
+                                </Col>
+                                <Col lg={4} className='archest-feature-progress-heading archest-feature-progress-time-sub-heading'>
+                                    Entered
+                                </Col>
+                                <Col lg={4} className='archest-feature-progress-heading archest-feature-progress-time-sub-heading'>
+                                    Remaining
+                                </Col>
+                            </Row>
                         </Col>
+
                         <Col lg={1} className='archest-feature-progress-heading'>
-                            Rem.
-                        </Col>
-                        <Col lg={1} className='archest-feature-progress-heading'>
-                            Actions
+                            Status
                         </Col>
                     </Row>
                     <hr/>

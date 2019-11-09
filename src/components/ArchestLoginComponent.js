@@ -6,7 +6,7 @@ import ArchestHttp from "../modules/archest_http";
 import ArchestAuth from "../modules/archest_auth";
 
 
-class LoginComponent extends Component {
+class ArchestLoginComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -105,4 +105,4 @@ class LoginComponent extends Component {
     }
 }
 
-export default LoginComponent;
+export default ArchestLoginComponent;

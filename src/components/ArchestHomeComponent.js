@@ -8,7 +8,7 @@ import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
 const _ = require('lodash');
 
-class HomeComponent extends Component {
+class ArchestHomeComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -109,4 +109,4 @@ class HomeComponent extends Component {
     }
 }
 
-export default HomeComponent;
+export default ArchestHomeComponent;

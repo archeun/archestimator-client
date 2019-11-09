@@ -5,10 +5,12 @@ import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import {Redirect} from "react-router-dom";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
+import './styles/ArchestPhaseEstimatesComponent.scss';
+import ArchestEstimateShareModalComponent from "./ArchestEstimateShareModalComponent";
 
 const _ = require('lodash');
 
-class PhaseEstimatesComponent extends Component {
+class ArchestPhaseEstimatesComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -18,7 +20,10 @@ class PhaseEstimatesComponent extends Component {
             phase: {},
             phaseEstimateList: [],
             modalProps: {},
-            breadcrumbs: []
+            breadcrumbs: [],
+            shareEstimateModalProps: {
+                show: false
+            }
         };
         this.addNewEstimate = this.addNewEstimate.bind(this);
         this.showAddEstimateModal = this.showAddEstimateModal.bind(this);
@@ -103,6 +108,25 @@ class PhaseEstimatesComponent extends Component {
         })
     }
 
+    showShareEstimateModal(estimatedId, estimateOwner) {
+        this.setState({
+            shareEstimateModalProps: {
+                show: true,
+                estimateId: estimatedId,
+                estimateOwner: estimateOwner,
+                onCancel: () => {
+                    this.setState({
+                        shareEstimateModalProps: {
+                            show: false,
+                            estimateId: estimatedId,
+                            estimateOwner: estimateOwner,
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     deleteEstimate(estimateId) {
         let component = this;
 
@@ -143,6 +167,15 @@ class PhaseEstimatesComponent extends Component {
         return (
             <ArchestAuthEnabledComponent>
                 <ArchestMainContainerComponent modalProps={this.state.modalProps} breadcrumbs={this.state.breadcrumbs}>
+                    <ArchestEstimateShareModalComponent
+                        show={this.state.shareEstimateModalProps.show}
+                        estimateData={{
+                            phaseId: this.state.phase.id,
+                            estimateId: this.state.shareEstimateModalProps.estimateId,
+                            estimateOwner: this.state.shareEstimateModalProps.estimateOwner
+                        }}
+                        onCancel={this.state.shareEstimateModalProps.onCancel}
+                    />
                     <Row>
                         <Col sm={2}/>
                         <Col sm={8}>
@@ -178,49 +211,59 @@ class PhaseEstimatesComponent extends Component {
     getPhaseEstimateInfoListItem(estimate) {
         return (
             <ListGroup.Item key={estimate.id}>
-                <div>
-                    <h5 style={{'display': 'inline-block', 'maxWidth': '80%'}}>{estimate.name}</h5>
-                    <OverlayTrigger key="delete" placement="right"
-                                    overlay={
-                                        <Tooltip id="tooltip-right">Delete</Tooltip>
-                                    }>
-                        <Button onClick={() => this.showDeleteEstimateModal(estimate.id)}
-                                style={{'float': 'right', 'marginLeft': '10px'}} variant="outline-danger" size="sm">
-                            <span className="oi oi-x"/>
-                        </Button>
-                    </OverlayTrigger>
-                    <OverlayTrigger key="view" placement="right"
-                                    overlay={
-                                        <Tooltip id="tooltip-right">View</Tooltip>
-                                    }>
-                        <Button onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'view')}
-                                style={{'float': 'right', 'marginLeft': '10px'}} variant="outline-primary" size="sm">
-                            <span className="oi oi-eye"/>
-                        </Button>
-                    </OverlayTrigger>
-                    <OverlayTrigger key="progress" placement="right"
-                                    overlay={
-                                        <Tooltip id="tooltip-right">Progress</Tooltip>
-                                    }>
-                        <Button onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'progress')}
-                                style={{'float': 'right', 'marginLeft': '10px'}} variant="outline-primary" size="sm">
-                            <span className="oi oi-project"/>
-                        </Button>
-                    </OverlayTrigger>
-                    <OverlayTrigger key="edit" placement="top"
-                                    overlay={
-                                        <Tooltip id="tooltip-top">Edit</Tooltip>
-                                    }>
-                        <Button onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'edit')}
-                                style={{'float': 'right'}} variant="outline-primary" size="sm">
-                            <span className="oi oi-pencil"/>
-                        </Button>
-                    </OverlayTrigger>
-                </div>
-                <Badge variant="success">{estimate.owner.full_name}</Badge>
+                <Col>
+                    <Row>
+                        <Col sm={9}>
+                            <p style={{}}>{estimate.name}</p>
+                        </Col>
+                        <Col sm={3}>
+                            <Row className="archest-phase-estimates-icons-row">
+                                <Col sm={2}>
+
+                                    <OverlayTrigger key="progress" placement="top"
+                                                    overlay={<Tooltip>Progress</Tooltip>}>
+                                        <i onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'progress')}
+                                           className="material-icons md-18 archest-phase-estimates-icon">view_list</i>
+                                    </OverlayTrigger>
+                                </Col>
+                                <Col sm={2}>
+
+                                    <OverlayTrigger key="view" placement="top" overlay={<Tooltip>Sheet View</Tooltip>}>
+                                        <i onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'view')}
+                                           className="material-icons md-18 archest-phase-estimates-icon">grid_on</i>
+                                    </OverlayTrigger>
+                                </Col>
+                                <Col sm={2}>
+
+                                    <OverlayTrigger key="edit" placement="top" overlay={<Tooltip>Edit</Tooltip>}>
+                                        <i onClick={() => this.handleEstimateNavigationBtnClick(estimate, 'edit')}
+                                           className="material-icons md-18 archest-phase-estimates-icon">edit</i>
+                                    </OverlayTrigger>
+                                </Col>
+                                <Col sm={2}>
+                                    <OverlayTrigger key="share" placement="top" overlay={<Tooltip>Share</Tooltip>}>
+                                        <i onClick={() => this.showShareEstimateModal(estimate.id, estimate.owner)}
+                                           className="material-icons md-18 archest-phase-estimates-icon">folder_shared</i>
+                                    </OverlayTrigger>
+                                </Col>
+                                <Col sm={2}>
+                                    <OverlayTrigger key="delete" placement="top" overlay={<Tooltip>Delete</Tooltip>}>
+                                        <i onClick={() => this.showDeleteEstimateModal(estimate.id)}
+                                           className="material-icons md-18 archest-phase-estimates-icon">delete</i>
+                                    </OverlayTrigger>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col sm={12}>
+                            <Badge variant="success">{estimate.owner.full_name}</Badge>
+                        </Col>
+                    </Row>
+                </Col>
             </ListGroup.Item>
         );
     }
 }
 
-export default PhaseEstimatesComponent;
+export default ArchestPhaseEstimatesComponent;

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {LOCAL_STORAGE_TOKEN_KEY} from "../constants";
 
 
-class LogoutComponent extends Component {
+class ArchestLogoutComponent extends Component {
 
     render() {
         localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
@@ -15,4 +15,4 @@ class LogoutComponent extends Component {
     }
 }
 
-export default LogoutComponent;
+export default ArchestLogoutComponent;

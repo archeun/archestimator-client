@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import React, {Component} from "react";
 import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
-import './styles/ArchestTimeline.scss';
+import './styles/ArchestTimelineComponent.scss';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";

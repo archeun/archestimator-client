@@ -6,7 +6,7 @@ import ArchestHttp from "../modules/archest_http";
 import {HotTable} from '@handsontable/react'
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
-class EstimateViewComponent extends Component {
+class ArchestEstimateViewComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -154,4 +154,4 @@ class EstimateViewComponent extends Component {
 
 }
 
-export default EstimateViewComponent;
+export default ArchestEstimateViewComponent;

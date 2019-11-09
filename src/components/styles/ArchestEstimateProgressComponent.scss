@@ -16,14 +16,8 @@
   color: #ffffff;
 }
 
-.archest-feature-progress-sub-activity:hover, .archest-feature-progress-sub-activity-name:hover {
-  background-color: $gray-300;
-  cursor: default;
-}
-
-.archest-feature-progress-activity:hover, .archest-feature-progress-activity-name:hover {
-  background-color: $info;
-  color: #ffffff;
+.archest-feature-progress-sub-activity:hover, .archest-feature-progress-sub-activity-name:hover, .archest-feature-progress-activity:hover, .archest-feature-progress-activity-name:hover {
+  background-color: $gray-200;
   cursor: default;
 }
 
@@ -38,6 +32,18 @@
   font-size: 0.95em;
 }
 
+.archest-feature-progress-activity-entered > p {
+  text-decoration: underline;
+  color: $info;
+  cursor: pointer;
+}
+
+.archest-feature-progress-sub-activity-entered > p {
+  text-decoration: underline;
+  color: $info;
+  cursor: pointer;
+}
+
 .archest-feature-progress-activity-entered-icon {
   font-size: 1.1em;
   margin-left: 5px;
@@ -50,4 +56,42 @@
 
 .archest-feature-progress-activity-completion, .archest-feature-progress-sub-activity-completion {
   padding-top: 7px;
+}
+
+.archest-feature-progress-activity-completion > .progress, .archest-feature-progress-sub-activity-completion > .progress {
+  width: 80%;
+}
+
+.archest-feature-progress-time-main-heading-row {
+  margin-left: -28%;
+}
+
+.archest-feature-progress-time-sub-heading {
+  padding: 0;
+  font-size: 0.75em;
+  margin-top: 5px;
+}
+
+.archest-feature-progress-activity-remaining-danger, .archest-feature-progress-sub-activity-remaining-danger {
+  color: $danger;
+}
+
+#archest-feature-progress-owner-heading {
+  margin-left: -4%;
+}
+
+.archest-feature-progress-activity-owner {
+  margin-left: -4%;
+}
+
+.archest-feature-progress-sub-activity-owner {
+  margin-left: -4%;
+}
+
+.archest-feature-progress-times-heading {
+  margin-left: -3%;
+}
+
+.archest-feature-progress-activity-estimated, .archest-feature-progress-sub-activity-estimated {
+  margin-left: -7%;
 }

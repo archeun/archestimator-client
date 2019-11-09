@@ -2,10 +2,12 @@ import React, {Component} from "react";
 import ArchestAuthEnabledComponent from "./ArchestAuthEnabledComponent";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import ArchestFeatureProgressComponent from "./ArchestFeatureProgressComponent";
-import {BACKEND_ESTIMATOR_API_URL} from "../constants";
+import {ACTIVITY, BACKEND_ESTIMATOR_API_URL, SUB_ACTIVITY} from "../constants";
 import ArchestHttp from "../modules/archest_http";
-import {Col, Row, Card, Table, ProgressBar, Dropdown} from "react-bootstrap";
+import {Col, Row, Card} from "react-bootstrap";
 import './styles/ArchestEstimateProgressComponent.scss';
+import './styles/ArchestEstimateWorkEntriesModalComponent.scss';
+import ArchestEstimateWorkEntriesModalComponent from "./ArchestEstimateWorkEntriesModalComponent";
 
 const _ = require('lodash');
 
@@ -17,8 +19,10 @@ class ArchestEstimateProgressComponent extends Component {
             estimateId: this.props.match.params.estimateId,
             estimate: {},
             estimateProgress: {},
+            workEntriesModalProps: {show: false, workEntries: [], activityOrSubActivity: {},},
             breadcrumbs: []
         };
+        this.showWorkEntriesModal = this.showWorkEntriesModal.bind(this);
     }
 
     componentDidMount() {
@@ -53,14 +57,59 @@ class ArchestEstimateProgressComponent extends Component {
         });
     }
 
+    showWorkEntriesModal(activityOrSubActivity, type) {
+
+        let url = '';
+
+        if (type === ACTIVITY) {
+            url = BACKEND_ESTIMATOR_API_URL + "/activities/" + activityOrSubActivity.id + '/work_entries/';
+        } else if (type === SUB_ACTIVITY) {
+            url = BACKEND_ESTIMATOR_API_URL + "/sub_activities/" + activityOrSubActivity.id + '/work_entries/';
+        } else {
+            return;
+        }
+
+        ArchestHttp.GET(url, {}).then((response) => {
+            this.setState({
+                workEntriesModalProps: {
+                    show: true,
+                    workEntries: response.data.results,
+                    activityOrSubActivity: activityOrSubActivity,
+                    onCancel: () => {
+                        this.setState({
+                            workEntriesModalProps: {
+                                show: false,
+                                workEntries: [],
+                                activityOrSubActivity: {}
+                            }
+                        });
+                    }
+                }
+            });
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+
+    }
+
     render() {
         let featureProgressComponents = _.map(
             this.state.estimateProgress.features,
-            feature => <ArchestFeatureProgressComponent key={feature.id} feature={feature}/>
+            feature => <ArchestFeatureProgressComponent key={feature.id} feature={feature}
+                                                        showWorkEntriesCallback={this.showWorkEntriesModal}/>
         );
         return (
             <ArchestAuthEnabledComponent>
                 <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
+
+                    <ArchestEstimateWorkEntriesModalComponent
+                        show={this.state.workEntriesModalProps.show}
+                        workEntries={this.state.workEntriesModalProps.workEntries}
+                        activityOrSubActivity={this.state.workEntriesModalProps.activityOrSubActivity}
+                        onCancel={this.state.workEntriesModalProps.onCancel}
+                    />
+
                     <Row className="archest-card-container-row">
                         <Col>
                             <Card className="archest-card">

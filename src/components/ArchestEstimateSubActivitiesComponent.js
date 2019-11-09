@@ -78,6 +78,7 @@ class ArchestEstimateSubActivitiesComponent extends Component {
                 removeSubActivityItemHandler={this.removeSubActivityItem}
                 saveSubActivityItemCallback={this.saveSubActivityItemCallback}
                 subActivityChangeHandler={this.subActivityChangeHandler}
+                estimateResources={this.props.estimateResources}
             />
         );
 

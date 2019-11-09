@@ -4,39 +4,36 @@ import './res/archest-default-theme/index.scss';
 import './res/icons/font/css/open-iconic-bootstrap.scss';
 import '../node_modules/handsontable/dist/handsontable.full.min.css';
 import * as serviceWorker from './serviceWorker';
-import HomeComponent from "./components/home";
-import LoginComponent from "./components/login";
-import LogoutComponent from "./components/logout";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import NavbarComponent from "./components/navbar";
-import PhaseEstimatesComponent from "./components/phase_estimates";
-import EstimateViewComponent from "./components/estimate_view";
-import EstimateEditComponent from "./components/estimate_edit";
+import ArchestHomeComponent from "./components/ArchestHomeComponent";
+import ArchestLoginComponent from "./components/ArchestLoginComponent";
+import ArchestLogoutComponent from "./components/ArchestLogoutComponent";
+import ArchestNavbarComponent from "./components/ArchestNavbarComponent";
+import ArchestPhaseEstimatesComponent from "./components/ArchestPhaseEstimatesComponent";
+import ArchestEstimateViewComponent from "./components/ArchestEstimateViewComponent";
+import ArchestEstimateEditComponent from "./components/ArchestEstimateEditComponent";
 import ArchestEstimateProgressComponent from "./components/ArchestEstimateProgressComponent";
-import TimelineComponent from "./components/ArchestTimelineComponent.js";
+import ArchestTimelineComponent from "./components/ArchestTimelineComponent.js";
 import ArchestCalendarComponent from "./components/ArchestCalendarComponent";
 
 ReactDOM.render(
     <Router>
         <div>
-            <NavbarComponent/>
+            <ArchestNavbarComponent/>
 
-            <Route path="/" exact component={HomeComponent}/>
-            <Route path="/home" component={HomeComponent}/>
-            <Route path="/timeline" component={TimelineComponent}/>
+            <Route path="/" exact component={ArchestHomeComponent}/>
+            <Route path="/home" component={ArchestHomeComponent}/>
+            <Route path="/timeline" component={ArchestTimelineComponent}/>
             <Route path="/calendar" component={ArchestCalendarComponent}/>
-            <Route path="/phase/:phaseId/estimates/" component={PhaseEstimatesComponent}/>
-            <Route path="/estimates/:estimateId/view/" component={EstimateViewComponent}/>
-            <Route path="/estimates/:estimateId/edit/" component={EstimateEditComponent}/>
+            <Route path="/phase/:phaseId/estimates/" component={ArchestPhaseEstimatesComponent}/>
+            <Route path="/estimates/:estimateId/view/" component={ArchestEstimateViewComponent}/>
+            <Route path="/estimates/:estimateId/edit/" component={ArchestEstimateEditComponent}/>
             <Route path="/estimates/:estimateId/progress/" component={ArchestEstimateProgressComponent}/>
-            <Route path="/login/" component={LoginComponent}/>
-            <Route path="/logout/" component={LogoutComponent}/>
+            <Route path="/login/" component={ArchestLoginComponent}/>
+            <Route path="/logout/" component={ArchestLogoutComponent}/>
         </div>
     </Router>,
     document.getElementById('root'),
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();

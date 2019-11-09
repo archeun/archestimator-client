@@ -4,7 +4,7 @@ import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import ArchestWorkEntryComponent from "./ArchestWorkEntryComponent";
-import './styles/ArchestTimeline.scss';
+import './styles/ArchestTimelineComponent.scss';
 import ArchestWorkEntryFormComponent from "./ArchestWorkEntryFormComponent";
 
 const _ = require('lodash');
