@@ -23,6 +23,7 @@ ReactDOM.render(
             <ArchestNavbarComponent/>
 
             <Route path="/" exact component={ArchestProjectsComponent}/>
+            <Route path="/home" exact component={ArchestProjectsComponent}/>
             <Route path="/projects" component={ArchestProjectsComponent}/>
             <Route path="/project/:projectId/phases/" component={ArchestProjectPhasesComponent}/>
             <Route path="/timeline" component={ArchestTimelineComponent}/>

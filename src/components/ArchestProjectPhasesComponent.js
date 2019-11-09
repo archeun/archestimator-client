@@ -5,6 +5,7 @@ import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import ArchestHttp from "../modules/archest_http";
 import {Redirect} from "react-router-dom";
 import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
+import ArchestAddPhaseModalComponent from "./ArchestAddPhaseModalComponent";
 
 const _ = require('lodash');
 
@@ -18,7 +19,11 @@ class ArchestProjectPhasesComponent extends Component {
             breadcrumbs: [],
             project: {},
             redirectTo: false,
+            addPhaseModalProps: {
+                show: false
+            }
         };
+        this.showAddPhaseModal = this.showAddPhaseModal.bind(this);
     }
 
     componentDidMount() {
@@ -52,6 +57,23 @@ class ArchestProjectPhasesComponent extends Component {
         });
     }
 
+    showAddPhaseModal(estimatedId, estimateOwner) {
+        this.setState({
+            addPhaseModalProps: {
+                show: true,
+                project: this.state.project,
+                onCancel: () => {
+                    this.setState({
+                        addPhaseModalProps: {
+                            show: false,
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
     render() {
 
         if (this.state.redirectTo) {
@@ -70,11 +92,33 @@ class ArchestProjectPhasesComponent extends Component {
         return (
             <ArchestAuthEnabledComponent>
                 <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
+                    <ArchestAddPhaseModalComponent
+                        show={this.state.addPhaseModalProps.show}
+                        project={this.state.addPhaseModalProps.project}
+                        onCancel={this.state.addPhaseModalProps.onCancel}
+                    />
                     <Row>
                         <Col sm={3}/>
                         <Col sm={6}>
                             <Card>
-                                <Card.Header>Your Phases of {this.state.project.name}</Card.Header>
+                                <Card.Header>
+                                    Your Phases of {this.state.project.name}
+                                    <OverlayTrigger key="edit" placement="top"
+                                                    overlay={
+                                                        <Tooltip id="tooltip-top">
+                                                            Add New Phase to {this.state.project.name}
+                                                        </Tooltip>
+                                                    }>
+                                        <Button
+                                            style={{'float': 'right'}}
+                                            variant="success"
+                                            size="sm"
+                                            onClick={this.showAddPhaseModal}
+                                        >
+                                            <span className="oi oi-plus"/>
+                                        </Button>
+                                    </OverlayTrigger>
+                                </Card.Header>
                                 <ListGroup variant="flush">
                                     {phaseList}
                                 </ListGroup>
