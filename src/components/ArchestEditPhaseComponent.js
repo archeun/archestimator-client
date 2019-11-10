@@ -34,7 +34,10 @@ class ArchestEditPhaseComponent extends Component {
 
     componentDidMount() {
         const phaseId = this.props.match.params.phaseId;
+        this.init(phaseId);
+    }
 
+    init(phaseId) {
         const requestConfigs = [
             {
                 name: 'phase',
@@ -71,16 +74,15 @@ class ArchestEditPhaseComponent extends Component {
                 ]
             })
         });
-
     }
 
     savePhaseData() {
         let values = this.state.formValues;
         values['resource_ids'] = _.map(values.project_resources, (resource) => parseInt(resource.id, 10));
         values['manager_ids'] = _.map(values.project_managers, (manager) => parseInt(manager.id, 10));
-        console.log(JSON.parse(JSON.stringify(values)));
         ArchestHttp.PATCH(`${BACKEND_ESTIMATOR_API_URL}/phases/${this.state.phase.id}/`, values).then((response) => {
-            console.log(response);
+            let phase = response.data;
+            this.init(phase.id);
         }).catch((error) => {
             console.log(error);
         });
