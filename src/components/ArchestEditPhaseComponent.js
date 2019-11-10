@@ -27,6 +27,7 @@ class ArchestEditPhaseComponent extends Component {
                 'project_resources': [],
             },
             breadcrumbs: [],
+            loading: true,
         };
         this.handleActivityFormFieldChange = this.handleActivityFormFieldChange.bind(this);
         this.savePhaseData = this.savePhaseData.bind(this);
@@ -71,12 +72,14 @@ class ArchestEditPhaseComponent extends Component {
                     {title: 'Projects', url: '/projects'},
                     {title: `Phases of ${phase.project.name}`, url: '/projects/' + phase.project.id + '/phases/'},
                     {title: phase.name, url: '#', active: true},
-                ]
+                ],
+                loading: false,
             })
         });
     }
 
     savePhaseData() {
+        this.setState({loading: true});
         let values = this.state.formValues;
         values['resource_ids'] = _.map(values.project_resources, (resource) => parseInt(resource.id, 10));
         values['manager_ids'] = _.map(values.project_managers, (manager) => parseInt(manager.id, 10));
@@ -111,7 +114,7 @@ class ArchestEditPhaseComponent extends Component {
     render() {
         return (
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
+                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs} loading={this.state.loading}>
                     <Card className="archest-card">
                         <Card.Body className="archest-card-body">
                             <Form>

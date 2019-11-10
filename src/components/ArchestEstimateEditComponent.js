@@ -22,7 +22,8 @@ class ArchestEstimateEditComponent extends Component {
             estimateDetails: {},
             estimateResources: [],
             estimateTableData: [],
-            breadcrumbs: []
+            breadcrumbs: [],
+            showLoadingBar: true,
         };
         this.removeActivityItem = this.removeActivityItem.bind(this);
         this.handleEstimateNameChange = this.handleEstimateNameChange.bind(this);
@@ -60,6 +61,7 @@ class ArchestEstimateEditComponent extends Component {
             component.setState({
                 estimateDetails: responses.estimateDetailedView.data.results,
                 dataLoaded: true,
+                showLoadingBar: false,
                 estimateResources: responses.estimateResources.data.results,
                 estimate: estimate,
                 breadcrumbs: [
@@ -99,10 +101,12 @@ class ArchestEstimateEditComponent extends Component {
     }
 
     saveEstimateName() {
+        this.setState({showLoadingBar: true});
         ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/estimates/" + this.state.estimate.id + "/", {
             name: this.state.estimate.name,
-        }).then(function (response) {
-        }).catch(function (error) {
+        }).then((response) => {
+            this.setState({showLoadingBar: false});
+        }).catch((error) => {
             console.log(error);
         }).finally(() => {
         });
@@ -147,7 +151,7 @@ class ArchestEstimateEditComponent extends Component {
         return (
 
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
+                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs} loading={this.state.showLoadingBar}>
                     <Card text="white">
                         <Card.Header>
                             <Row>

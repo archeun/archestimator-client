@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Container, Modal, Button, Breadcrumb, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {BarLoader} from "react-spinners";
 
 const _ = require('lodash');
 
@@ -28,7 +29,8 @@ class ArchestMainContainerComponent extends Component {
         let breadcrumbs = _.map(this.props.breadcrumbs, (function (breadcrumb) {
             return (
 
-                <OverlayTrigger key={breadcrumb.title} placement="bottom" overlay={<Tooltip>{breadcrumb.title}</Tooltip>}>
+                <OverlayTrigger key={breadcrumb.title} placement="bottom"
+                                overlay={<Tooltip>{breadcrumb.title}</Tooltip>}>
                     <Breadcrumb.Item key={breadcrumb.title} active={breadcrumb.active} href={breadcrumb.url}>
                         {breadcrumb.title}
                     </Breadcrumb.Item>
@@ -56,6 +58,16 @@ class ArchestMainContainerComponent extends Component {
                 <Breadcrumb>
                     {breadcrumbs}
                 </Breadcrumb>
+
+                <div style={{'height':'5px'}}>
+                    <BarLoader
+                        css={{'width': 'inherit', 'display': 'block'}}
+                        sizeUnit={"px"}
+                        size={150}
+                        loading={this.props.loading === true}
+                        color={'#17a2b8'}
+                    />
+                </div>
                 {this.props.children}
             </Container>
         );
