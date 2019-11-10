@@ -67,13 +67,7 @@ export default class ArchestHttp {
      * @param params
      */
     static PATCH(url, params) {
-
-        const patchParams = new URLSearchParams();
-        _.each(params, function (value, key) {
-            patchParams.append(key, value);
-        });
-
-        return axios.patch(url, patchParams, {headers: {'Authorization': 'Token ' + ArchestAuth.getToken()}});
+        return axios.patch(url, params, {headers: {'Authorization': 'Token ' + ArchestAuth.getToken()}});
     }
 
     /**

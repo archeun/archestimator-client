@@ -134,7 +134,7 @@ class ArchestProjectPhasesComponent extends Component {
 
     handleEstimateListBtnClick(phase) {
         this.setState({
-            redirectTo: '/phase/' + phase.id + '/estimates/'
+            redirectTo: '/phases/' + phase.id + '/estimates/'
         });
     };
 
@@ -143,7 +143,9 @@ class ArchestProjectPhasesComponent extends Component {
         return (
             <ListGroup.Item key={phase.id}>
                 <div>
-                    <h5 style={{'display': 'inline-block'}}>{phase.name}</h5>
+                    <h5 style={{'display': 'inline-block'}}>
+                        <a className={'archest-anchor'} href={`/phases/${phase.id}/edit/`}>{phase.name}</a>
+                    </h5>
                     <OverlayTrigger key="right" placement="right"
                                     overlay={
                                         <Tooltip id="tooltip-right">

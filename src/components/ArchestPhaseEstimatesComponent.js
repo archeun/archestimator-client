@@ -55,7 +55,7 @@ class ArchestPhaseEstimatesComponent extends Component {
                     breadcrumbs: [
                         {title: 'Home', url: '/'},
                         {title: 'Projects', url: '/projects'},
-                        {title: `Phases of ${phase.project.name}`, url: '/project/' + phase.project.id + '/phases/'},
+                        {title: `Phases of ${phase.project.name}`, url: '/projects/' + phase.project.id + '/phases/'},
                         {title: `Estimates for ${phase.name}`, url: '#', active: true},
                     ]
                 });

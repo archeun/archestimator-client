@@ -65,10 +65,10 @@ class ArchestEstimateEditComponent extends Component {
                 breadcrumbs: [
                     {title: 'Home', url: '/'},
                     {title: 'Projects', url: '/projects'},
-                    {title: `Phases of ${estimate.phase.project.name}`, url: '/project/' + estimate.phase.project.id + '/phases/'},
+                    {title: `Phases of ${estimate.phase.project.name}`, url: '/projects/' + estimate.phase.project.id + '/phases/'},
                     {
                         title: `Estimates for ${estimate.phase.name}`,
-                        url: `/phase/${estimate.phase.id}/estimates/`
+                        url: `/phases/${estimate.phase.id}/estimates/`
                     },
                     {title: estimate.name, url: '#', active: true},
                 ]
@@ -111,13 +111,14 @@ class ArchestEstimateEditComponent extends Component {
     render() {
         let activityComps = [];
         let component = this;
+        let areFeaturesDefined = component.state.estimate.features && component.state.estimate.features.length > 0;
 
         if (this.state.dataLoaded) {
             activityComps = this.state.estimateDetails.map(
                 (activity) =>
                     <ArchestEstimateActivityComponent
                         key={activity.id}
-                        activity={activity}
+                        activity={activity}ArchestEstimateEditComponent
                         features={this.state.estimate.features}
                         estimateResources={this.state.estimateResources}
                         removeActivityItemHandler={this.removeActivityItem}
@@ -127,20 +128,21 @@ class ArchestEstimateEditComponent extends Component {
 
         let addActivityItem = function () {
             const features = component.state.estimate.features;
-
-            ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/activities/", {
-                feature_id: features[0].id,
-                name: '',
-                estimate_id: component.state.estimate.id,
-                estimated_time: 0,
-                status: 1,
-            }).then(function (response) {
-                component.setState(prevState => ({
-                    estimateDetails: [...prevState.estimateDetails, response.data]
-                }));
-            }).catch(function (error) {
-                console.log(error);
-            });
+            if(areFeaturesDefined){
+                ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/activities/", {
+                    feature_id: features[0].id,
+                    name: '',
+                    estimate_id: component.state.estimate.id,
+                    estimated_time: 0,
+                    status: 1,
+                }).then(function (response) {
+                    component.setState(prevState => ({
+                        estimateDetails: [...prevState.estimateDetails, response.data]
+                    }));
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         };
         return (
 
@@ -165,7 +167,7 @@ class ArchestEstimateEditComponent extends Component {
                     </Card>
                     <br/>
                     {activityComps}
-                    <Row style={{margin: '0 42%'}}>
+                    <Row style={{margin: '0 42%'}} hidden={!areFeaturesDefined}>
                         <Col>
                             <Button onClick={addActivityItem} variant="link">
                                 <span className="oi oi-plus"/>&nbsp;&nbsp;

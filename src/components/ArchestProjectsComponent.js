@@ -77,7 +77,7 @@ class ArchestProjectsComponent extends Component {
 
     handlePhaseListBtnClick(project) {
         this.setState({
-            redirectTo: '/project/' + project.id + '/phases/'
+            redirectTo: '/projects/' + project.id + '/phases/'
         });
     };
 

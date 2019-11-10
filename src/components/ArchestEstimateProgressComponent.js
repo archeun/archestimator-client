@@ -48,10 +48,10 @@ class ArchestEstimateProgressComponent extends Component {
                 breadcrumbs: [
                     {title: 'Home', url: '/'},
                     {title: 'Projects', url: '/projects'},
-                    {title: `Phases of ${estimate.phase.project.name}`, url: '/project/' + estimate.phase.project.id + '/phases/'},
+                    {title: `Phases of ${estimate.phase.project.name}`, url: '/projects/' + estimate.phase.project.id + '/phases/'},
                     {
                         title: `Estimates for ${estimate.phase.name}`,
-                        url: `/phase/${estimate.phase.id}/estimates/`
+                        url: `/phases/${estimate.phase.id}/estimates/`
                     },
                     {title: estimate.name, url: '#', active: true},
                 ]
