@@ -4,7 +4,6 @@ import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 import ArchestHttp from "../modules/archest_http";
 import {BACKEND_ESTIMATOR_API_URL} from "../constants";
 import {Button, Card, Col, Form} from "react-bootstrap";
-import Select from 'react-select';
 import ArchestWidgetMultiSelect from "./ArchestWidgetMultiSelect";
 
 const _ = require('lodash');
