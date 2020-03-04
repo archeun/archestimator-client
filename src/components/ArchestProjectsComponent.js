@@ -8,32 +8,36 @@ import ArchestMainContainerComponent from "./ArchestMainContainerComponent";
 
 const _ = require('lodash');
 
-class ArchestHomeComponent extends Component {
+class ArchestProjectsComponent extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            phaseList: [],
+            projectList: [],
+            breadcrumbs: [],
             redirectTo: false,
         };
+        this.handlePhaseListBtnClick = this.handlePhaseListBtnClick.bind(this)
     }
 
     componentDidMount() {
 
-        const component = this;
-
-        ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/phases/', {})
-            .then(function (response) {
-                    component.setState({
-                        phaseList: response.data.results
-                    });
-                }
-            )
-            .catch(function (error) {
-                    console.log(error);
-                }
-            );
+        ArchestHttp.GET(BACKEND_ESTIMATOR_API_URL + '/projects/', {}).then(
+            (response) => {
+                this.setState({
+                    projectList: response.data.results,
+                    breadcrumbs: [
+                        {title: 'Home', url: '/'},
+                        {title: 'Projects', url: '#', active: true},
+                    ]
+                });
+            }
+        ).catch(
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 
     render() {
@@ -45,22 +49,21 @@ class ArchestHomeComponent extends Component {
             }}
             />
         }
-        const component = this;
 
-        let phaseList = _.map(this.state.phaseList, (function (phase) {
-            return component.getPhaseInfoListItem(phase);
+        let projectList = _.map(this.state.projectList, ((project) => {
+            return this.getProjectInfoListItem(project);
         }));
 
         return (
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent>
+                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
                     <Row>
                         <Col sm={3}/>
                         <Col sm={6}>
                             <Card>
-                                <Card.Header>Your Project Phases</Card.Header>
+                                <Card.Header>Your Projects</Card.Header>
                                 <ListGroup variant="flush">
-                                    {phaseList}
+                                    {projectList}
                                 </ListGroup>
                             </Card>
                         </Col>
@@ -72,41 +75,33 @@ class ArchestHomeComponent extends Component {
     }
 
 
-    handleEstimateListBtnClick(phase) {
+    handlePhaseListBtnClick(project) {
         this.setState({
-            redirectTo: '/phase/' + phase.id + '/estimates/'
+            redirectTo: '/projects/' + project.id + '/phases/'
         });
     };
 
-    getPhaseInfoListItem(phase) {
-        let managersNames = _.map(phase.managers, (manager) => manager.full_name).join(', ');
+    getProjectInfoListItem(project) {
         return (
-            <ListGroup.Item key={phase.id}>
+            <ListGroup.Item key={project.id}>
                 <div>
-                    <h5 style={{'display': 'inline-block'}}>{phase.name}</h5>
+                    <h5 style={{'display': 'inline-block'}}>{project.name}</h5>
                     <OverlayTrigger key="right" placement="right"
                                     overlay={
                                         <Tooltip id="tooltip-right">
-                                            Estimates
+                                            Phases
                                         </Tooltip>
                                     }>
-                        <Button onClick={this.handleEstimateListBtnClick.bind(this, phase)}
+                        <Button onClick={() => this.handlePhaseListBtnClick(project)}
                                 style={{'float': 'right'}} variant="outline-primary" size="sm">
                             <span className="oi oi-excerpt"/>
                         </Button>
                     </OverlayTrigger>
                 </div>
-                <div>
-                    <footer className="blockquote-footer">
-                        From <cite>{phase.start_date}</cite> To <cite>{phase.end_date}.</cite> Managers: <cite>{managersNames}</cite>
-                    </footer>
-                </div>
-                <Badge variant="info">{phase.project.customer.name}</Badge>
-                <span> > </span>
-                <Badge variant="success">{phase.project.name}</Badge>
+                <Badge variant="info">{project.customer.name}</Badge>
             </ListGroup.Item>
         );
     }
 }
 
-export default ArchestHomeComponent;
+export default ArchestProjectsComponent;

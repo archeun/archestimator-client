@@ -22,7 +22,8 @@ class ArchestEstimateEditComponent extends Component {
             estimateDetails: {},
             estimateResources: [],
             estimateTableData: [],
-            breadcrumbs: []
+            breadcrumbs: [],
+            showLoadingBar: true,
         };
         this.removeActivityItem = this.removeActivityItem.bind(this);
         this.handleEstimateNameChange = this.handleEstimateNameChange.bind(this);
@@ -60,13 +61,16 @@ class ArchestEstimateEditComponent extends Component {
             component.setState({
                 estimateDetails: responses.estimateDetailedView.data.results,
                 dataLoaded: true,
+                showLoadingBar: false,
                 estimateResources: responses.estimateResources.data.results,
                 estimate: estimate,
                 breadcrumbs: [
                     {title: 'Home', url: '/'},
+                    {title: 'Projects', url: '/projects'},
+                    {title: `Phases of ${estimate.phase.project.name}`, url: '/projects/' + estimate.phase.project.id + '/phases/'},
                     {
-                        title: estimate.phase.name + ' - Estimates',
-                        url: `/phase/${estimate.phase.id}/estimates/`
+                        title: `Estimates for ${estimate.phase.name}`,
+                        url: `/phases/${estimate.phase.id}/estimates/`
                     },
                     {title: estimate.name, url: '#', active: true},
                 ]
@@ -97,10 +101,12 @@ class ArchestEstimateEditComponent extends Component {
     }
 
     saveEstimateName() {
+        this.setState({showLoadingBar: true});
         ArchestHttp.PATCH(BACKEND_ESTIMATOR_API_URL + "/estimates/" + this.state.estimate.id + "/", {
             name: this.state.estimate.name,
-        }).then(function (response) {
-        }).catch(function (error) {
+        }).then((response) => {
+            this.setState({showLoadingBar: false});
+        }).catch((error) => {
             console.log(error);
         }).finally(() => {
         });
@@ -109,13 +115,14 @@ class ArchestEstimateEditComponent extends Component {
     render() {
         let activityComps = [];
         let component = this;
+        let areFeaturesDefined = component.state.estimate.features && component.state.estimate.features.length > 0;
 
         if (this.state.dataLoaded) {
             activityComps = this.state.estimateDetails.map(
                 (activity) =>
                     <ArchestEstimateActivityComponent
                         key={activity.id}
-                        activity={activity}
+                        activity={activity}ArchestEstimateEditComponent
                         features={this.state.estimate.features}
                         estimateResources={this.state.estimateResources}
                         removeActivityItemHandler={this.removeActivityItem}
@@ -125,25 +132,26 @@ class ArchestEstimateEditComponent extends Component {
 
         let addActivityItem = function () {
             const features = component.state.estimate.features;
-
-            ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/activities/", {
-                feature_id: features[0].id,
-                name: '',
-                estimate_id: component.state.estimate.id,
-                estimated_time: 0,
-                status: 1,
-            }).then(function (response) {
-                component.setState(prevState => ({
-                    estimateDetails: [...prevState.estimateDetails, response.data]
-                }));
-            }).catch(function (error) {
-                console.log(error);
-            });
+            if(areFeaturesDefined){
+                ArchestHttp.POST(BACKEND_ESTIMATOR_API_URL + "/activities/", {
+                    feature_id: features[0].id,
+                    name: '',
+                    estimate_id: component.state.estimate.id,
+                    estimated_time: 0,
+                    status: 1,
+                }).then(function (response) {
+                    component.setState(prevState => ({
+                        estimateDetails: [...prevState.estimateDetails, response.data]
+                    }));
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         };
         return (
 
             <ArchestAuthEnabledComponent>
-                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs}>
+                <ArchestMainContainerComponent breadcrumbs={this.state.breadcrumbs} loading={this.state.showLoadingBar}>
                     <Card text="white">
                         <Card.Header>
                             <Row>
@@ -163,7 +171,7 @@ class ArchestEstimateEditComponent extends Component {
                     </Card>
                     <br/>
                     {activityComps}
-                    <Row style={{margin: '0 42%'}}>
+                    <Row style={{margin: '0 42%'}} hidden={!areFeaturesDefined}>
                         <Col>
                             <Button onClick={addActivityItem} variant="link">
                                 <span className="oi oi-plus"/>&nbsp;&nbsp;

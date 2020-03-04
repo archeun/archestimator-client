@@ -5,7 +5,7 @@ import './res/icons/font/css/open-iconic-bootstrap.scss';
 import '../node_modules/handsontable/dist/handsontable.full.min.css';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import ArchestHomeComponent from "./components/ArchestHomeComponent";
+import ArchestProjectPhasesComponent from "./components/ArchestProjectPhasesComponent";
 import ArchestLoginComponent from "./components/ArchestLoginComponent";
 import ArchestLogoutComponent from "./components/ArchestLogoutComponent";
 import ArchestNavbarComponent from "./components/ArchestNavbarComponent";
@@ -15,20 +15,25 @@ import ArchestEstimateEditComponent from "./components/ArchestEstimateEditCompon
 import ArchestEstimateProgressComponent from "./components/ArchestEstimateProgressComponent";
 import ArchestTimelineComponent from "./components/ArchestTimelineComponent.js";
 import ArchestCalendarComponent from "./components/ArchestCalendarComponent";
+import ArchestProjectsComponent from "./components/ArchestProjectsComponent";
+import ArchestEditPhaseComponent from "./components/ArchestEditPhaseComponent";
 
 ReactDOM.render(
     <Router>
         <div>
             <ArchestNavbarComponent/>
 
-            <Route path="/" exact component={ArchestHomeComponent}/>
-            <Route path="/home" component={ArchestHomeComponent}/>
-            <Route path="/timeline" component={ArchestTimelineComponent}/>
-            <Route path="/calendar" component={ArchestCalendarComponent}/>
-            <Route path="/phase/:phaseId/estimates/" component={ArchestPhaseEstimatesComponent}/>
-            <Route path="/estimates/:estimateId/view/" component={ArchestEstimateViewComponent}/>
-            <Route path="/estimates/:estimateId/edit/" component={ArchestEstimateEditComponent}/>
-            <Route path="/estimates/:estimateId/progress/" component={ArchestEstimateProgressComponent}/>
+            <Route path="/" exact component={ArchestProjectsComponent}/>
+            <Route path="/home/" exact component={ArchestProjectsComponent}/>
+            <Route path="/projects/" exact component={ArchestProjectsComponent}/>
+            <Route path="/projects/:projectId/phases/" exact component={ArchestProjectPhasesComponent}/>
+            <Route path="/timeline/" exact component={ArchestTimelineComponent}/>
+            <Route path="/calendar/" exact component={ArchestCalendarComponent}/>
+            <Route path="/phases/:phaseId/edit/" exact component={ArchestEditPhaseComponent}/>
+            <Route path="/phases/:phaseId/estimates/" exact component={ArchestPhaseEstimatesComponent}/>
+            <Route path="/estimates/:estimateId/view/" exact component={ArchestEstimateViewComponent}/>
+            <Route path="/estimates/:estimateId/edit/" exact component={ArchestEstimateEditComponent}/>
+            <Route path="/estimates/:estimateId/progress/" exact component={ArchestEstimateProgressComponent}/>
             <Route path="/login/" component={ArchestLoginComponent}/>
             <Route path="/logout/" component={ArchestLogoutComponent}/>
         </div>
